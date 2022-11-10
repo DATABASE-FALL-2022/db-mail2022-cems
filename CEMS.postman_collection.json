@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cb86c3c0-285b-4f5a-9d3e-8689822c65b1",
+		"_postman_id": "9dd87b15-f0de-4fda-a104-54a4bff62a8e",
 		"name": "CEMS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -9,12 +9,12 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "GetAllUsers",
+					"name": "GetAllAccounts",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/users",
+							"raw": "http://127.0.0.1:5000/account/getAll",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -24,14 +24,15 @@
 							],
 							"port": "5000",
 							"path": [
-								"users"
+								"account",
+								"getAll"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "AddNewUser",
+					"name": "AddNewAccount",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -45,7 +46,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/users",
+							"raw": "http://127.0.0.1:5000/account/getAll",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -55,19 +56,20 @@
 							],
 							"port": "5000",
 							"path": [
-								"users"
+								"account",
+								"getAll"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "SearchUsers",
+					"name": "SearchAccounts",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/users?name=elliot",
+							"raw": "http://127.0.0.1:5000/account/getAll?name=elliot",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -77,7 +79,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"users"
+								"account",
+								"getAll"
 							],
 							"query": [
 								{
@@ -90,12 +93,12 @@
 					"response": []
 				},
 				{
-					"name": "GetUserByID",
+					"name": "GetAccountByID",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/users/:uid",
+							"raw": "http://127.0.0.1:5000/account/getById/:uid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -105,7 +108,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"users",
+								"account",
+								"getById",
 								":uid"
 							],
 							"variable": [
@@ -119,7 +123,7 @@
 					"response": []
 				},
 				{
-					"name": "Update User",
+					"name": "Update Account",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -134,7 +138,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/users/:uid",
+							"raw": "http://127.0.0.1:5000/account/getById/:uid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -144,7 +148,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"users",
+								"account",
+								"getById",
 								":uid"
 							],
 							"variable": [
@@ -158,12 +163,12 @@
 					"response": []
 				},
 				{
-					"name": "Delete User",
+					"name": "Delete Account",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/users/:uid",
+							"raw": "http://127.0.0.1:5000/account/getById/:uid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -173,7 +178,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"users",
+								"account",
+								"getById",
 								":uid"
 							],
 							"variable": [
@@ -206,7 +212,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/friends",
+							"raw": "http://127.0.0.1:5000/friend/getAll",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -216,7 +222,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"friends"
+								"friend",
+								"getAll"
 							]
 						}
 					},
@@ -228,7 +235,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/friends",
+							"raw": "http://127.0.0.1:5000/friend/getAll",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -238,7 +245,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"friends"
+								"friend",
+								"getAll"
 							]
 						}
 					},
@@ -250,7 +258,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/friends?name=pedro",
+							"raw": "http://127.0.0.1:5000/friend/getAll?name=pedro",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -260,7 +268,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"friends"
+								"friend",
+								"getAll"
 							],
 							"query": [
 								{
@@ -283,8 +292,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/messages",
-							"protocol": "http",
+							"raw": "127.0.0.1:5000/message/getAll",
 							"host": [
 								"127",
 								"0",
@@ -293,7 +301,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"messages"
+								"message",
+								"getAll"
 							]
 						}
 					},
@@ -314,7 +323,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/messages",
+							"raw": "http://127.0.0.1:5000/message/getAll",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -324,7 +333,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"messages"
+								"message",
+								"getAll"
 							]
 						}
 					},
@@ -336,7 +346,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/messages?email=cems@gmail.com",
+							"raw": "http://127.0.0.1:5000/message/getAll?email=cems@gmail.com",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -346,7 +356,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"messages"
+								"message",
+								"getAll"
 							],
 							"query": [
 								{
@@ -364,7 +375,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/messages/:mid",
+							"raw": "http://127.0.0.1:5000/message/getById/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -374,7 +385,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"messages",
+								"message",
+								"getById",
 								":mid"
 							],
 							"variable": [
@@ -403,7 +415,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/messages/:mid",
+							"raw": "http://127.0.0.1:5000/message/getById/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -413,7 +425,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"messages",
+								"message",
+								"getById",
 								":mid"
 							],
 							"variable": [
@@ -432,7 +445,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/messages/:mid",
+							"raw": "http://127.0.0.1:5000/message/getById/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -442,7 +455,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"messages",
+								"message",
+								"getById",
 								":mid"
 							],
 							"variable": [

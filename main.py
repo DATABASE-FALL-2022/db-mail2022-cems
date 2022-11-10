@@ -10,35 +10,35 @@ CORS(app)
 def greeting():
     return 'Welcome to CEMS DB Project'
 
-@app.route('/users', methods=['GET','POST'])
-def getAllUsers():
+@app.route('/account/getAll', methods=['GET','POST'])
+def getAllAccounts():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        #return UserHandler().insertUserJson(request.json)
-        return 'Inserted new User'
+        #return AccountHandler().insertAccountJson(request.json)
+        return 'Inserted new Account'
     else:
         if not request.args:
-            #return UserHandler().getAllUsers()
-            return 'Got all users'
+            #return AccountHandler().getAllAccounts()
+            return 'Got all Accounts'
         else:
-            #return UserHandler().searchUsers(request.args) 
-            return 'searched for users with request.args'
+            #return AccountHandler().searchAccounts(request.args) 
+            return 'searched for Accounts with request.args'
 
-@app.route('/users/<int:uid>', methods=['GET','PUT','DELETE'])
-def getUserByID(uid):
+@app.route('/account/getById/<int:uid>', methods=['GET','PUT','DELETE'])
+def getAccountByID(uid):
     if request.method == 'GET':
-        #return UserHandler().getUserById(uid)
-        return 'Got user with uid provided'
+        #return AccountHandler().getAccountById(uid)
+        return 'Got Account with uid provided'
     elif request.method == 'PUT':
-        #return UserHandler().updateUser(uid,request.form)
-        return 'Updated User with provided request.form'
+        #return AccountHandler().updateAccount(uid,request.form)
+        return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        #return UserHandler().deleteUser(uid)
-        return 'Deleted User with uid provided'
+        #return AccountHandler().deleteAccount(uid)
+        return 'Deleted Account with uid provided'
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/friends', methods=['GET','POST'])
+@app.route('/friend/getAll', methods=['GET','POST'])
 def getAllFriends():
     if request.method == 'POST':
         #return FriendHandler().insertFriendJson(request.json)
@@ -51,7 +51,7 @@ def getAllFriends():
             #return FriendHandler().searchFriends(request.args)
             return 'Search for friendships with request.args'
 
-@app.route('/messages', methods=['GET','POST'])
+@app.route('/message/getAll', methods=['GET','POST'])
 def getAllMessages():
     if request.method == 'POST':
         #return MessageHandler().insertMesaggeJson(request.json)
@@ -64,7 +64,7 @@ def getAllMessages():
             #return MessageHandler().searchMesages(request.args)
             return 'Searched for messages with request.args'
 
-@app.route('/messages/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/message/getById/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
 def getMessageById(mid):
     if request.method == 'GET':
         #return MessageHandler().getMessageById(mid)
