@@ -7,5 +7,5 @@
 
 ### Host: cems-database.postgres.database.azure.com
 ### User: dbfall22
-### Password: Colegio2022!
+### Password: colegio2022!
 ### Database: cemsdb
