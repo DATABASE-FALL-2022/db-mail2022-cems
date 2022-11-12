@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "9dd87b15-f0de-4fda-a104-54a4bff62a8e",
+		"_postman_id": "ddfdf427-074b-40f5-ac62-a96652f741f0",
 		"name": "CEMS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Users",
+			"name": "Accounts",
 			"item": [
 				{
 					"name": "GetAllAccounts",
@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/account/getAll",
+							"raw": "http://127.0.0.1:5000/cems/account",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -24,8 +24,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"account",
-								"getAll"
+								"cems",
+								"account"
 							]
 						}
 					},
@@ -38,7 +38,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"elliot\",\r\n    \"password\":\"123456\"\r\n}",
+							"raw": "{\r\n    \"first_name\":\"elliot\",\r\n    \"last_name\":\"cardona\",\r\n    \"date_of_birth\":\"1999-12-28\",\r\n    \"gender\":\"male\",\r\n    \"phone_number\":\"7876122646\",\r\n    \"email_address\":\"elliot.cardona@upr.edu\",\r\n    \"passwd\":\"gotcha\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,7 +46,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/account/getAll",
+							"raw": "http://127.0.0.1:5000/cems/account",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -56,8 +56,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"account",
-								"getAll"
+								"cems",
+								"account"
 							]
 						}
 					},
@@ -69,7 +69,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/account/getAll?name=elliot",
+							"raw": "http://127.0.0.1:5000/cems/account?name=elliot",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -79,8 +79,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"account",
-								"getAll"
+								"cems",
+								"account"
 							],
 							"query": [
 								{
@@ -98,7 +98,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/account/getById/:uid",
+							"raw": "http://127.0.0.1:5000/cems/account/:uid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -108,8 +108,8 @@
 							],
 							"port": "5000",
 							"path": [
+								"cems",
 								"account",
-								"getById",
 								":uid"
 							],
 							"variable": [
@@ -138,7 +138,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/account/getById/:uid",
+							"raw": "http://127.0.0.1:5000/cems/account/:uid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -148,8 +148,8 @@
 							],
 							"port": "5000",
 							"path": [
+								"cems",
 								"account",
-								"getById",
 								":uid"
 							],
 							"variable": [
@@ -168,7 +168,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/account/getById/:uid",
+							"raw": "http://127.0.0.1:5000/cems/account/:uid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -178,8 +178,8 @@
 							],
 							"port": "5000",
 							"path": [
+								"cems",
 								"account",
-								"getById",
 								":uid"
 							],
 							"variable": [
@@ -212,7 +212,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/friend/getAll",
+							"raw": "http://127.0.0.1:5000/cems/friend",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -222,8 +222,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"friend",
-								"getAll"
+								"cems",
+								"friend"
 							]
 						}
 					},
@@ -235,7 +235,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/friend/getAll",
+							"raw": "http://127.0.0.1:5000/cems/friend",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -245,8 +245,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"friend",
-								"getAll"
+								"cems",
+								"friend"
 							]
 						}
 					},
@@ -258,7 +258,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/friend/getAll?name=pedro",
+							"raw": "http://127.0.0.1:5000/cems/friend?name=pedro",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -268,8 +268,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"friend",
-								"getAll"
+								"cems",
+								"friend"
 							],
 							"query": [
 								{
@@ -292,7 +292,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "127.0.0.1:5000/message/getAll",
+							"raw": "127.0.0.1:5000/cems/message",
 							"host": [
 								"127",
 								"0",
@@ -301,8 +301,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"message",
-								"getAll"
+								"cems",
+								"message"
 							]
 						}
 					},
@@ -323,7 +323,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/message/getAll",
+							"raw": "http://127.0.0.1:5000/cems/message",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -333,8 +333,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"message",
-								"getAll"
+								"cems",
+								"message"
 							]
 						}
 					},
@@ -346,7 +346,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/message/getAll?email=cems@gmail.com",
+							"raw": "http://127.0.0.1:5000/cems/message?email=cems@gmail.com",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -356,8 +356,8 @@
 							],
 							"port": "5000",
 							"path": [
-								"message",
-								"getAll"
+								"cems",
+								"message"
 							],
 							"query": [
 								{
@@ -375,7 +375,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/message/getById/:mid",
+							"raw": "http://127.0.0.1:5000/cems/message/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -385,8 +385,8 @@
 							],
 							"port": "5000",
 							"path": [
+								"cems",
 								"message",
-								"getById",
 								":mid"
 							],
 							"variable": [
@@ -415,7 +415,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/message/getById/:mid",
+							"raw": "http://127.0.0.1:5000/cems/message/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -425,8 +425,8 @@
 							],
 							"port": "5000",
 							"path": [
+								"cems",
 								"message",
-								"getById",
 								":mid"
 							],
 							"variable": [
@@ -445,7 +445,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/message/getById/:mid",
+							"raw": "http://127.0.0.1:5000/cems/message/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -455,8 +455,8 @@
 							],
 							"port": "5000",
 							"path": [
+								"cems",
 								"message",
-								"getById",
 								":mid"
 							],
 							"variable": [
@@ -477,7 +477,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/",
+					"raw": "http://127.0.0.1:5000/cems",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -487,7 +487,7 @@
 					],
 					"port": "5000",
 					"path": [
-						""
+						"cems"
 					]
 				}
 			},
