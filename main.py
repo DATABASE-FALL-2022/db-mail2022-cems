@@ -20,25 +20,28 @@ def teardown_db(exception):
         db.close()
 
 
-@app.route('/')
+@app.route('/cems')
 def greeting():
     return 'Welcome to CEMS DB Project'
 
-@app.route('/account/getAll', methods=['GET','POST'])
+@app.route('/cems/account', methods=['GET','POST'])
 def getAllAccounts():
     if request.method == 'POST':
         print("REQUEST: ", request.json)
-        #return AccountHandler().insertAccountJson(request.json)
-        return 'Inserted new Account'
-    else:
+        return Accounts().addNewAccount(request.json)
+        
+    elif request.method == "GET":
         if not request.args:
             #return AccountHandler().getAllAccounts()
             return 'Got all Accounts'
         else:
             #return AccountHandler().searchAccounts(request.args) 
             return 'searched for Accounts with request.args'
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
-@app.route('/account/getById/<int:uid>', methods=['GET','PUT','DELETE'])
+
+@app.route('/cems/account/<int:uid>', methods=['GET','PUT','DELETE'])
 def getAccountByID(uid):
     if request.method == 'GET':
         #return AccountHandler().getAccountById(uid)
@@ -52,33 +55,38 @@ def getAccountByID(uid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/friend/getAll', methods=['GET','POST'])
+@app.route('/cems/friend', methods=['GET','POST'])
 def getAllFriends():
     if request.method == 'POST':
         #return FriendHandler().insertFriendJson(request.json)
         return 'Inserted new Friendship'
-    else:
+    elif request.methos == 'GET':
         if not request.args:
             #return FriendHandler().getAllFriends()
             return 'Got all friendships'
         else:
             #return FriendHandler().searchFriends(request.args)
             return 'Search for friendships with request.args'
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
-@app.route('/message/getAll', methods=['GET','POST'])
+
+@app.route('/cems/message', methods=['GET','POST'])
 def getAllMessages():
     if request.method == 'POST':
         #return MessageHandler().insertMesaggeJson(request.json)
         return 'Inserted new message'
-    else:
+    elif request.method == 'GET':
         if not request.args:
             #return MessageHandler().getAllMessages()
             return 'Got all messages'
         else:
             #return MessageHandler().searchMesages(request.args)
             return 'Searched for messages with request.args'
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
-@app.route('/message/getById/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/cems/message/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
 def getMessageById(mid):
     if request.method == 'GET':
         #return MessageHandler().getMessageById(mid)
@@ -91,15 +99,6 @@ def getMessageById(mid):
         return 'Deleted message with provided mid'
     else:
         return jsonify(Error="Method not allowed."), 405
-
-
-@app.route('/email/accounts', methods=['POST'])
-def handleAccount():
-    if request.method == 'POST':
-
-        return Accounts().addNewAccount(request.json)
-    else:
-        return jsonify("Method not allowed"), 405
 
 
 
