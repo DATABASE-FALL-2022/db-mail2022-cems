@@ -70,6 +70,14 @@ def getAllFriends():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/cems/friend/<int:uid>', methods=['DELETE'])
+def deleteFriend(uid):
+    if request.method == 'DELETE':
+        #return FriendHandler().deleteFriend(uid)
+        return 'Deleted Friend with uid provided'
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message', methods=['GET','POST'])
 def getAllMessages():
@@ -100,6 +108,22 @@ def getMessageById(mid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/cems/message/inbox', methods=['GET'])
+def getUserInbox(uid):
+    if request.method == 'GET':
+        #return MessageHandler().getUserInbox(uid)
+        return 'Got User inbox with provided UID'
+    else:
+        return jsonify(Error="Method not allowed."), 405
+@app.route('/cems/message/outbox', methods=['GET'])
+def getUserOutbox(uid):
+    if request.method == 'GET':
+        #return MessageHandler().getUserOutbox(uid)
+        return 'Got User inbox with provided UID'
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#@app.route('/cems/recipient/topTenUserInbox')
 
 
 if __name__ == '__main__':
