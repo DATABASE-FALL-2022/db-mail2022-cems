@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, g
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 from handler.accounts import Accounts
+from handler.message import Message
 
 
 load_dotenv(".env")
@@ -81,8 +82,8 @@ def deleteFriend(uid):
 @app.route('/cems/message', methods=['GET','POST'])
 def getAllMessages():
     if request.method == 'POST':
-        #return MessageHandler().insertMesaggeJson(request.json)
-        return 'Inserted new message'
+        return Message().sendNewMessage(request.json)
+   
     elif request.method == 'GET':
         if not request.args:
             #return MessageHandler().getAllMessages()

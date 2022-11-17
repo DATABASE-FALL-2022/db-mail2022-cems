@@ -1,6 +1,5 @@
 from config import get_db
-import psycopg2
-from psycopg2.extras import DictCursor, RealDictCursor
+from psycopg2.extras import RealDictCursor #RealDictCursor is used to configurate the cursor to return a dictionary
 
 
 
@@ -15,6 +14,7 @@ class AccountsDAO:
         '''
         cursor.execute(query,(email,))
         result = cursor.fetchone()
+        cursor.close()
         if result == None:
             return True
         return False
@@ -22,7 +22,7 @@ class AccountsDAO:
 
     def addNewAccount(self, json):
         conn = get_db()
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
         query = '''
         INSERT INTO account (first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd) 
         VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING user_id;
