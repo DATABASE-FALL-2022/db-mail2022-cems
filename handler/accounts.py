@@ -13,4 +13,19 @@ class Accounts:
 
             return jsonify(AccountsDAO().addNewAccount(json)) , 201 #Only returns the user_id
 
-        return jsonify("Error in accounts handler") 
+        return jsonify("ERROR: Email already exits in the system") 
+
+    
+    def getAllAccounts(self):
+
+        return jsonify(AccountsDAO().getAllAccounts()), 200
+
+    
+    def getAccountById(self, id):
+
+        result = AccountsDAO().getAccountById(id)
+
+        if result:
+            return jsonify(result), 200
+
+        return jsonify('Account not found :('), 200

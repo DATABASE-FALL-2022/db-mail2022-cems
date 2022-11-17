@@ -1,2 +1,4 @@
 .venv/
-testdb
+tests/
+testLogging.py
+logfile.log

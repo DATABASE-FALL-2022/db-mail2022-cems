@@ -27,13 +27,12 @@ def greeting():
 @app.route('/cems/account', methods=['GET','POST'])
 def getAllAccounts():
     if request.method == 'POST':
-        print("REQUEST: ", request.json)
+        # print("REQUEST: ", request.json)
         return Accounts().addNewAccount(request.json)
-        
+            
     elif request.method == "GET":
         if not request.args:
-            #return AccountHandler().getAllAccounts()
-            return 'Got all Accounts'
+            return Accounts().getAllAccounts()
         else:
             #return AccountHandler().searchAccounts(request.args) 
             return 'searched for Accounts with request.args'
@@ -44,8 +43,8 @@ def getAllAccounts():
 @app.route('/cems/account/<int:uid>', methods=['GET','PUT','DELETE'])
 def getAccountByID(uid):
     if request.method == 'GET':
-        #return AccountHandler().getAccountById(uid)
-        return 'Got Account with uid provided'
+        return Accounts().getAccountById(uid)
+    
     elif request.method == 'PUT':
         #return AccountHandler().updateAccount(uid,request.form)
         return 'Updated Account with provided request.form'
