@@ -1,7 +1,7 @@
 from config import get_db
 from psycopg2.extras import RealDictCursor #RealDictCursor is used to configurate the cursor to return a dictionary
 
-class FriendDAO:
+class FriendsDAO:
 
     def getAllFriends(self):
         """

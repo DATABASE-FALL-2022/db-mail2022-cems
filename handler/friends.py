@@ -1,7 +1,10 @@
-from dao.friends import FriendDAO
+from dao.friends import FriendsDAO
 from flask import jsonify
 
-class FriendHandler():
+class FriendsHandler():
 
     def getAllFriends(self):
-        return jsonify(FriendDAO().getAllFriends()), 200
+        return jsonify(FriendsDAO().getAllFriends()), 200
+
+    def addFriend(self, json):
+        return jsonify(FriendsDAO().addNewAccount(json)) , 201 #Only returns the user_id
