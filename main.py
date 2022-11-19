@@ -60,11 +60,9 @@ def getAccountByID(uid):
 def getAllFriends():
     if request.method == 'POST':
         return FriendsHandler().addFriendship(request.json)
-        # return 'Inserted new Friendship'
     elif request.method == 'GET':
         if not request.args:
             return FriendsHandler().getAllFriends()
-            #return 'Got all friendships'
         else:
             #return FriendHandler().searchFriends(request.args)
             return 'Search for friendships with request.args'

@@ -7,4 +7,4 @@ class FriendsHandler():
         return jsonify(FriendsDAO().getAllFriends()), 200
 
     def addFriendship(self, json):
-        return jsonify(FriendsDAO().addFriendship(json)) , 201 #Only returns the user_id
+        return jsonify(FriendsDAO().addFriendship(json)) , 201
