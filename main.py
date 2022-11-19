@@ -56,6 +56,20 @@ def getAccountByID(uid):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/cems/account/<string:email>', methods=['GET', 'PUT', 'DELETE'])
+def getAccountByEmail(email):
+    if request.method == 'GET':
+        return Accounts().getAccountByEmail(email)
+
+    elif request.method == 'PUT':
+        # return AccountHandler().updateAccount(uid,request.form)
+        return 'Updated Account with provided request.form'
+    elif request.method == 'DELETE':
+        # return AccountHandler().deleteAccount(uid)
+        return 'Deleted Account with email provided'
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 @app.route('/cems/friend', methods=['GET','POST'])
 def getAllFriends():
     if request.method == 'POST':

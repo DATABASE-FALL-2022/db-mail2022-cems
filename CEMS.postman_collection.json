@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "ddfdf427-074b-40f5-ac62-a96652f741f0",
+		"_postman_id": "233a8d29-5296-4000-83cd-b994beccd312",
 		"name": "CEMS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19633924"
 	},
 	"item": [
 		{
@@ -186,6 +187,36 @@
 								{
 									"key": "uid",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAccountByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/:email",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "test4.user@upr.edu"
 								}
 							]
 						}
