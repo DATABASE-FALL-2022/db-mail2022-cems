@@ -60,7 +60,7 @@ def getAllFriends():
     if request.method == 'POST':
         #return FriendHandler().insertFriendJson(request.json)
         return 'Inserted new Friendship'
-    elif request.methos == 'GET':
+    elif request.method == 'GET':
         if not request.args:
             #return FriendHandler().getAllFriends()
             return 'Got all friendships'
