@@ -15,3 +15,16 @@ class FriendsDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+
+    def addFriendship(self, json):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = '''
+            INSERT INTO friends (user_id, friend_id)
+            VALUES (%s, %s) RETURNING user_id, friend_id;
+        '''
+        cursor.execute(query, (json['user_id'], json['friend_id']))
+        result = cursor.fetchone()
+        conn.commit()
+        cursor.close()
+        return result

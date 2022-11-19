@@ -59,8 +59,8 @@ def getAccountByID(uid):
 @app.route('/cems/friend', methods=['GET','POST'])
 def getAllFriends():
     if request.method == 'POST':
-        #return FriendHandler().insertFriendJson(request.json)
-        return 'Inserted new Friendship'
+        return FriendsHandler().addFriendship(request.json)
+        # return 'Inserted new Friendship'
     elif request.method == 'GET':
         if not request.args:
             return FriendsHandler().getAllFriends()
