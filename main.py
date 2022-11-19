@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 from handler.accounts import Accounts
 from handler.message import Message
+from handler.friends import FriendHandler
 
 
 load_dotenv(".env")
@@ -62,8 +63,8 @@ def getAllFriends():
         return 'Inserted new Friendship'
     elif request.method == 'GET':
         if not request.args:
-            #return FriendHandler().getAllFriends()
-            return 'Got all friendships'
+            return FriendHandler().getAllFriends()
+            #return 'Got all friendships'
         else:
             #return FriendHandler().searchFriends(request.args)
             return 'Search for friendships with request.args'
