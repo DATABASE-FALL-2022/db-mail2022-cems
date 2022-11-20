@@ -159,7 +159,8 @@ def getMessageById(m_id):
 @app.route('/cems/message/premium/<int:m_id>/', methods=['DELETE'])
 def deleteMessageById(m_id):
     if request.method == 'DELETE':
-        return MessageHandler.deleteMessageCompletely(m_id)
+        #return MessageHandler.deleteMessageCompletely(m_id)
+        return 'Deleted message completely as premium of proveided m_id'
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -186,8 +187,13 @@ def getUserOutbox(user_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-# TODO
-# @app.route('/cems/recipient/topTenUserInbox')
+# Statistics #
+@app.route('/cems/recipient/statistics')
+#def getEmailMostRecipients():
+#    if request.method == 'GET':
+#        return 
+
+#@app.route('/cems/recipient/topTenUserInbox')
 
 
 if __name__ == '__main__':
