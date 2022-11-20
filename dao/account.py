@@ -116,7 +116,7 @@ class AccountDAO:
         result = result["is_premium"]
         return result
     
-    def deleteAccount(self, user_id):
+    def deleteAccountById(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor) 
         query = """
@@ -125,6 +125,20 @@ class AccountDAO:
         RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
         """
         cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        conn.commit()
+        cursor.close()
+        return result
+
+    def deleteAccountByEmail(self, email):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = """
+        DELETE FROM account
+        WHERE email_address = %s
+        RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
+        """
+        cursor.execute(query, (email,))
         result = cursor.fetchone()
         conn.commit()
         cursor.close()

@@ -42,8 +42,14 @@ class AccountHandler:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)
 
-    def deleteAccount(self, user_id):
-        result = AccountDAO().deleteAccount(user_id)
+    def deleteAccountById(self, user_id):
+        result = AccountDAO().deleteAccountById(user_id)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Account not found :(', 200)
+
+    def deleteAccountByEmail(self, email):
+        result = AccountDAO().deleteAccountByEmail(email)
         if result:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)

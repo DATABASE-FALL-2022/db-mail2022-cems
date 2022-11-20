@@ -49,7 +49,7 @@ def getAccountByID(user_id):
         # return AccountHandler().updateAccount(user_id,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        return AccountHandler().deleteAccount(user_id)
+        return AccountHandler().deleteAccountById(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -61,12 +61,10 @@ def getAccountByEmail(email):
 
     elif request.method == 'PUT':
         # TODO
-        # return AccountHandler().updateAccount(user_id,request.form)
+        # return AccountHandler().updateAccount(email, request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        # TODO
-        # return AccountHandler().deleteAccount(user_id)
-        return 'Deleted Account with email provided'
+        return AccountHandler().deleteAccountByEmail(email)
     else:
         return jsonify(Error="Method not allowed."), 405
 
