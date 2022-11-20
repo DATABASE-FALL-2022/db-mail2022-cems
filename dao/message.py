@@ -64,6 +64,22 @@ class MessageDAO:
         cursor.close()
         return result
 
+    def getInboxByCategory(self, user_id, category):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
+        INNER JOIN recipient r ON (m.m_id = r.m_id)
+        WHERE r.user_id = %s
+        AND category = %s
+        ORDER BY m_date DESC;
+        """
+        cursor.execute(query, (user_id, category,))
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+
     def getUserOutbox(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
