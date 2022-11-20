@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, g
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 from handler.accounts import Accounts
-from handler.message import Message
+from handler.message import MessageHandler
 from handler.friends import FriendsHandler
 
 
@@ -117,13 +117,13 @@ def deleteFriend(user_id, friend_id):
 @app.route('/cems/message', methods=['GET', 'POST'])
 def getAllMessages():
     if request.method == 'POST':
-        return Message().sendNewMessage(request.json)
+        return MessageHandler().sendNewMessage(request.json)
 
     elif request.method == 'GET':
         if not request.args:
-            # return MessageHandler().getAllMessages()
-            return 'Got all messages'
+            return MessageHandler().getAllMessages()
         else:
+            # TODO
             # return MessageHandler().searchMesages(request.args)
             return 'Searched for messages with request.args'
     else:
