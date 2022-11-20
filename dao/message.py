@@ -55,7 +55,8 @@ class MessageDAO:
         query = """
         SELECT *
         FROM account NATURAL INNER JOIN message
-        WHERE user_id = %s;
+        WHERE user_id = %s
+        ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()
@@ -69,7 +70,8 @@ class MessageDAO:
         SELECT a.user_id AS sender_id, m.m_id AS m_id, r.user_id AS receiver_id, reply_id, subject, body, m_date, category, is_read, is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient r ON (m.m_id = r.m_id)
-        WHERE a.user_id = %s;
+        WHERE a.user_id = %s
+        ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()
