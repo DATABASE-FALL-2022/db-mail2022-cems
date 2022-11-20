@@ -2,8 +2,7 @@ from config import get_db
 # RealDictCursor is used to configurate the cursor to return a dictionary
 from psycopg2.extras import RealDictCursor
 
-
-class AccountsDAO:
+class AccountDAO:
 
     def verifyUniqueEmail(self, email):
         conn = get_db()
