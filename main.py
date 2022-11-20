@@ -1,10 +1,9 @@
 from flask import Flask, jsonify, request, g
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from dotenv import load_dotenv
-from handler.accounts import Accounts
+from handler.account import AccountHandler
 from handler.message import MessageHandler
 from handler.friends import FriendsHandler
-
 
 load_dotenv(".env")
 
@@ -12,7 +11,6 @@ load_dotenv(".env")
 app = Flask(__name__)
 # Apply CORS to this app
 CORS(app)
-
 
 @app.teardown_appcontext
 def teardown_db(exception):
@@ -30,13 +28,12 @@ def greeting():
 @app.route('/cems/account', methods=['GET', 'POST'])
 def getAllAccounts():
     if request.method == 'POST':
-        # print("REQUEST: ", request.json)
-        return Accounts().addNewAccount(request.json)
-
+        return AccountHandler().addNewAccount(request.json)
     elif request.method == "GET":
         if not request.args:
-            return Accounts().getAllAccounts()
+            return AccountHandler().getAllAccounts()
         else:
+            # TODO
             # return AccountHandler().searchAccounts(request.args)
             return 'searched for Accounts with request.args'
     else:
@@ -46,12 +43,13 @@ def getAllAccounts():
 @app.route('/cems/account/<int:uid>', methods=['GET', 'PUT', 'DELETE'])
 def getAccountByID(uid):
     if request.method == 'GET':
-        return Accounts().getAccountById(uid)
-
+        return AccountHandler().getAccountById(uid)
     elif request.method == 'PUT':
+        # TODO
         # return AccountHandler().updateAccount(uid,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
+        # TODO
         # return AccountHandler().deleteAccount(uid)
         return 'Deleted Account with uid provided'
     else:
@@ -61,12 +59,14 @@ def getAccountByID(uid):
 @app.route('/cems/account/<string:email>', methods=['GET', 'PUT', 'DELETE'])
 def getAccountByEmail(email):
     if request.method == 'GET':
-        return Accounts().getAccountByEmail(email)
+        return AccountHandler().getAccountByEmail(email)
 
     elif request.method == 'PUT':
+        # TODO
         # return AccountHandler().updateAccount(uid,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
+        # TODO
         # return AccountHandler().deleteAccount(uid)
         return 'Deleted Account with email provided'
     else:
@@ -76,7 +76,7 @@ def getAccountByEmail(email):
 @app.route('/cems/account/upPremium/<int:uid>', methods=['POST'])
 def updatePremiumAccount(uid):
     if request.method == 'POST':
-        return Accounts().updatePremiumAccount(uid)
+        return AccountHandler().updatePremiumAccount(uid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -84,7 +84,7 @@ def updatePremiumAccount(uid):
 @app.route('/cems/account/dnPremium/<int:uid>', methods=['POST'])
 def demotePremiumAccount(uid):
     if request.method == 'POST':
-        return Accounts().demotePremiumAccount(uid)
+        return AccountHandler().demotePremiumAccount(uid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -92,7 +92,7 @@ def demotePremiumAccount(uid):
 @app.route('/cems/account/premium/<int:uid>', methods=['GET'])
 def verifyPremiumAccount(uid):
     if request.method == 'GET':
-        return Accounts().verifyPremiumAccount(uid)
+        return AccountHandler().verifyPremiumAccount(uid)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -105,6 +105,7 @@ def getAllFriends():
         if not request.args:
             return FriendsHandler().getAllFriends()
         else:
+            # TODO
             # return FriendHandler().searchFriends(request.args)
             return 'Search for friendships with request.args'
     else:
@@ -141,35 +142,37 @@ def getAllMessages():
 @app.route('/cems/message/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
 def getMessageById(mid):
     if request.method == 'GET':
+        # TODO
         # return MessageHandler().getMessageById(mid)
         return 'Got message with mid provided'
     elif request.method == 'PUT':
+        # TODO
         # return MessageHandler().updateMessage(mid, request.form)
         return 'Updated message with mid provided using request.form info'
     elif request.method == 'DELETE':
+        # TODO
         # return MessageHandler().deleteMessage(mid)
         return 'Deleted message with provided mid'
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/inbox', methods=['GET'])
-def getUserInbox(uid):
+@app.route('/cems/message/inbox/<int:user_id>', methods=['GET'])
+def getUserInbox(user_id):
     if request.method == 'GET':
-        # return MessageHandler().getUserInbox(uid)
-        return 'Got User inbox with provided UID'
+        return MessageHandler().getUserInbox(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/outbox', methods=['GET'])
-def getUserOutbox(uid):
+@app.route('/cems/message/outbox/<int:user_id>', methods=['GET'])
+def getUserOutbox(user_id):
     if request.method == 'GET':
-        # return MessageHandler().getUserOutbox(uid)
-        return 'Got User inbox with provided UID'
+        return MessageHandler().getUserOutbox(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
+# TODO
 # @app.route('/cems/recipient/topTenUserInbox')
 
 
