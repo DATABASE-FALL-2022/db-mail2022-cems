@@ -69,3 +69,25 @@ class AccountsDAO:
         result = cursor.fetchone()
         cursor.close()
         return result
+
+    def updatePremiumAccount(self, id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE account SET is_premium = true WHERE user_id = %s
+        '''
+        cursor.execute(query, (id,))
+        conn.commit()
+        cursor.close()
+        return str(cursor.rowcount) + " record(s) affected"
+
+    def demotePremiumAccount(self, id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE account SET is_premium = false WHERE user_id = %s;
+        '''
+        cursor.execute(query, (id,))
+        conn.commit()
+        cursor.close()
+        return str(cursor.rowcount) + " record(s) affected"
