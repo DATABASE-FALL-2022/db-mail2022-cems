@@ -145,11 +145,11 @@ def getMessageById(m_id):
     elif request.method == 'PUT':
         # TODO
         # return MessageHandler().updateMessage(m_id, request.form)
-        return 'Updated message with mid provided using request.form info'
+        return 'Updated message with m_id provided using request.form info'
     elif request.method == 'DELETE':
         # TODO
         # return MessageHandler().deleteMessage(m_id)
-        return 'Deleted message with provided mid'
+        return 'Deleted message with provided m_id'
     else:
         return jsonify(Error="Method not allowed."), 405
 
