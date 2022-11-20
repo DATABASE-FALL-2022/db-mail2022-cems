@@ -115,6 +115,47 @@ class AccountDAO:
         cursor.close()
         result = result["is_premium"]
         return result
+    
+    def deleteAccountById(self, user_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = """
+        DELETE FROM account
+        WHERE user_id = %s
+        RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
+        """
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        conn.commit()
+        cursor.close()
+        return result
+
+    def deleteAccountByEmail(self, email):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = """
+        DELETE FROM account
+        WHERE email_address = %s
+        RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
+        """
+        cursor.execute(query, (email,))
+        result = cursor.fetchone()
+        conn.commit()
+        cursor.close()
+        return result
+    
+    def markCategory(user_id, m_id, category):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = """
+        UPDATE recipient SET category = %s
+        WHERE user_id = %s
+        AND m_id = %s;
+        """
+        cursor.execute(query, (category, user_id, m_id,))
+        conn.commit()
+        cursor.close()
+        return str(cursor.rowcount) + " record(s) affected"
 
     def getTopFiveSentToAccounts():
         return

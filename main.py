@@ -49,9 +49,7 @@ def getAccountByID(user_id):
         # return AccountHandler().updateAccount(user_id,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        # TODO
-        # return AccountHandler().deleteAccount(user_id)
-        return 'Deleted Account with user_id provided'
+        return AccountHandler().deleteAccountById(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -63,12 +61,10 @@ def getAccountByEmail(email):
 
     elif request.method == 'PUT':
         # TODO
-        # return AccountHandler().updateAccount(user_id,request.form)
+        # return AccountHandler().updateAccount(email, request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        # TODO
-        # return AccountHandler().deleteAccount(user_id)
-        return 'Deleted Account with email provided'
+        return AccountHandler().deleteAccountByEmail(email)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -188,6 +184,13 @@ def getUserInboxByCategory(user_id, category):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/cems/message/inbox/markCategory/<int:user_id>/<int:m_id>/<string:category>', methods=['PUT'])
+def markCategory(user_id, m_id, category):
+    if request.method == 'PUT':
+        return MessageHandler().markCategory(user_id, m_id, category)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message/outbox/<int:user_id>', methods=['GET'])
 def getUserOutbox(user_id):
@@ -208,7 +211,7 @@ def getAllRecipientMessages():
         return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/recipient/<int:u_id>/<int:m_id>', methods=['GET','PUT', 'DELETE'])
-def getRecipientById(u_id,m_id):
+def getRecipientById(u_id, m_id):
     if request.method == 'GET':
         #return RecipientHandler().getRecipientById(m_id,u_id)
         return 'Got Recipient Message from provided m_id and u_id'
