@@ -1,11 +1,13 @@
 from config import get_db
 from psycopg2.extras import RealDictCursor #RealDictCursor is used to configurate the cursor to return a dictionary
+from datetime import datetime
+from dao.account import AccountDAO
+
 
 class MessageDAO:
 
     def verifyEmailExist(self, email):
         conn = get_db()
-        conn.autocommit = True
         cursor = conn.cursor()
         query = """
         SELECT * FROM account WHERE email_address = %s;
@@ -17,9 +19,33 @@ class MessageDAO:
             return True
         return False
 
+    def verifyMessageExist(self, m_id):
+        conn = get_db()
+        cursor = conn.cursor()
+        query = '''
+        SELECT * FROM message WHERE m_id = %s
+        '''
+        cursor.execute(query, (m_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        if result: 
+            return True
+
+        return False
+
+    def verifyRead(self, m_id):
+        conn = get_db()
+        cursor = conn.cursor()
+        query = '''
+        SELECT is_read FROM recipient WHERE m_id = %s
+        '''
+        cursor.execute(query, (m_id,))
+        result = cursor.fetchone()[0]
+        cursor.close()
+        return result
+
     def sendNewMessage(self, sender_id, receiver_email, subject, body):
         conn = get_db()
-        conn.autocommit = True
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         
         send_query = """
@@ -32,9 +58,11 @@ class MessageDAO:
         #Insert message into the sender outbox
         cursor.execute(send_query, (sender_id, subject, body))
         message_id = cursor.fetchone()['m_id']
+        conn.commit()
 
         #Insert message into the receiver inbox
         cursor.execute(receive_query, (receiver_email, message_id))
+        conn.commit()
         cursor.close()
         return ('Message sent to %s' % (receiver_email))
 
@@ -104,3 +132,36 @@ class MessageDAO:
         result = cursor.fetchone()
         cursor.close()
         return result
+
+    def sendSupportMessage(self, type, arg1, arg2):
+
+        if type == 'read_notification':
+            current_datetime = datetime.now().strftime("%H:%M on %B %d, %Y")
+            subject = 'Read Notification'
+            body = '%s has read your message at %s' % (arg2, current_datetime)
+            self.sendNewMessage(12, arg1, subject, body)
+
+    def readMessage(self, m_id, reader_id):
+
+        conn = get_db()
+        # conn.autocommit = True
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+        #Mark as read
+        read_query = '''
+        UPDATE recipient SET is_read = True WHERE m_id = %s AND user_id = %s
+        '''
+        cursor.execute(read_query, (m_id, reader_id))
+        conn.commit()
+        cursor.close()
+
+        #Notify as read
+        sender_id = self.getMessageById(m_id)['user_id']
+        sender_email = AccountDAO().getAccountById(sender_id)['email_address']
+        reader_email = AccountDAO().getAccountById(reader_id)['email_address']
+        self.sendSupportMessage('read_notification', sender_email, reader_email)
+
+        return ('Message with id: %s marked as read' % m_id)
+        
+        
+

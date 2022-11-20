@@ -176,7 +176,7 @@ def getUserInbox(user_id):
 
 
 @app.route('/cems/message/inbox/category/<int:user_id>/<string:category>', methods=['GET'])
-def getInboxByCategory(user_id, category):
+def getUserInboxByCategory(user_id, category):
     if request.method == 'GET':
         return MessageHandler().getInboxByCategory(user_id, category)
     else:
@@ -230,6 +230,15 @@ def deleteRecipientCompletely(u_id,m_id):
 #        return 
 
 #@app.route('/cems/recipient/topTenUserInbox')
+
+@app.route('/cems/message/read', methods=['PUT'])
+def updateRead():
+    
+    if request.method == 'PUT':
+        return MessageHandler().readMessage(request.json)
+        
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 
 if __name__ == '__main__':
