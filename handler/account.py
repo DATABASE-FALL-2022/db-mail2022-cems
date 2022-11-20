@@ -12,8 +12,8 @@ class AccountHandler:
     def getAllAccounts(self):
         return jsonify(AccountDAO().getAllAccounts()), 200
 
-    def getAccountById(self, id):
-        result = AccountDAO().getAccountById(id)
+    def getAccountById(self, user_id):
+        result = AccountDAO().getAccountById(user_id)
         if result:
             return jsonify(result), 200
         return jsonify('Account not found :('), 200
@@ -24,20 +24,20 @@ class AccountHandler:
             return jsonify(result), 200
         return jsonify('Account not found :('), 200
 
-    def updatePremiumAccount(self, id):
-        result = AccountDAO().updatePremiumAccount(id)
+    def updatePremiumAccount(self, user_id):
+        result = AccountDAO().updatePremiumAccount(user_id)
         if result:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)
 
-    def demotePremiumAccount(self, id):
-        result = AccountDAO().demotePremiumAccount(id)
+    def demotePremiumAccount(self, user_id):
+        result = AccountDAO().demotePremiumAccount(user_id)
         if result:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)
 
-    def verifyPremiumAccount(self, id):
-        result = AccountDAO().verifyPremiumAccount(id)
+    def verifyPremiumAccount(self, user_id):
+        result = AccountDAO().verifyPremiumAccount(user_id)
         if result:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)

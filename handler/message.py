@@ -23,3 +23,10 @@ class MessageHandler:
         if result:
             return jsonify(result), 200
         return jsonify('Account not found.'), 200
+    
+    def getMessageById(self, m_id):
+        result = MessageDAO().getMessageById(m_id)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Message not found.'), 200
+    
