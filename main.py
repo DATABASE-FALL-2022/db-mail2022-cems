@@ -33,7 +33,7 @@ def getAllAccounts():
         if not request.args:
             return AccountHandler().getAllAccounts()
         else:
-            # TODO
+            # TODO - not necessary at the moment
             # return AccountHandler().searchAccounts(request.args)
             return 'searched for Accounts with request.args'
     else:
@@ -105,7 +105,7 @@ def getAllFriends():
         if not request.args:
             return FriendsHandler().getAllFriends()
         else:
-            # TODO
+            # TODO - not necessary at the moment
             # return FriendHandler().searchFriends(request.args)
             return 'Search for friendships with request.args'
     else:
@@ -131,7 +131,7 @@ def getAllMessages():
         if not request.args:
             return MessageHandler().getAllMessages()
         else:
-            # TODO
+            # TODO - not necessary at the moment
             # return MessageHandler().searchMesages(request.args)
             return 'Searched for messages with request.args'
     else:
