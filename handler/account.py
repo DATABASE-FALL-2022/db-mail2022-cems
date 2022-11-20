@@ -54,6 +54,12 @@ class AccountHandler:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)
 
+    def markCategory(self, user_id, m_id, category):
+        result = AccountDAO().markCategory(user_id, m_id, category)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Account not found :(', 200)
+
     def getTopFiveSentToAccounts(self):
         return
 

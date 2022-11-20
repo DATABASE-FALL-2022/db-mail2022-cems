@@ -143,6 +143,19 @@ class AccountDAO:
         conn.commit()
         cursor.close()
         return result
+    
+    def markCategory(user_id, m_id, category):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = """
+        UPDATE recipient SET category = %s
+        WHERE user_id = %s
+        AND m_id = %s;
+        """
+        cursor.execute(query, (category, user_id, m_id,))
+        conn.commit()
+        cursor.close()
+        return str(cursor.rowcount) + " record(s) affected"
 
     def getTopFiveSentToAccounts():
         return

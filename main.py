@@ -178,6 +178,13 @@ def getUserInboxByCategory(user_id, category):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/cems/message/inbox/markCategory/<int:user_id>/<int:m_id>/<string:category>', methods=['PUT'])
+def markCategory(user_id, m_id, category):
+    if request.method == 'PUT':
+        return MessageHandler().markCategory(user_id, m_id, category)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message/outbox/<int:user_id>', methods=['GET'])
 def getUserOutbox(user_id):
