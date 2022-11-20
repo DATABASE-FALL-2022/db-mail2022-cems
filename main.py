@@ -40,18 +40,18 @@ def getAllAccounts():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/account/<int:uid>', methods=['GET', 'PUT', 'DELETE'])
-def getAccountByID(uid):
+@app.route('/cems/account/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])
+def getAccountByID(user_id):
     if request.method == 'GET':
-        return AccountHandler().getAccountById(uid)
+        return AccountHandler().getAccountById(user_id)
     elif request.method == 'PUT':
         # TODO
-        # return AccountHandler().updateAccount(uid,request.form)
+        # return AccountHandler().updateAccount(user_id,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
         # TODO
-        # return AccountHandler().deleteAccount(uid)
-        return 'Deleted Account with uid provided'
+        # return AccountHandler().deleteAccount(user_id)
+        return 'Deleted Account with user_id provided'
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -63,36 +63,36 @@ def getAccountByEmail(email):
 
     elif request.method == 'PUT':
         # TODO
-        # return AccountHandler().updateAccount(uid,request.form)
+        # return AccountHandler().updateAccount(user_id,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
         # TODO
-        # return AccountHandler().deleteAccount(uid)
+        # return AccountHandler().deleteAccount(user_id)
         return 'Deleted Account with email provided'
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/account/upPremium/<int:uid>', methods=['POST'])
-def updatePremiumAccount(uid):
+@app.route('/cems/account/upPremium/<int:user_id>', methods=['POST'])
+def updatePremiumAccount(user_id):
     if request.method == 'POST':
-        return AccountHandler().updatePremiumAccount(uid)
+        return AccountHandler().updatePremiumAccount(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/account/dnPremium/<int:uid>', methods=['POST'])
-def demotePremiumAccount(uid):
+@app.route('/cems/account/dnPremium/<int:user_id>', methods=['POST'])
+def demotePremiumAccount(user_id):
     if request.method == 'POST':
-        return AccountHandler().demotePremiumAccount(uid)
+        return AccountHandler().demotePremiumAccount(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/account/premium/<int:uid>', methods=['GET'])
-def verifyPremiumAccount(uid):
+@app.route('/cems/account/premium/<int:user_id>', methods=['GET'])
+def verifyPremiumAccount(user_id):
     if request.method == 'GET':
-        return AccountHandler().verifyPremiumAccount(uid)
+        return AccountHandler().verifyPremiumAccount(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 

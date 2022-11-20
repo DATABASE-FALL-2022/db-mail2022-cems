@@ -47,13 +47,13 @@ class AccountDAO:
         cursor.close()
         return result
 
-    def getAccountById(self, id):
+    def getAccountById(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
         SELECT * FROM account WHERE user_id = %s
         '''
-        cursor.execute(query, (id,))
+        cursor.execute(query, (user_id,))
         result = cursor.fetchone()
         cursor.close()
         return result
@@ -69,35 +69,35 @@ class AccountDAO:
         cursor.close()
         return result
 
-    def updatePremiumAccount(self, id):
+    def updatePremiumAccount(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
         UPDATE account SET is_premium = true WHERE user_id = %s
         '''
-        cursor.execute(query, (id,))
+        cursor.execute(query, (user_id,))
         conn.commit()
         cursor.close()
         return str(cursor.rowcount) + " record(s) affected"
 
-    def demotePremiumAccount(self, id):
+    def demotePremiumAccount(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
         UPDATE account SET is_premium = false WHERE user_id = %s;
         '''
-        cursor.execute(query, (id,))
+        cursor.execute(query, (user_id,))
         conn.commit()
         cursor.close()
         return str(cursor.rowcount) + " record(s) affected"
 
-    def verifyPremiumAccount(self, id):
+    def verifyPremiumAccount(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
         SELECT is_premium FROM account WHERE user_id = %s;
         '''
-        cursor.execute(query, (id,))
+        cursor.execute(query, (user_id,))
         result = cursor.fetchone()
         cursor.close()
         result = result["is_premium"]
