@@ -75,3 +75,14 @@ class MessageDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+
+    def getMessageById(self, m_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        SELECT * FROM message WHERE m_id = %s
+        '''
+        cursor.execute(query, (m_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        return result

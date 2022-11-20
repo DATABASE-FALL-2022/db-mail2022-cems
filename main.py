@@ -139,19 +139,19 @@ def getAllMessages():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/<int:mid>', methods=['GET', 'PUT', 'DELETE'])
-def getMessageById(mid):
+@app.route('/cems/message/<int:m_id>', methods=['GET', 'PUT', 'DELETE'])
+def getMessageById(m_id):
     if request.method == 'GET':
         # TODO
-        # return MessageHandler().getMessageById(mid)
-        return 'Got message with mid provided'
+        return MessageHandler().getMessageById(m_id)
+        # return 'Got message with mid provided'
     elif request.method == 'PUT':
         # TODO
-        # return MessageHandler().updateMessage(mid, request.form)
+        # return MessageHandler().updateMessage(m_id, request.form)
         return 'Updated message with mid provided using request.form info'
     elif request.method == 'DELETE':
         # TODO
-        # return MessageHandler().deleteMessage(mid)
+        # return MessageHandler().deleteMessage(m_id)
         return 'Deleted message with provided mid'
     else:
         return jsonify(Error="Method not allowed."), 405
