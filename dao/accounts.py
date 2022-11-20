@@ -22,7 +22,7 @@ class AccountsDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        INSERT INTO account (first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd) 
+        INSERT INTO account (first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd)
         VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING user_id;
         '''
         cursor.execute(query, (json['first_name'], json['last_name'], json['date_of_birth'],
@@ -35,7 +35,7 @@ class AccountsDAO:
 
     def getAllAccounts(self):
         """
-        This function return all tuples in the account table with all the infor including 
+        This function return all tuples in the account table with all the infor including
         delicate info like passwords.
         """
         conn = get_db()
@@ -91,3 +91,27 @@ class AccountsDAO:
         conn.commit()
         cursor.close()
         return str(cursor.rowcount) + " record(s) affected"
+
+    def verifyPremiumAccount(self, id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        SELECT is_premium FROM account WHERE user_id = %s;
+        '''
+        cursor.execute(query, (id,))
+        result = cursor.fetchone()
+        cursor.close()
+        result = result["is_premium"]
+        return result
+
+    def getTopFiveSentToAccounts():
+        return
+
+    def getTopFiveReceiveFromAccounts():
+        return
+
+    def getTopTenAccountsWithMostInboxMessages():
+        return
+
+    def getTopTenAccountsWithMostOutboxMessages():
+        return

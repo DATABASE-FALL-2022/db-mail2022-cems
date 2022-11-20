@@ -5,9 +5,7 @@ from flask import jsonify
 class Accounts:
 
     def addNewAccount(self, json):
-
         if AccountsDAO().verifyUniqueEmail(json['email_address']):
-
             # Only returns the user_id
             return jsonify(AccountsDAO().addNewAccount(json)), 201
 
@@ -43,3 +41,22 @@ class Accounts:
         if result:
             return jsonify(result), 200
         return jsonify('Account not found :(', 200)
+
+    def verifyPremiumAccount(self, id):
+        result = AccountsDAO().verifyPremiumAccount(id)
+
+        if result:
+            return jsonify(result), 200
+        return jsonify('Account not found :(', 200)
+
+    def getTopFiveSentToAccounts(self):
+        return
+
+    def getTopFiveReceiveFromAccounts(self):
+        return
+
+    def getTopTenAccountsWithMostInboxMessages(self):
+        return
+
+    def getTopTenAccountsWithMostOutboxMessages(self):
+        return

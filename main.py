@@ -89,6 +89,14 @@ def demotePremiumAccount(uid):
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/cems/account/premium/<int:uid>', methods=['GET'])
+def verifyPremiumAccount(uid):
+    if request.method == 'GET':
+        return Accounts().verifyPremiumAccount(uid)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
 @app.route('/cems/friend', methods=['GET', 'POST'])
 def getAllFriends():
     if request.method == 'POST':
