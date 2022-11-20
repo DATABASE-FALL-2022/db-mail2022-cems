@@ -122,6 +122,9 @@ def deleteFriend(user_id, friend_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+# TODO
+# friend update (CRUD) Point 18
+
 
 @app.route('/cems/message', methods=['GET', 'POST'])
 def getAllMessages():
@@ -131,7 +134,7 @@ def getAllMessages():
         if not request.args:
             return MessageHandler().getAllMessages()
         else:
-            # TODO - not necessary at the moment
+            # TODO - Point 6
             # return MessageHandler().searchMesages(request.args)
             return 'Searched for messages with request.args'
     else:
@@ -147,12 +150,18 @@ def getMessageById(m_id):
         # return MessageHandler().updateMessage(m_id, request.form)
         return 'Updated message with m_id provided using request.form info'
     elif request.method == 'DELETE':
-        # TODO
+        # TODO - Delete for nomal user
         # return MessageHandler().deleteMessage(m_id)
         return 'Deleted message with provided m_id'
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/cems/message/premium/<int:m_id>/', methods=['DELETE'])
+def deleteMessageById(m_id):
+    if request.method == 'DELETE':
+        return MessageHandler.deleteMessageCompletely(m_id)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/message/inbox/<int:user_id>', methods=['GET'])
 def getUserInbox(user_id):
@@ -162,8 +171,8 @@ def getUserInbox(user_id):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/inbox/category/<int:user_id>/<str:category>', methods=['GET'])
-def getUserInbox(user_id, category):
+@app.route('/cems/message/inbox/category/<int:user_id>/<string:category>', methods=['GET'])
+def getInboxByCategory(user_id, category):
     if request.method == 'GET':
         return MessageHandler().getInboxByCategory(user_id, category)
     else:
