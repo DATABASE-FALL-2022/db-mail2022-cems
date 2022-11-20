@@ -132,7 +132,13 @@ def getFriendRelation(user_id, friend_id):
 @app.route('/cems/message', methods=['GET', 'POST'])
 def getAllMessages():
     if request.method == 'POST':
-        return MessageHandler().sendNewMessage(request.json)
+
+        if 'reply_id' in request.json:
+            return MessageHandler().sendReply(request.json)
+
+        else: 
+            return MessageHandler().sendNewMessage(request.json)
+
     elif request.method == 'GET':
         if not request.args:
             return MessageHandler().getAllMessages()

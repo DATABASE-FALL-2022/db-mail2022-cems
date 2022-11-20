@@ -133,12 +133,12 @@ class MessageDAO:
         cursor.close()
         return result
 
-    def sendSupportMessage(self, type, arg1, arg2):
+    def sendSupportMessage(self, type, arg1, arg2, arg3):
 
         if type == 'read_notification':
             current_datetime = datetime.now().strftime("%H:%M on %B %d, %Y")
             subject = 'Read Notification'
-            body = '%s has read your message at %s' % (arg2, current_datetime)
+            body = '%s has read your message with id: %s at %s' % (arg2, arg3, current_datetime)
             self.sendNewMessage(12, arg1, subject, body)
 
     def readMessage(self, m_id, reader_id):
@@ -159,9 +159,30 @@ class MessageDAO:
         sender_id = self.getMessageById(m_id)['user_id']
         sender_email = AccountDAO().getAccountById(sender_id)['email_address']
         reader_email = AccountDAO().getAccountById(reader_id)['email_address']
-        self.sendSupportMessage('read_notification', sender_email, reader_email)
+        self.sendSupportMessage('read_notification', sender_email, reader_email, m_id)
 
         return ('Message with id: %s marked as read' % m_id)
         
+
+    def sendReply(self, m_id, sender_id, receiver_email, subject, body):
+
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        send_query = """
+        INSERT INTO message(user_id, subject, body, reply_id, m_date) VALUES (%s, %s, %s, %s, current_timestamp) RETURNING m_id;
+        """
+        receive_query = """
+        INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
+        """
         
+        #Insert message into sender outbox
+        cursor.execute(send_query, (sender_id, subject, body, m_id))
+        message_id = cursor.fetchone()['m_id']
+        conn.commit()
+        
+        #Insert message into receiver inbox
+        cursor.execute(receive_query, (receiver_email, message_id))
+        conn.commit()
+        cursor.close()
+        return ('Reply sent to %s' % receiver_email)
 
