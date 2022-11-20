@@ -11,3 +11,15 @@ class MessageHandler:
     
     def getAllMessages(self):
         return jsonify(MessageDAO().getAllMessages()), 200
+
+    def getUserInbox(self, user_id):
+        result = MessageDAO().getUserInbox(user_id)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Account not found.'), 200
+
+    def getUserOutbox(self, user_id):
+        result = MessageDAO().getUserOutbox(user_id)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Account not found.'), 200

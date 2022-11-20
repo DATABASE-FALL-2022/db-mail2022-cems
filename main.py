@@ -153,23 +153,22 @@ def getMessageById(mid):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/inbox', methods=['GET'])
-def getUserInbox(uid):
+@app.route('/cems/message/inbox/<int:user_id>', methods=['GET'])
+def getUserInbox(user_id):
     if request.method == 'GET':
-        # return MessageHandler().getUserInbox(uid)
-        return 'Got User inbox with provided UID'
+        return MessageHandler().getUserInbox(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/outbox', methods=['GET'])
-def getUserOutbox(uid):
+@app.route('/cems/message/outbox/<int:user_id>', methods=['GET'])
+def getUserOutbox(user_id):
     if request.method == 'GET':
-        # return MessageHandler().getUserOutbox(uid)
-        return 'Got User inbox with provided UID'
+        return MessageHandler().getUserOutbox(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
+# TODO
 # @app.route('/cems/recipient/topTenUserInbox')
 
 
