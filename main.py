@@ -103,11 +103,13 @@ def getAllFriends():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/friend/<int:uid>', methods=['DELETE'])
-def deleteFriend(uid):
+@app.route('/cems/friend/<int:user_id>/<int:friend_id>', methods=['DELETE'])
+def deleteFriend(user_id, friend_id):
+    """
+    Delete friend with `friend_id` from account with `user_id`.
+    """
     if request.method == 'DELETE':
-        # return FriendHandler().deleteFriend(uid)
-        return 'Deleted Friend with uid provided'
+        return FriendsHandler().deleteFriend(user_id, friend_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
