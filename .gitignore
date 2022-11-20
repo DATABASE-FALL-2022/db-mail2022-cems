@@ -1,0 +1,5 @@
+.venv/
+tests/
+testLogging.py
+logfile.log
+.vscode/
