@@ -17,6 +17,19 @@ class AccountDAO:
             return True
         return False
 
+    def verifyAccountExist(self, user_id):
+        conn = get_db()
+        cursor = conn.cursor()
+        query = '''
+        SELECT * FROM account WHERE user_id = %s;
+        '''
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        if result:
+            return True
+        return False
+
     def addNewAccount(self, json):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)

@@ -7,7 +7,7 @@ class AccountHandler:
         if AccountDAO().verifyUniqueEmail(json['email_address']):
             # Only returns the user_id
             return jsonify(AccountDAO().addNewAccount(json)), 201
-        return jsonify("ERROR: Email already exists in the system")
+        return jsonify(Error="Email already exists in the system")
 
     def getAllAccounts(self):
         return jsonify(AccountDAO().getAllAccounts()), 200
