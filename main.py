@@ -112,18 +112,21 @@ def getAllFriends():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/friend/<int:user_id>/<int:friend_id>', methods=['DELETE'])
-def deleteFriend(user_id, friend_id):
+
+
+@app.route('/cems/friend/<int:user_id>/<int:friend_id>', methods=['PUT','DELETE'])
+def getFriendRelation(user_id, friend_id):
     """
     Delete friend with `friend_id` from account with `user_id`.
     """
     if request.method == 'DELETE':
         return FriendsHandler().deleteFriend(user_id, friend_id)
+    elif request.method == 'PUT':
+        #return FriendsHandler().updateFriendship(user_id, friend_id, request.json)
+        return 'Updated friendship with provided request.json'
     else:
         return jsonify(Error="Method not allowed."), 405
 
-# TODO
-# friend update (CRUD) Point 18
 
 
 @app.route('/cems/message', methods=['GET', 'POST'])
@@ -188,7 +191,7 @@ def getUserOutbox(user_id):
         return jsonify(Error="Method not allowed."), 405
 
 # Statistics #
-@app.route('/cems/recipient/statistics')
+#@app.route('/cems/recipient/statistics')
 #def getEmailMostRecipients():
 #    if request.method == 'GET':
 #        return 
