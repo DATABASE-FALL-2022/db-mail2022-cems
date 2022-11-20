@@ -190,11 +190,14 @@ def getUserOutbox(user_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/cems/recipient', methods=['GET'])
+@app.route('/cems/recipient', methods=['GET', 'POST'])
 def getAllRecipientMessages():
     if request.method == 'GET':
         #return RecipientHandler().getAllRecipientMessages()
         return 'Got all recipient messages'
+    elif request.method == 'POST':
+        #return RecipientHandler().createRecipientMessage(request.json)
+        return 'Created Recipient from provided request.json'
     else:
         return jsonify(Error="Method not allowed."), 405
 
