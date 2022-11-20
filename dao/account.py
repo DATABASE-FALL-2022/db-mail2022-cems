@@ -115,6 +115,20 @@ class AccountDAO:
         cursor.close()
         result = result["is_premium"]
         return result
+    
+    def deleteAccount(self, user_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        query = """
+        DELETE FROM account
+        WHERE user_id = %s
+        RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
+        """
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        conn.commit()
+        cursor.close()
+        return result
 
     def getTopFiveSentToAccounts():
         return

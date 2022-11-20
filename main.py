@@ -49,9 +49,7 @@ def getAccountByID(user_id):
         # return AccountHandler().updateAccount(user_id,request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        # TODO
-        # return AccountHandler().deleteAccount(user_id)
-        return 'Deleted Account with user_id provided'
+        return AccountHandler().deleteAccount(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -202,7 +200,7 @@ def getAllRecipientMessages():
         return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/recipient/<int:u_id>/<int:m_id>', methods=['GET','PUT', 'DELETE'])
-def getRecipientById(u_id,m_id):
+def getRecipientById(u_id, m_id):
     if request.method == 'GET':
         #return RecipientHandler().getRecipientById(m_id,u_id)
         return 'Got Recipient Message from provided m_id and u_id'
