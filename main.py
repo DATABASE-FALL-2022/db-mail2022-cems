@@ -165,7 +165,7 @@ def getUserInbox(user_id):
 @app.route('/cems/message/inbox/category/<int:user_id>/<str:category>', methods=['GET'])
 def getUserInbox(user_id, category):
     if request.method == 'GET':
-        return MessageHandler().getInboxbyCategory(user_id, category)
+        return MessageHandler().getInboxByCategory(user_id, category)
     else:
         return jsonify(Error="Method not allowed."), 405
 
