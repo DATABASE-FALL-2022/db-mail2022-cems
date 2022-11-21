@@ -1057,8 +1057,13 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": []
+							"mode": "raw",
+							"raw": "{\n    \"user_id\":\"1\",\n    \"m_id\":\"14\",\n    \"is_read\":\"false\",\n    \"is_deleted\":\"false\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "http://127.0.0.1:5000/cems/recipient",
