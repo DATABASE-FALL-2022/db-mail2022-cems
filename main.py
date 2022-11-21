@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from handler.account import AccountHandler
 from handler.message import MessageHandler
 from handler.friends import FriendsHandler
+from handler.recipient import RecipientHandler
 
 load_dotenv(".env")
 
