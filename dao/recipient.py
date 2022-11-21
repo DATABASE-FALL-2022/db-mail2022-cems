@@ -58,7 +58,7 @@ class RecipientDAO:
         WHERE m_id = %s
         AND u_id = %s;
         """
-        cursor.execute(query, m_id, u_id)
+        cursor.execute(query, (m_id, u_id))
         result = cursor.fetchall()
         cursor.close()
         return result
