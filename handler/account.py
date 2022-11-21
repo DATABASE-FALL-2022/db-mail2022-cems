@@ -1,6 +1,7 @@
 from dao.account import AccountDAO
 from flask import jsonify
 
+
 class AccountHandler:
 
     def addNewAccount(self, json):
@@ -16,31 +17,39 @@ class AccountHandler:
         result = AccountDAO().getAccountById(user_id)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :('), 200
+        return jsonify('Account not found'), 200
 
     def getAccountByEmail(self, email):
         result = AccountDAO().getAccountByEmail(email)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :('), 200
+        return jsonify('Account not found'), 200
 
     def updatePremiumAccount(self, user_id):
         result = AccountDAO().updatePremiumAccount(user_id)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :(', 200)
+        return jsonify('Account not found', 200)
 
     def demotePremiumAccount(self, user_id):
         result = AccountDAO().demotePremiumAccount(user_id)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :(', 200)
+        return jsonify('Account not found', 200)
 
     def verifyPremiumAccount(self, user_id):
         result = AccountDAO().verifyPremiumAccount(user_id)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :(', 200)
+        return jsonify('Account not found', 200)
+
+    def updateAccount(self, user_id, request):
+        if not request:
+            return "Nothing to update"
+        result = AccountDAO().updateAccount(user_id, request)
+        if result:
+            return result, 200
+        return jsonify('Account not found', 200)
 
     def getTopFiveSentToAccounts(self):
         return

@@ -2,6 +2,7 @@ from config import get_db
 # RealDictCursor is used to configurate the cursor to return a dictionary
 from psycopg2.extras import RealDictCursor
 
+
 class AccountDAO:
 
     def verifyUniqueEmail(self, email):
@@ -115,6 +116,31 @@ class AccountDAO:
         cursor.close()
         result = result["is_premium"]
         return result
+
+    def updateAccount(self, user_id, request):
+        # Gets all values from current account before updating it
+        original_account = self.getAccountById(user_id)
+        # Replace only the keys from the request
+        result = {key: request.get(
+            key, original_account[key]) for key in original_account}
+
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE account SET first_name = %s, last_name = %s, date_of_birth = %s, gender = %s, phone_number = %s, email_address = %s, passwd = %s, is_premium = %s
+        WHERE user_id = %s;
+        '''
+        cursor.execute(query, (result['first_name'], result['last_name'], result['date_of_birth'], result['gender'],
+                       result['phone_number'], result['email_address'], result['passwd'], result['is_premium'], user_id))
+        conn.commit()
+        cursor.close()
+        result_msg = "Updated the following values from user_id " + \
+            str(user_id) + ":\n"
+
+        for key in request:
+            result_msg = result_msg + key + ": " + \
+                str(original_account[key]) + " -> " + str(request[key]) + "\n"
+        return result_msg
 
     def getTopFiveSentToAccounts():
         return
