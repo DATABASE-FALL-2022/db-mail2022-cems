@@ -59,7 +59,6 @@ class MessageHandler:
             return jsonify(Error="Message don't exist"), 200
         
 
-
     def sendReply(self, json):
 
         valid_recipient = MessageDAO().verifyEmailExist(json['receiver_email'])
@@ -74,4 +73,12 @@ class MessageHandler:
         else:
             return jsonify(Error="Email address don't exist")
 
-    
+
+    def updateMessage(self, m_id, request):
+        if not request:
+            return jsonify('Nothing to update.'), 200
+
+        result = MessageDAO().updateMessage(m_id, request)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Message not found.'), 200
