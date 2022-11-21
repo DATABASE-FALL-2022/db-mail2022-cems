@@ -43,10 +43,18 @@ class AccountHandler:
             return jsonify(result), 200
         return jsonify('Account not found', 200)
 
-    def updateAccount(self, user_id, request):
+    def updateAccountById(self, user_id, request):
         if not request:
-            return "Nothing to update"
-        result = AccountDAO().updateAccount(user_id, request)
+            return jsonify('Nothing to update', 200)
+        result = AccountDAO().updateAccountById(user_id, request)
+        if result:
+            return result, 200
+        return jsonify('Account not found', 200)
+
+    def updateAccountByEmail(self, email, request):
+        if not request:
+            return jsonify('Nothing to update', 200)
+        result = AccountDAO().updateAccountByEmail(email, request)
         if result:
             return result, 200
         return jsonify('Account not found', 200)
@@ -55,19 +63,19 @@ class AccountHandler:
         result = AccountDAO().deleteAccountById(user_id)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :(', 200)
+        return jsonify('Account not found', 200)
 
     def deleteAccountByEmail(self, email):
         result = AccountDAO().deleteAccountByEmail(email)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :(', 200)
+        return jsonify('Account not found', 200)
 
     def markCategory(self, user_id, m_id, category):
         result = AccountDAO().markCategory(user_id, m_id, category)
         if result:
             return jsonify(result), 200
-        return jsonify('Account not found :(', 200)
+        return jsonify('Account not found', 200)
 
     def getTopFiveSentToAccounts(self):
         return

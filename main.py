@@ -46,8 +46,7 @@ def getAccountByID(user_id):
     if request.method == 'GET':
         return AccountHandler().getAccountById(user_id)
     elif request.method == 'PUT':
-        return AccountHandler().updateAccount(user_id, request.form.to_dict())
-        return 'Updated Account with provided request.form'
+        return AccountHandler().updateAccountById(user_id, request.form.to_dict())
     elif request.method == 'DELETE':
         return AccountHandler().deleteAccountById(user_id)
     else:
@@ -58,11 +57,8 @@ def getAccountByID(user_id):
 def getAccountByEmail(email):
     if request.method == 'GET':
         return AccountHandler().getAccountByEmail(email)
-
     elif request.method == 'PUT':
-        # TODO
-        # return AccountHandler().updateAccount(email, request.form)
-        return 'Updated Account with provided request.form'
+        return AccountHandler().updateAccountByEmail(email, request.form.to_dict())
     elif request.method == 'DELETE':
         return AccountHandler().deleteAccountByEmail(email)
     else:
@@ -116,7 +112,7 @@ def getFriendRelation(user_id, friend_id):
     if request.method == 'DELETE':
         return FriendsHandler().deleteFriend(user_id, friend_id)
     elif request.method == 'PUT':
-        # return FriendsHandler().updateFriendship(user_id, friend_id, request.json)
+        # return FriendsHandler().updateFriendship(user_id, friend_id, request.form.to_dict())
         return 'Updated friendship with provided request.json'
     else:
         return jsonify(Error="Method not allowed."), 405
@@ -148,9 +144,7 @@ def getMessageById(m_id):
     if request.method == 'GET':
         return MessageHandler().getMessageById(m_id)
     elif request.method == 'PUT':
-        # TODO
-        # return MessageHandler().updateMessage(m_id, request.form)
-        return 'Updated message with m_id provided using request.form info'
+        return MessageHandler().updateMessage(m_id, request.form.to_dict())
     elif request.method == 'DELETE':
         # TODO - Delete for nomal user
         # return MessageHandler().deleteMessage(m_id)
