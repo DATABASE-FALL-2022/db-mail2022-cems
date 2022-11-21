@@ -105,7 +105,7 @@ def getAllFriends():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('cems/friends/<int:user_id>', methods=['GET'])
+@app.route('/cems/friends/<int:user_id>', methods=['GET'])
 def getEmailsSentByFriends(user_id):
     """
     The `user_id` is the user for which the query will get the emails
