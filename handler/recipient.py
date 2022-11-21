@@ -3,11 +3,14 @@ from flask import jsonify
 
 class RecipientHandler:
     
-    def getEmailMostRecipients(self, type):
-        if type == 'global' or type == 'user':
-            return jsonify(RecipientDAO().getEmailMostRecipients(type)), 200
-        else:
-            return jsonify(Error="Type not valid")
+    def getGlobalEmailMostRecipients(self):
+        return jsonify(RecipientDAO().getGlobalEmailMostRecipients()), 200
+
+    def getTopTenInbox(self):
+        return jsonify(RecipientDAO().getTopTenInbox())
+    def getTopTenOutbox(self):
+        return jsonify(RecipientDAO().getTopTenOutbox())
+
 
     def getAllRecipientMessages(self):
         result = RecipientDAO().getAllRecipientMessages()
