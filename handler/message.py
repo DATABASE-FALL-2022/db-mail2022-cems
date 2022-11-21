@@ -72,6 +72,12 @@ class MessageHandler:
                 return jsonify(Error="Message doesn't exist")
         else:
             return jsonify(Error="Email address doesn't exist")
+    
+    def getEmailMostReplies(self, type):
+        if type == 'global' or type == 'user':
+            return jsonify(MessageDAO().getEmailMostReplies(type)), 200
+        else:
+            return jsonify(Error="Type not valid")
 
 
     def updateMessage(self, m_id, request):
