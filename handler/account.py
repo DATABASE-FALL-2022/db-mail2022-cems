@@ -76,6 +76,12 @@ class AccountHandler:
         if result:
             return jsonify(result), 200
         return jsonify('Account not found', 200)
+    
+    def searchMessages(self, request_args):
+        result = AccountDAO().searchMessages(request_args)
+        if result:
+            return jsonify(result), 200
+        return jsonify('Account not found'), 200
 
     def getTopFiveSentToAccounts(self):
         return
