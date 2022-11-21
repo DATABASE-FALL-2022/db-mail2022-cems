@@ -1,5 +1,6 @@
 from config import get_db
-from psycopg2.extras import RealDictCursor #RealDictCursor is used to configurate the cursor to return a dictionary
+# RealDictCursor is used to configurate the cursor to return a dictionary
+from psycopg2.extras import RealDictCursor
 from datetime import datetime
 from dao.account import AccountDAO
 
@@ -28,7 +29,7 @@ class MessageDAO:
         cursor.execute(query, (m_id,))
         result = cursor.fetchone()
         cursor.close()
-        if result: 
+        if result:
             return True
 
         return False
@@ -47,7 +48,7 @@ class MessageDAO:
     def sendNewMessage(self, sender_id, receiver_email, subject, body):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        
+
         send_query = """
         INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
         """
@@ -55,12 +56,12 @@ class MessageDAO:
         INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
         """
 
-        #Insert message into the sender outbox
+        # Insert message into the sender outbox
         cursor.execute(send_query, (sender_id, subject, body))
         message_id = cursor.fetchone()['m_id']
         conn.commit()
 
-        #Insert message into the receiver inbox
+        # Insert message into the receiver inbox
         cursor.execute(receive_query, (receiver_email, message_id))
         conn.commit()
         cursor.close()
@@ -149,7 +150,7 @@ class MessageDAO:
         # conn.autocommit = True
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-        #Mark as read
+        # Mark as read
         read_query = '''
         UPDATE recipient SET is_read = True WHERE m_id = %s AND user_id = %s
         '''
@@ -157,14 +158,13 @@ class MessageDAO:
         conn.commit()
         cursor.close()
 
-        #Notify as read
+        # Notify as read
         sender_id = self.getMessageById(m_id)['user_id']
         sender_email = AccountDAO().getAccountById(sender_id)['email_address']
         reader_email = AccountDAO().getAccountById(reader_id)['email_address']
         self.sendSupportMessage('read_notification', sender_email, reader_email, m_id)
 
         return ('Message with id: %s marked as read' % m_id)
-        
 
     def sendReply(self, m_id, sender_id, receiver_email, subject, body):
 
@@ -176,15 +176,39 @@ class MessageDAO:
         receive_query = """
         INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
         """
-        
-        #Insert message into sender outbox
+
+        # Insert message into sender outbox
         cursor.execute(send_query, (sender_id, subject, body, m_id))
         message_id = cursor.fetchone()['m_id']
         conn.commit()
-        
-        #Insert message into receiver inbox
+
+        # Insert message into receiver inbox
         cursor.execute(receive_query, (receiver_email, message_id))
         conn.commit()
         cursor.close()
         return ('Reply sent to %s' % receiver_email)
 
+    def updateMessage(self, m_id, request):
+        original_message = self.getMessageById(m_id)
+
+        if not original_message:
+            return ('Message with id: %s not found' % m_id)
+
+        result = {key: request.get(key, original_message[key]) for key in original_message}
+
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE message 
+        SET user_id = %s, reply_id = %s, subject = %s, body = %s, m_date = %s
+        WHERE m_id = %s;
+        '''
+        cursor.execute(query, (result['user_id'], result['reply_id'], result['subject'], result['body'],
+                       result['m_date'], m_id))
+        conn.commit()
+        cursor.close()
+        result_msg = "Updated the following values from m_id " + str(m_id) + ": "
+
+        for key in request:
+            result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + ""
+        return result_msg

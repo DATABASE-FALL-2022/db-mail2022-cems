@@ -116,10 +116,10 @@ class AccountDAO:
         cursor.close()
         result = result["is_premium"]
         return result
-    
+
     def deleteAccountById(self, user_id):
         conn = get_db()
-        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
         DELETE FROM account
         WHERE user_id = %s
@@ -133,7 +133,7 @@ class AccountDAO:
 
     def deleteAccountByEmail(self, email):
         conn = get_db()
-        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
         DELETE FROM account
         WHERE email_address = %s
@@ -144,10 +144,10 @@ class AccountDAO:
         conn.commit()
         cursor.close()
         return result
-    
+
     def markCategory(user_id, m_id, category):
         conn = get_db()
-        cursor = conn.cursor(cursor_factory=RealDictCursor) 
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
         UPDATE recipient SET category = %s
         WHERE user_id = %s
@@ -158,29 +158,54 @@ class AccountDAO:
         cursor.close()
         return str(cursor.rowcount) + " record(s) affected"
 
-    def updateAccount(self, user_id, request):
-        # Gets all values from current account before updating it
+    def updateAccountById(self, user_id, request):
         original_account = self.getAccountById(user_id)
-        # Replace only the keys from the request
-        result = {key: request.get(
-            key, original_account[key]) for key in original_account}
+
+        if not original_account:
+            return ('Account with id: %s not found' % user_id)
+
+        result = {key: request.get(key, original_account[key]) for key in original_account}
 
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        UPDATE account SET first_name = %s, last_name = %s, date_of_birth = %s, gender = %s, phone_number = %s, email_address = %s, passwd = %s, is_premium = %s
+        UPDATE account
+        SET first_name = %s, last_name = %s, date_of_birth = %s, gender = %s, phone_number = %s, email_address = %s, passwd = %s, is_premium = %s
         WHERE user_id = %s;
         '''
         cursor.execute(query, (result['first_name'], result['last_name'], result['date_of_birth'], result['gender'],
                        result['phone_number'], result['email_address'], result['passwd'], result['is_premium'], user_id))
         conn.commit()
         cursor.close()
-        result_msg = "Updated the following values from user_id " + \
-            str(user_id) + ":\n"
+        result_msg = "Updated the following values from user_id " + str(user_id) + ":\n"
 
         for key in request:
-            result_msg = result_msg + key + ": " + \
-                str(original_account[key]) + " -> " + str(request[key]) + "\n"
+            result_msg = result_msg + key + ": " + str(original_account[key]) + " -> " + str(request[key]) + "\n"
+        return result_msg
+
+    def updateAccountByEmail(self, email, request):
+        original_account = self.getAccountByEmail(email)
+
+        if not original_account:
+            return ('Account with email: %s not found' % email)
+
+        result = {key: request.get(key, original_account[key]) for key in original_account}
+
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE account 
+        SET first_name = %s, last_name = %s, date_of_birth = %s, gender = %s, phone_number = %s, email_address = %s, passwd = %s, is_premium = %s
+        WHERE email_address = %s;
+        '''
+        cursor.execute(query, (result['first_name'], result['last_name'], result['date_of_birth'], result['gender'],
+                       result['phone_number'], result['email_address'], result['passwd'], result['is_premium'], email))
+        conn.commit()
+        cursor.close()
+        result_msg = "Updated the following values from email " + str(email) + ":\n"
+
+        for key in request:
+            result_msg = result_msg + key + ": " + str(original_account[key]) + " -> " + str(request[key]) + "\n"
         return result_msg
 
     def getTopFiveSentToAccounts():
