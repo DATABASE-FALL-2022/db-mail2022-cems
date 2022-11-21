@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "147d6993-2987-406c-8f0a-11ba9ba95113",
+		"_postman_id": "106b5717-45db-4245-a589-a3296cd0ddb3",
 		"name": "CEMS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19633924"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -867,7 +866,10 @@
 					"name": "Get User Inbox by Category",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -1002,6 +1004,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get email with most replies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/topEmail/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"topEmail",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get top five receive from",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/topFive/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"topFive",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1094,7 +1146,10 @@
 					"name": "Get Recipient by ID",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -1273,6 +1328,56 @@
 								"cems",
 								"message",
 								"topTenOutbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get email with most recipients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/topEmail/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"topEmail",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get top five sent to",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/topFive/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"topFive",
+								"1"
 							]
 						}
 					},
