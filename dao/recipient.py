@@ -40,7 +40,8 @@ class RecipientDAO:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
         INSERT INTO recipient (user_id, m_id, category, is_read, is_deleted)
-        VALUES (%s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s)
+        RETURNING user_id, m_id;
         '''
         cursor.execute(query, (request['user_id'], request['m_id'], request['category'],
                        request['is_read'], request['is_deleted']))
@@ -56,9 +57,9 @@ class RecipientDAO:
         query = """
         SELECT * FROM recipient
         WHERE m_id = %s
-        AND u_id = %s;
+        AND user_id = %s;
         """
-        cursor.execute(query, m_id, u_id)
+        cursor.execute(query, (m_id, u_id))
         result = cursor.fetchall()
         cursor.close()
         return result
@@ -69,6 +70,7 @@ class RecipientDAO:
         if not original_message:
             return ('Recipient message with id: %s not found' % m_id)
 
+        original_message = original_message[0]
         result = {key: request.get(key, original_message[key]) for key in original_message}
 
         conn = get_db()
@@ -83,10 +85,10 @@ class RecipientDAO:
                        result['is_deleted'], u_id, m_id))
         conn.commit()
         cursor.close()
-        result_msg = "Updated the following values from user_id " + str(u_id) + ":\n"
+        result_msg = "Updated the following values from user_id " + str(u_id) + ": "
 
         for key in request:
-            result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + "\n"
+            result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + " "
         return result_msg
  
     def deleteRecipientMessage(self, m_id, u_id):
