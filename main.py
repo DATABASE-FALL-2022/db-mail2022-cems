@@ -49,9 +49,7 @@ def getAccountByID(user_id):
         return AccountHandler().updateAccount(user_id, request.form.to_dict())
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        # TODO
-        # return AccountHandler().deleteAccount(user_id)
-        return 'Deleted Account with user_id provided'
+        return AccountHandler().deleteAccountById(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -63,12 +61,10 @@ def getAccountByEmail(email):
 
     elif request.method == 'PUT':
         # TODO
-        # return AccountHandler().updateAccount(user_id,request.form)
+        # return AccountHandler().updateAccount(email, request.form)
         return 'Updated Account with provided request.form'
     elif request.method == 'DELETE':
-        # TODO
-        # return AccountHandler().deleteAccount(user_id)
-        return 'Deleted Account with email provided'
+        return AccountHandler().deleteAccountByEmail(email)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -129,7 +125,13 @@ def getFriendRelation(user_id, friend_id):
 @app.route('/cems/message', methods=['GET', 'POST'])
 def getAllMessages():
     if request.method == 'POST':
-        return MessageHandler().sendNewMessage(request.json)
+
+        if 'reply_id' in request.json:
+            return MessageHandler().sendReply(request.json)
+
+        else:
+            return MessageHandler().sendNewMessage(request.json)
+
     elif request.method == 'GET':
         if not request.args:
             return MessageHandler().getAllMessages()
@@ -178,6 +180,14 @@ def getUserInbox(user_id):
 def getUserInboxByCategory(user_id, category):
     if request.method == 'GET':
         return MessageHandler().getInboxByCategory(user_id, category)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+@app.route('/cems/message/inbox/markCategory/<int:user_id>/<int:m_id>/<string:category>', methods=['PUT'])
+def markCategory(user_id, m_id, category):
+    if request.method == 'PUT':
+        return MessageHandler().markCategory(user_id, m_id, category)
     else:
         return jsonify(Error="Method not allowed."), 405
 
