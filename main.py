@@ -105,7 +105,7 @@ def getAllFriends():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('cems/friends/<int:user_id>', methods=['GET'])
+@app.route('/cems/friends/<int:user_id>', methods=['GET'])
 def getEmailsSentByFriends(user_id):
     """
     The `user_id` is the user for which the query will get the emails
@@ -240,20 +240,22 @@ def deleteRecipientCompletely(user_id, m_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-# Statistics #
-#@app.route('/cems/recipient/statistics')
-# def getEmailMostRecipients():
-#    if request.method == 'GET':
-#        return
+@app.route('/cems/message/read', methods=['PUT'])
+def updateRead():
 
-# @app.route('/cems/recipient/topTenUserInbox')
+    if request.method == 'PUT':
+        return MessageHandler().readMessage(request.json)
+
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 #Global Statistics#
 
 
 @app.route('/cems/recipient/mostRecipients/global',methods=['GET'])
 def getGlobalEmailMostRecipients():
     if request.method == 'GET':
-        return RecipientHandler().getEmailMostRecipients('global')
+        return RecipientHandler().getGlobalEmailMostRecipients()
     else:
         return jsonify(Error="Method not allowed."), 405
     
@@ -261,16 +263,23 @@ def getGlobalEmailMostRecipients():
 @app.route('/cems/message/mostReplies/global',methods=['GET'])
 def getGlobalEmailMostReplies():
     if request.method == 'GET':
-        return MessageHandler().getEmailMostReplies('global')
+        
+        return MessageHandler().getGlobalEmailMostReplies()
+    else:
+        return jsonify(Error="Method not allowed."), 405
+@app.route('/cems/recipient/topTenInbox', methods=['GET'])
+def getTopTenInbox():
+    if request.method == 'GET':
+        return RecipientHandler().getTopTenInbox()
+    else:
+        return jsonify(Error="Method not allowed."), 405
+@app.route('/cems/message/topTenOutbox', methods=['GET'])
+def getTopTenOutbox():
+    if request.method == 'GET':
+        return RecipientHandler().getTopTenOutbox()
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/cems/message/read', methods=['PUT'])
-def updateRead():
-    if request.method == 'PUT':
-        return MessageHandler().readMessage(request.json)
-    else:
-        return jsonify(Error="Method not allowed."), 405
 
 
 if __name__ == '__main__':

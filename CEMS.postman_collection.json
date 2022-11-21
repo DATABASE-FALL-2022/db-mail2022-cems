@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "1cc7f5b8-2a49-4007-9bf7-d8fd36b4fb31",
+		"_postman_id": "1046efec-3366-4fce-b626-64bb8dbf222f",
 		"name": "CEMS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24519327"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -213,7 +212,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend",
+							"raw": "http://127.0.0.1:5000/cems/friends",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -224,7 +223,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend"
+								"friends"
 							],
 							"query": [
 								{
@@ -248,7 +247,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend",
+							"raw": "http://127.0.0.1:5000/cems/friends",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -259,7 +258,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend"
+								"friends"
 							]
 						}
 					},
@@ -271,7 +270,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend?name=pedro",
+							"raw": "http://127.0.0.1:5000/cems/friends?name=pedro",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -282,7 +281,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend"
+								"friends"
 							],
 							"query": [
 								{
@@ -300,7 +299,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend/1/11",
+							"raw": "http://127.0.0.1:5000/cems/friends/1/11",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -311,7 +310,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend",
+								"friends",
 								"1",
 								"11"
 							]
@@ -430,7 +429,7 @@
 							"variable": [
 								{
 									"key": "mid",
-									"value": "1"
+									"value": "10"
 								}
 							]
 						}
@@ -511,7 +510,10 @@
 					"name": "Get User Inbox",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -519,7 +521,35 @@
 					"name": "Get User Outbox",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmailMostRepliesGlobal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/mostReplies/global",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"mostReplies",
+								"global"
+							]
+						}
 					},
 					"response": []
 				}
@@ -545,6 +575,84 @@
 							"port": "5000",
 							"path": [
 								"cems"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipients",
+			"item": [
+				{
+					"name": "GetEmailMostRecipientsGlobal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/mostRecipients/global",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"mostRecipients",
+								"global"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTopTenUsersMostEmailInbox",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/topTenInbox",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"topTenInbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTopTenUsersMostEmailOutbox",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/topTenOutbox",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"topTenOutbox"
 							]
 						}
 					},
