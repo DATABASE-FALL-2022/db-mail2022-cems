@@ -88,3 +88,26 @@ class MessageHandler:
         if result:
             return jsonify(result), 200
         return jsonify(Error='Message not found.'), 200
+
+
+    def getEmailWithMostRecipientsByUserId(self, user_id):
+
+        result = MessageDAO().getEmailWithMostRecipientsByUserId(user_id)
+        return result
+
+    
+    def getEmailWithMostRepliesByUserId(self, user_id):
+
+        result = MessageDAO().getEmailWithMostRepliesByUserId(user_id)
+        return result
+
+
+    def getTopFiveSentToUsers(self, user_id):
+
+        result = MessageDAO().getTopFiveSentToUsers(user_id)
+        return result
+
+    def getTopFiveReceiveFromUsers(self, user_id):
+        
+        result = MessageDAO().getTopFiveReceiveFromUsers(user_id)
+        return result
