@@ -53,10 +53,10 @@ class MessageHandler:
                 return jsonify(result), 200
 
             else:
-                return jsonify(Error="Account don't exist"), 200
+                return jsonify(Error="Account doesn't exist"), 200
 
         else:
-            return jsonify(Error="Message don't exist"), 200
+            return jsonify(Error="Message doesn't exist"), 200
         
 
     def sendReply(self, json):
@@ -67,24 +67,22 @@ class MessageHandler:
         if valid_recipient:
             if valid_message:
                 result = MessageDAO().sendReply(json['reply_id'], json['id'], json['receiver_email'], json['subject'], json['body'])
-                return jsonify(result)
+                return jsonify(result), 200
             else:
-                return jsonify(Error="Message don't exist")
+                return jsonify(Error="Message doesn't exist")
         else:
-            return jsonify(Error="Email address don't exist")
+            return jsonify(Error="Email address doesn't exist")
     
-    def getEmailMostReplies(self, type):
-        if type == 'global' or type == 'user':
-            return jsonify(MessageDAO().getEmailMostReplies(type)), 200
-        else:
-            return jsonify(Error="Type not valid")
+    def getGlobalEmailMostReplies(self):
+        return jsonify(MessageDAO().getGlobalEmailMostReplies()), 200
+        
 
 
     def updateMessage(self, m_id, request):
         if not request:
-            return jsonify('Nothing to update.'), 200
+            return jsonify(Error='Nothing to update.'), 200
 
         result = MessageDAO().updateMessage(m_id, request)
         if result:
             return jsonify(result), 200
-        return jsonify('Message not found.'), 200
+        return jsonify(Error='Message not found.'), 200
