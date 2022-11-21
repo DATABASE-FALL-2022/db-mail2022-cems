@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "1046efec-3366-4fce-b626-64bb8dbf222f",
+		"_postman_id": "147d6993-2987-406c-8f0a-11ba9ba95113",
 		"name": "CEMS",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19633924"
 	},
 	"item": [
 		{
@@ -93,10 +94,45 @@
 					"response": []
 				},
 				{
-					"name": "Get Account By ID",
+					"name": "Update Account By ID",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "is_premium",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email_address",
+									"value": "new_email@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "first_name",
+									"value": "New Name",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "last_name",
+									"value": "New Last Name",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "passwd",
+									"value": "New Password",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
 						"url": {
 							"raw": "http://127.0.0.1:5000/cems/account/:uid",
 							"protocol": "http",
@@ -115,7 +151,7 @@
 							"variable": [
 								{
 									"key": "uid",
-									"value": "1"
+									"value": "11"
 								}
 							]
 						}
@@ -123,7 +159,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Account",
+					"name": "Update Account By Email",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -131,7 +167,105 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "isPremium",
+									"key": "is_premium",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email_address",
+									"value": "new_email@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "first_name",
+									"value": "New Name",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "last_name",
+									"value": "New Last Name",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "passwd",
+									"value": "New Password",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/:email",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "elliot.cardona@upr.edu"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account By Email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/:email",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "elliot.cardona@upr.edu"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "is_premium",
 									"value": "TRUE",
 									"type": "default"
 								}
@@ -163,7 +297,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Account",
+					"name": "Delete Account by ID",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -180,6 +314,129 @@
 							"path": [
 								"cems",
 								"account",
+								":uid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Account By Email",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/:email",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "elliot.cardona@upr.edu"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Premium Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/upPremium/:uid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								"upPremium",
+								":uid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Demote Premium Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/dnPremium/:uid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								"dnPremium",
+								":uid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Premium Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/account/premium/:uid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"account",
+								"premium",
 								":uid"
 							],
 							"variable": [
@@ -346,13 +603,13 @@
 					"response": []
 				},
 				{
-					"name": "Add New Message",
+					"name": "Send New Message",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"recipient\": \"cems@gmail.com\",\r\n    \"body\":\"hi\"\r\n}",
+							"raw": "{\r\n    \"id\": 11,\r\n    \"receiver_email\": \"test.user@upr.edu\",\r\n    \"subject\": \"Test message for friend 3\",\r\n    \"body\":\"hi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -507,10 +764,64 @@
 					"response": []
 				},
 				{
+					"name": "Delete Premium Message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/premium/:mid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"premium",
+								":mid"
+							],
+							"variable": [
+								{
+									"key": "mid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get User Inbox",
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/inbox/:uid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"inbox",
+								":uid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								}
+							]
+						},
 						"url": {
 							"raw": ""
 						}
@@ -519,6 +830,37 @@
 				},
 				{
 					"name": "Get User Outbox",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/outbox/:uid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"outbox",
+								":uid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Inbox by Category",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -548,6 +890,138 @@
 								"message",
 								"mostReplies",
 								"global"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Global Email Most Replies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/mostReplies/global",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"mostReplies",
+								"global"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/inbox/markCategory/:uid/:mid/:category",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"inbox",
+								"markCategory",
+								":uid",
+								":mid",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								},
+								{
+									"key": "mid",
+									"value": "11"
+								},
+								{
+									"key": "category",
+									"value": "supp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Message",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"m_id\": \"11\",\n    \"user_id\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/read",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Reply",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 6,\n    \"receiver_email\": \"test.user@upr.edu\",\n    \"subject\": \"Test reply to user 6 from user 10\",\n    \"body\": \"Hello World reply\",\n    \"reply_id\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message"
 							]
 						}
 					},
@@ -582,6 +1056,29 @@
 				}
 			]
 		},
+		{
+			"name": "Recipient",
+			"item": [
+				{
+					"name": "Get All Recipient Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient"
+							]
+						},
 		{
 			"name": "Recipients",
 			"item": [
@@ -653,6 +1150,184 @@
 								"cems",
 								"message",
 								"topTenOutbox"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recipient Message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\":\"1\",\n    \"m_id\":\"14\",\n    \"is_read\":\"false\",\n    \"is_deleted\":\"false\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient"
+							]
+						}
+
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipient by ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recipient Message",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/:uid/:mid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								":uid",
+								":mid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								},
+								{
+									"key": "mid",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipient Message",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/del/:uid/:mid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"del",
+								":uid",
+								":mid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								},
+								{
+									"key": "mid",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Premium Recipient Message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/premium/:uid/:mid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"premium",
+								":uid",
+								":mid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "1"
+								},
+								{
+									"key": "mid",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Global Email Most Recipients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/recipient/mostRecipients/global",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"recipient",
+								"mostRecipients",
+								"global"
 							]
 						}
 					},
