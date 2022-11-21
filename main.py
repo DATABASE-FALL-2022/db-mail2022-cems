@@ -124,9 +124,6 @@ def getFriendRelation(user_id, friend_id):
     """
     if request.method == 'DELETE':
         return FriendsHandler().deleteFriend(user_id, friend_id)
-    elif request.method == 'PUT':
-        # return FriendsHandler().updateFriendship(user_id, friend_id, request.form.to_dict())
-        return 'Updated friendship with provided request.json'
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -145,9 +142,7 @@ def getAllMessages():
         if not request.args:
             return MessageHandler().getAllMessages()
         else:
-            # TODO - Point 6
-            # return MessageHandler().searchMesages(request.args)
-            return 'Searched for messages with request.args'
+            return MessageHandler().searchMessages(request.args)
     else:
         return jsonify(Error="Method not allowed."), 405
 

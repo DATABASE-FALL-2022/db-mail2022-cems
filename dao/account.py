@@ -208,6 +208,29 @@ class AccountDAO:
             result_msg = result_msg + key + ": " + str(original_account[key]) + " -> " + str(request[key]) + "\n"
         return result_msg
 
+    def searchMessages(self, request_args):
+        user_id = request_args.get('user_id')
+        if user_id is None:
+            return "user_id argument for search does not exist."
+        email = request_args.get('email_address')
+        if email is None:
+            return "Email address argument for search does not exist."
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
+        INNER JOIN recipient AS r ON (m.m_id = r.m_id)
+        WHERE r.user_id = %s
+        AND a.email_address = %s
+        AND is_deleted = FALSE
+        ORDER BY m_date DESC;
+        """
+        cursor.execute(query, (user_id, email,))
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+
     def getTopFiveSentToAccounts():
         return
 
