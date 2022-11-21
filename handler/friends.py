@@ -11,4 +11,8 @@ class FriendsHandler():
 
     def deleteFriend(self, user_id, friend_id):
         return jsonify(FriendsDAO().deleteFriend(user_id, friend_id)), 200
+
+    def getEmailsSentByFriends(self, user_id):
+        return jsonify(FriendsDAO().getEmailsSentByFriends(user_id)), 200
+
  
