@@ -217,22 +217,26 @@ def getAllRecipientMessages():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/recipient/<int:u_id>/<int:m_id>', methods=['GET', 'PUT', 'DELETE'])
-def getRecipientById(u_id, m_id):
+@app.route('/cems/recipient/<int:user_id>/<int:m_id>', methods=['GET', 'PUT', 'DELETE'])
+def getRecipientById(user_id, m_id):
     if request.method == 'GET':
-        return RecipientHandler().getRecipientById(m_id,u_id)
+        return RecipientHandler().getRecipientById(m_id,user_id)
     elif request.method == 'PUT':
-        return RecipientHandler().updateRecipientMessage(m_id, u_id, request.form.to_dict())
-    elif request.method == 'DELETE':
-        return RecipientHandler().deleteRecipientMessage(m_id, u_id)
+        return RecipientHandler().updateRecipientMessage(m_id, user_id, request.form.to_dict())
     else:
         return jsonify(Error="Method not allowed."), 405
+    
+
+@app.route('/cems/recipient/del/<int:user_id>/<int:m_id>', methods=['PUT'])
+def deleteRecipientMessage(m_id, user_id):
+    if request.method == 'PUT':
+        return RecipientHandler().deleteRecipientMessage(m_id, user_id)
 
 
-@app.route('/cems/recipient/premium/<int:u_id>/<int:m_id>', methods=['DELETE'])
-def deleteRecipientCompletely(u_id, m_id):
+@app.route('/cems/recipient/premium/<int:user_id>/<int:m_id>', methods=['DELETE'])
+def deleteRecipientCompletely(user_id, m_id):
     if request.method == 'DELETE':
-        return RecipientHandler().deleteRecipientCompletely(m_id,u_id)
+        return RecipientHandler().deleteRecipientCompletely(m_id, user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
