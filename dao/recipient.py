@@ -1,8 +1,8 @@
 from config import get_db
 # RealDictCursor is used to configurate the cursor to return a dictionary
 from psycopg2.extras import RealDictCursor
-from datetime import datetime
 from dao.message import MessageDAO
+from dao.account import AccountDAO
 
 class RecipientDAO:
     
@@ -50,21 +50,21 @@ class RecipientDAO:
         cursor.close()
         return result
     
-    def getRecipientById(self, m_id, u_id):
+    def getRecipientById(self, m_id, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
         SELECT * FROM recipient
         WHERE m_id = %s
-        AND u_id = %s;
+        AND user_id = %s;
         """
-        cursor.execute(query, (m_id, u_id))
+        cursor.execute(query, (m_id, user_id))
         result = cursor.fetchall()
         cursor.close()
         return result
     
-    def updateRecipientMessage(self, m_id, u_id, request):
-        original_message = self.getRecipientById(m_id, u_id)
+    def updateRecipientMessage(self, m_id, user_id, request):
+        original_message = self.getRecipientById(m_id, user_id)
 
         if not original_message:
             return ('Recipient message with id: %s not found' % m_id)
@@ -80,17 +80,44 @@ class RecipientDAO:
         AND m_id = %s;
         '''
         cursor.execute(query, (result['user_id'], result['m_id'], result['category'], result['is_read'],
-                       result['is_deleted'], u_id, m_id))
+                       result['is_deleted'], user_id, m_id))
         conn.commit()
         cursor.close()
-        result_msg = "Updated the following values from user_id " + str(u_id) + ":\n"
+        result_msg = "Updated the following values from user_id " + str(user_id) + ":\n"
 
         for key in request:
             result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + "\n"
         return result_msg
  
-    def deleteRecipientMessage(self, m_id, u_id):
-        return
+    def deleteRecipientMessage(self, m_id, user_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+        UPDATE recipient
+        SET is_deleted = TRUE
+        WHERE user_id = %s
+        AND m_id = %s;
+        """
+        cursor.execute(query, (user_id, m_id,))
+        conn.commit()
+        cursor.close()
+        return str(cursor.rowcount) + " record(s) affected"
     
-    def deleteRecipientCompletely(self, m_id,u_id):
-        return
+    def deleteRecipientCompletely(self, m_id, user_id):
+        if AccountDAO.verifyPremiumAccount(user_id):
+            return f'User with user_id={user_id} does not have Premium acces.'
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        delete_from_recipient_query = """
+        DELETE FROM recipient
+        WHERE m_id = %s;
+        """
+        delete_from_message_query = """
+        DELETE FROM message
+        WHERE m_id = %s;
+        """
+        cursor.execute(delete_from_recipient_query, (m_id,))
+        conn.commit()
+        cursor.execute(delete_from_message_query, (m_id,))
+        conn.commit()
+        return f'Deleted email with message ID m_id={m_id} from DB'
