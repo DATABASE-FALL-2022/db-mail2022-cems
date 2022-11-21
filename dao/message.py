@@ -188,3 +188,20 @@ class MessageDAO:
         cursor.close()
         return ('Reply sent to %s' % receiver_email)
 
+    def getEmailMostReplies(self, type):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        if type == 'global':
+            query = """
+        SELECT * FROM message WHERE m_id = (SELECT reply_id FROM message WHERE reply_id IS NOT NULL GROUP BY reply_id ORDER BY count(m_id) DESC LIMIT 1);
+        """
+        elif type =='user':
+            query = """
+        SELECT * FROM message;
+        """
+        
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+

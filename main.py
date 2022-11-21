@@ -236,13 +236,26 @@ def deleteRecipientCompletely(u_id, m_id):
         return jsonify(Error="Method not allowed."), 405
 
 # Statistics #
-# @app.route('/cems/recipient/statistics')
+#@app.route('/cems/recipient/statistics')
 # def getEmailMostRecipients():
 #    if request.method == 'GET':
 #        return
 
 # @app.route('/cems/recipient/topTenUserInbox')
-
+#Global Statistics#
+@app.route('/cems/recipient/mostRecipients/global',methods=['GET'])
+def getGlobalEmailMostRecipients():
+    if request.method == 'GET':
+        return RecipientHandler().getEmailMostRecipients('global')
+    else:
+        return jsonify(Error="Method not allowed."), 405
+@app.route('/cems/message/mostReplies/global',methods=['GET'])
+def getGlobalEmailMostReplies():
+    if request.method == 'GET':
+        
+        return MessageHandler().getEmailMostReplies('global')
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/message/read', methods=['PUT'])
 def updateRead():
