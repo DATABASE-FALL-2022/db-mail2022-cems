@@ -61,9 +61,9 @@ class RecipientDAO:
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
         INSERT INTO recipient (user_id, m_id, category, is_read, is_deleted)
-        VALUES (%s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s) RETURNING user_id, m_id, category, is_read, is_deleted;
         '''
-        cursor.execute(query, (request['user_id'], request['m_id'], request['category'],
+        cursor.execute(query, (request['user_id'], request['m_id'], request.get('category'),
                        request['is_read'], request['is_deleted']))
         
         result = cursor.fetchone()
@@ -90,6 +90,7 @@ class RecipientDAO:
         if not original_message:
             return ('Recipient message with id: %s not found' % m_id)
 
+        original_message = original_message[0]
         result = {key: request.get(key, original_message[key]) for key in original_message}
 
         conn = get_db()
@@ -104,10 +105,10 @@ class RecipientDAO:
                        result['is_deleted'], user_id, m_id))
         conn.commit()
         cursor.close()
-        result_msg = "Updated the following values from user_id " + str(user_id) + ":\n"
+        result_msg = "Updated the following values from user_id " + str(user_id) + ": "
 
         for key in request:
-            result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + "\n"
+            result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + " "
         return result_msg
  
     def deleteRecipientMessage(self, m_id, user_id):
@@ -126,7 +127,7 @@ class RecipientDAO:
     
     def deleteRecipientCompletely(self, m_id, user_id):
         if AccountDAO.verifyPremiumAccount(user_id):
-            return f'User with user_id={user_id} does not have Premium acces.'
+            return f'User with user_id={user_id} does not have Premium access.'
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         delete_from_recipient_query = """
