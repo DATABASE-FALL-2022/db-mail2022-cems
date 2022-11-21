@@ -4,7 +4,12 @@ from flask import jsonify
 class RecipientHandler:
     
     def getGlobalEmailMostRecipients(self):
-        return jsonify(RecipientDAO().getEmailMostRecipients()), 200
+        return jsonify(RecipientDAO().getGlobalEmailMostRecipients()), 200
+
+    def getTopTenInbox(self):
+        return jsonify(RecipientDAO().getTopTenInbox())
+    def getTopTenOutbox(self):
+        return jsonify(RecipientDAO().getTopTenOutbox())
 
 
     def getAllRecipientMessages(self):

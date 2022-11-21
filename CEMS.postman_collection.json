@@ -212,7 +212,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend",
+							"raw": "http://127.0.0.1:5000/cems/friends",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -223,7 +223,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend"
+								"friends"
 							],
 							"query": [
 								{
@@ -247,7 +247,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend",
+							"raw": "http://127.0.0.1:5000/cems/friends",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -258,7 +258,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend"
+								"friends"
 							]
 						}
 					},
@@ -270,7 +270,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend?name=pedro",
+							"raw": "http://127.0.0.1:5000/cems/friends?name=pedro",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -281,7 +281,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend"
+								"friends"
 							],
 							"query": [
 								{
@@ -299,7 +299,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/friend/1/11",
+							"raw": "http://127.0.0.1:5000/cems/friends/1/11",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -310,7 +310,7 @@
 							"port": "5000",
 							"path": [
 								"cems",
-								"friend",
+								"friends",
 								"1",
 								"11"
 							]

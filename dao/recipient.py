@@ -13,6 +13,45 @@ class RecipientDAO:
         """
         
         cursor.execute(query)
+        result = cursor.fetchone()
+        cursor.close()
+        result = MessageDAO.getMessageById(self,result)
+        return result
+    def getTopTenInbox(self):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        SELECT a.user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium FROM account AS a NATURAL INNER JOIN recipient AS r WHERE a.user_id IN (
+        SELECT user_id FROM recipient) GROUP BY r.user_id, a.user_id ORDER BY count(m_id) DESC LIMIT 10;
+        '''
+        cursor.execute(query)
+        
+        result = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        return result
+
+    def getTopTenOutbox(self):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        SELECT a.user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium FROM account AS a NATURAL INNER JOIN message AS m WHERE a.user_id IN (
+        SELECT user_id FROM message) GROUP BY m.user_id, a.user_id ORDER BY count(m_id) DESC LIMIT 10;
+        '''
+        cursor.execute(query)
+        
+        result = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        return result
+
+    def getAllRecipientMessages(self):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+        SELECT * FROM recipient;
+        """
+        cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
         return result
@@ -44,6 +83,7 @@ class RecipientDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+    
     def updateRecipientMessage(self, m_id, user_id, request):
         original_message = self.getRecipientById(m_id, user_id)
 
@@ -101,4 +141,4 @@ class RecipientDAO:
         conn.commit()
         cursor.execute(delete_from_message_query, (m_id,))
         conn.commit()
-        return f'Deleted email with message ID m_id={m_id}'
+        return f'Deleted email with message ID m_id={m_id} from DB'
