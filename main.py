@@ -198,11 +198,9 @@ def getUserOutbox(user_id):
 @app.route('/cems/recipient', methods=['GET', 'POST'])
 def getAllRecipientMessages():
     if request.method == 'GET':
-        # return RecipientHandler().getAllRecipientMessages()
-        return 'Got all recipient messages'
+        return RecipientHandler().getAllRecipientMessages()
     elif request.method == 'POST':
-        # return RecipientHandler().createRecipientMessage(request.json)
-        return 'Created Recipient from provided request.json'
+        return RecipientHandler().createRecipientMessage(request.json)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -210,14 +208,11 @@ def getAllRecipientMessages():
 @app.route('/cems/recipient/<int:u_id>/<int:m_id>', methods=['GET', 'PUT', 'DELETE'])
 def getRecipientById(u_id, m_id):
     if request.method == 'GET':
-        # return RecipientHandler().getRecipientById(m_id,u_id)
-        return 'Got Recipient Message from provided m_id and u_id'
+        return RecipientHandler().getRecipientById(m_id,u_id)
     elif request.method == 'PUT':
-        # return RecipientHandler().updateRecipientMessage(m_id, u_id, request.form)
-        return 'Updated Recipient Message from provided m_id and u_id with provided request.form'
+        return RecipientHandler().updateRecipientMessage(m_id, u_id, request.form.to_dict())
     elif request.method == 'DELETE':
-        # return RecipientHandler().deleteRecipientMessage(m_id, u_id)
-        return 'Deleted Recipient Message from provided m_id and u_id'
+        return RecipientHandler().deleteRecipientMessage(m_id, u_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -225,8 +220,7 @@ def getRecipientById(u_id, m_id):
 @app.route('/cems/recipient/premium/<int:u_id>/<int:m_id>', methods=['DELETE'])
 def deleteRecipientCompletely(u_id, m_id):
     if request.method == 'DELETE':
-        # return RecipientHandler().deleteRecipientCompletely(m_id,u_id)
-        return 'Deleted Completely Recipient Message from provided m_id and u_id'
+        return RecipientHandler().deleteRecipientCompletely(m_id,u_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -238,26 +232,27 @@ def deleteRecipientCompletely(u_id, m_id):
 
 # @app.route('/cems/recipient/topTenUserInbox')
 #Global Statistics#
+
+
 @app.route('/cems/recipient/mostRecipients/global',methods=['GET'])
 def getGlobalEmailMostRecipients():
     if request.method == 'GET':
         return RecipientHandler().getEmailMostRecipients('global')
     else:
         return jsonify(Error="Method not allowed."), 405
+    
+    
 @app.route('/cems/message/mostReplies/global',methods=['GET'])
 def getGlobalEmailMostReplies():
     if request.method == 'GET':
-        
         return MessageHandler().getEmailMostReplies('global')
     else:
         return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/message/read', methods=['PUT'])
 def updateRead():
-
     if request.method == 'PUT':
         return MessageHandler().readMessage(request.json)
-
     else:
         return jsonify(Error="Method not allowed."), 405
 
