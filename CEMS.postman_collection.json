@@ -603,13 +603,13 @@
 					"response": []
 				},
 				{
-					"name": "Add New Message",
+					"name": "Send New Message",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"recipient\": \"cems@gmail.com\",\r\n    \"body\":\"hi\"\r\n}",
+							"raw": "{\r\n    \"id\": 11,\r\n    \"receiver_email\": \"test.user@upr.edu\",\r\n    \"subject\": \"Test message for friend 3\",\r\n    \"body\":\"hi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
