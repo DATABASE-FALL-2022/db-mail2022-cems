@@ -89,7 +89,7 @@ def verifyPremiumAccount(user_id):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/friend', methods=['GET', 'POST'])
+@app.route('/cems/friends', methods=['GET', 'POST'])
 def getAllFriends():
     if request.method == 'POST':
         return FriendsHandler().addFriendship(request.json)
@@ -104,7 +104,19 @@ def getAllFriends():
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/friend/<int:user_id>/<int:friend_id>', methods=['PUT', 'DELETE'])
+@app.route('cems/friends/<int:user_id>', methods=['GET'])
+def getEmailsSentByFriends(user_id):
+    """
+    The `user_id` is the user for which the query will get the emails
+    sent to by their friends.
+    """
+    if request.method == 'GET':
+        return FriendsHandler().getEmailsSentByFriends(user_id)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+@app.route('/cems/friends/<int:user_id>/<int:friend_id>', methods=['PUT', 'DELETE'])
 def getFriendRelation(user_id, friend_id):
     """
     Delete friend with `friend_id` from account with `user_id`.
