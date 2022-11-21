@@ -84,7 +84,7 @@ class MessageDAO:
         query = """
         SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
-        INNER JOIN recipient r ON (m.m_id = r.m_id)
+        INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND is_deleted = FALSE
         ORDER BY m_date DESC;
@@ -100,7 +100,7 @@ class MessageDAO:
         query = """
         SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
-        INNER JOIN recipient r ON (m.m_id = r.m_id)
+        INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND category = %s
         AND is_deleted = FALSE
