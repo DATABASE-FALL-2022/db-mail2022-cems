@@ -6,3 +6,4 @@ logfile.log
 testDatetime.py
 *.pyc
 *.pyc
+frontend/node_modules/
