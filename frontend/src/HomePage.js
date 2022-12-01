@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { Button, Divider, Form, Grid, Header, Modal, Segment, Tab } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Button, Divider, Form, Grid, Header, Modal, Segment } from 'semantic-ui-react';
 
 function HomePage() {
 	const [open, setOpen] = useState(false);
@@ -11,7 +11,7 @@ function HomePage() {
 	return (
 		<Segment>
 			<Header dividing textAlign='center' size='huge'>
-				Welcome to DB Demo
+				Welcome to CEMS Demo
 			</Header>
 			<Modal centered={false} open={open} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
 				<Modal.Header>Needs changing!</Modal.Header>
@@ -26,7 +26,7 @@ function HomePage() {
 				<Grid columns={2} relaxed='very' stackable>
 					<Grid.Column>
 						<Form>
-							<Form.Input icon='user' iconPosition='left' label='Username' placeholder='Username' />
+							<Form.Input icon='user' iconPosition='left' label='Email' placeholder='Email' />
 							<Form.Input icon='lock' iconPosition='left' label='Password' type='password' />
 							<Button content='Login' primary onClick={handleChange} />
 						</Form>
