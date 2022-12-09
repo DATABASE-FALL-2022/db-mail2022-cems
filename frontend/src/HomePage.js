@@ -87,7 +87,7 @@ function HomePage() {
 	return (
 		<Segment>
 			<Header dividing textAlign='center' size='huge'>
-				CEMS Email App
+				CEMS Mail App
 			</Header>
 			<Modal centered={false} open={open} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
 				<Modal.Header>Success!</Modal.Header>
