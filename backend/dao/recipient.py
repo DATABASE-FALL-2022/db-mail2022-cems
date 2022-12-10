@@ -9,7 +9,7 @@ class RecipientDAO:
         conn = get_db()
         cursor = conn.cursor()
         query = """
-        SELECT m_id FROM recipient GROUP BY m_id ORDER BY count(user_id) DESC LIMIT 1;
+        SELECT m_id, count(user_id) AS stats FROM recipient GROUP BY m_id ORDER BY count(user_id) DESC LIMIT 1;
         """
         
         cursor.execute(query)
