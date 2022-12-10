@@ -1,7 +1,11 @@
 import React, { Component, useState } from 'react';
-import { Button, Card, Container, Divider, Header, Icon, Image, Modal, Tab } from 'semantic-ui-react';
+import { Nav } from 'react-bootstrap';
+import { Button, Container, Divider, Header, Icon, Image, Modal, Tab } from 'semantic-ui-react';
 import Dashboard from './Dashboard';
 import Emails from './Emails';
+import Email from './components/Email';
+import { Card, ListGroup } from 'react-bootstrap';
+import Inbox from './views/Inbox';
 
 function UserView() {
 	const [isAuth, setIsAuth] = useState(true);
@@ -15,7 +19,7 @@ function UserView() {
 						<Header>Anything you need to put here</Header>
 						<Divider />
 					</Container>
-					<Emails />
+					<Inbox />
 				</Tab.Pane>
 			),
 		},
