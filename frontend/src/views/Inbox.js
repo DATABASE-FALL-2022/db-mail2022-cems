@@ -7,7 +7,9 @@ export default function Inbox() {
 	const emailList = data.map((value) => <Email key={value.m_id} info={value} />);
 
 	useEffect(() => {
-		fetch('http://127.0.0.1:5000/cems/message/inbox/1', {
+		var user = JSON.parse(localStorage.getItem('user'));
+		console.log(user.user_id);
+		fetch('http://127.0.0.1:5000/cems/message/inbox/' + user.user_id, {
 			methods: 'GET',
 		})
 			.then((response) => response.json())

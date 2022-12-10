@@ -1,15 +1,15 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
-import { Button, Container, Divider, Header, Icon, Image, Modal, Tab } from 'semantic-ui-react';
+import { Container, Divider, Header, Icon, Tab } from 'semantic-ui-react';
 import Dashboard from './Dashboard';
-import Emails from './Emails';
-import Email from './components/Email';
 import { Card, ListGroup } from 'react-bootstrap';
 import Inbox from './views/Inbox';
+import Outbox from './views/Outbox';
 
 function UserView() {
 	const [isAuth, setIsAuth] = useState(true);
 	const [notShow, setNotShow] = useState(false);
+
 	const panes = [
 		{
 			menuItem: 'Inbox',
@@ -17,6 +17,7 @@ function UserView() {
 				<Tab.Pane active={isAuth}>
 					<Container>
 						<Header>Anything you need to put here</Header>
+
 						<Divider />
 					</Container>
 					<Inbox />
@@ -31,7 +32,7 @@ function UserView() {
 						<Header>Anything you need to put here</Header>
 						<Divider />
 					</Container>
-					<Emails />
+					<Outbox />
 				</Tab.Pane>
 			),
 		},
