@@ -10,45 +10,49 @@ function HomePage() {
 	const [user, setUser] = useState();
 	const [errorEmail,setErrorEmail] = useState(false);
 	const [errorPass,setErrorPass] = useState(false);
+	const [btnLoading,setBtnLoading] = useState(false);
 
-	const handleChange = (event, newValue) => {
-		setOpen(true);
-	};
-
-	// React States
-	const [errorMessages, setErrorMessages] = useState({});
-
-	const errors = {
-		email: 'invalid username',
-		pass: 'invalid password',
-		clean: '',
-	};
 
 	const validate = (res, p) => {
 		if (res.data.passwd === p.value) {
-			setErrorMessages({ name: 'clean', message: errors.clean });
+			setErrorPass(false);
 			console.log('logged in');
+			var full_name = res.data.first_name + " " + res.data.last_name;
 			setUser(res.data);
 			const usr = {
 				user_id: res.data.user_id,
 				email_address: res.data.email_address,
 				is_premium: res.data.is_premium,
+				full_name: full_name
 			};
 			localStorage.setItem('user', JSON.stringify(usr));
 		} else {
-			setErrorMessages({ name: 'pass', message: errors.pass });
-
+			setErrorPass({state:true,content:'Wrong Password'});
 			console.log('wrong password');
 		}
 	};
 
 	const toFetch = async (e) => {
+		setErrorEmail(false);
+		setErrorPass(false);
+		setBtnLoading(true);
 		var { email, pass } = document.forms[0];
 		var base = 'http://127.0.0.1:5000/cems/account/';
 		var link = base + email.value;
 
 		const response = await axios.get(link).catch((error) => console.log(error));
-		validate(response, pass);
+
+		try{
+			if(response.data === 'Account not found'){
+				setErrorEmail({state:true,content:'Email Not Found'});
+			}else{
+				validate(response, pass);
+			}
+		}catch (error){
+			console.log(error);
+		}
+
+		setBtnLoading(false);
 	};
 
 	const handleLogout = () => {
@@ -56,8 +60,6 @@ function HomePage() {
 		localStorage.clear();
 		window.location.reload();
 	};
-
-	const renderErrorMessage = (name) => name === errorMessages.name && <div className='error'>{errorMessages.message}</div>;
 
 	useEffect(() => {
 		const loggedInUser = localStorage.getItem('user');
@@ -85,11 +87,11 @@ function HomePage() {
 			</Header>
 			<Form size='large' onSubmit={toFetch}>
 				<Segment stacked>
-				<Form.Input fluid error={errorEmail} icon='at' iconPosition='left' label='Email' placeholder='Email' name='email'/>
+				<Form.Input error={errorEmail} fluid  icon='at' iconPosition='left' label='Email' placeholder='Email' name='email'/>
 				
-				<Form.Input fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
+				<Form.Input error={errorPass} fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
 				
-				<Button color='blue' fluid error={errorPass} size='large' type='submit' primary>
+				<Button loading={btnLoading} color='blue' fluid size='large' type='submit' primary>
 					Login
 				</Button>
 				</Segment>
