@@ -7,25 +7,28 @@ from dao.account import AccountDAO
 class RecipientDAO:
     def getGlobalEmailMostRecipients(self):
         conn = get_db()
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
         SELECT m_id, count(user_id) AS stats FROM recipient GROUP BY m_id ORDER BY count(user_id) DESC LIMIT 1;
         """
-        
         cursor.execute(query)
-        result = cursor.fetchone()
+        result = cursor.fetchall()
+        conn.commit()
         cursor.close()
-        result = MessageDAO.getMessageById(self,result)
         return result
+
     def getTopTenInbox(self):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT a.user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium FROM account AS a NATURAL INNER JOIN recipient AS r WHERE a.user_id IN (
-        SELECT user_id FROM recipient) GROUP BY r.user_id, a.user_id ORDER BY count(m_id) DESC LIMIT 10;
+        SELECT a.user_id, count(m_id) as stats
+        FROM account AS a NATURAL INNER JOIN recipient AS r
+        WHERE a.user_id IN (SELECT user_id FROM recipient)
+        GROUP BY r.user_id, a.user_id
+        ORDER BY count(m_id)
+        DESC LIMIT 10;
         '''
         cursor.execute(query)
-        
         result = cursor.fetchall()
         conn.commit()
         cursor.close()
@@ -35,11 +38,16 @@ class RecipientDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT a.user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium FROM account AS a NATURAL INNER JOIN message AS m WHERE a.user_id IN (
-        SELECT user_id FROM message) GROUP BY m.user_id, a.user_id ORDER BY count(m_id) DESC LIMIT 10;
+        SELECT a.user_id, count(m_id) as stats
+        FROM account AS a NATURAL INNER JOIN message AS m
+        WHERE a.user_id IN (
+                SELECT user_id
+                FROM message)
+        GROUP BY m.user_id, a.user_id
+        ORDER BY count(m_id)
+        DESC LIMIT 10;
         '''
         cursor.execute(query)
-        
         result = cursor.fetchall()
         conn.commit()
         cursor.close()
