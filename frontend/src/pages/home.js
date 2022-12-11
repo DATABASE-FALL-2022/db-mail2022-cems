@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Divider, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup } from 'semantic-ui-react';
-import UserView from './UserView';
+import UserView from './userview';
 import axios from 'axios';
 
 function HomePage() {
@@ -67,7 +67,7 @@ function HomePage() {
 	if (user) {
 		return (
 			<SegmentGroup>
-				<UserView />
+				<UserView logout={handleLogout} />
 			</SegmentGroup>
 		);
 	}
