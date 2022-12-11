@@ -13,6 +13,35 @@ class FriendsDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+    
+    def getAllFriendsByUserId(self, user_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = """
+        SELECT * FROM friends 
+        WHERE user_id = %s
+        ORDER BY friend_id;
+        """
+        cursor.execute(query, user_id)
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+    
+    def getIsFriend(self, user_id, friend_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        SELECT EXISTS(
+            SELECT * FROM friends
+            WHERE user_id = %s
+            AND friend_id = %s
+            ORDER BY user_id
+        );
+        '''
+        cursor.execute(query, (user_id, friend_id))
+        result = cursor.fetchone()
+        cursor.close()
+        return result
 
     def addFriendship(self, json):
         conn = get_db()
