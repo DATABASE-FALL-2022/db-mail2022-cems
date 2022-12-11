@@ -194,10 +194,13 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT * FROM message WHERE m_id = (SELECT reply_id FROM message WHERE reply_id IS NOT NULL GROUP BY reply_id ORDER BY count(m_id) DESC LIMIT 1);
+        SELECT reply_id AS m_id, count(reply_id) AS stats
+        FROM message
+        WHERE reply_id IS NOT NULL
+        GROUP BY reply_id
+        ORDER BY count(reply_id)
+        DESC LIMIT 1;
         """
-        
-        
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()

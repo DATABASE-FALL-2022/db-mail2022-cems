@@ -262,13 +262,17 @@ def getGlobalEmailMostReplies():
         return MessageHandler().getGlobalEmailMostReplies()
     else:
         return jsonify(Error="Method not allowed."), 405
+
+
 @app.route('/cems/recipient/topTenInbox', methods=['GET'])
 def getTopTenInbox():
     if request.method == 'GET':
         return RecipientHandler().getTopTenInbox()
     else:
         return jsonify(Error="Method not allowed."), 405
-@app.route('/cems/message/topTenOutbox', methods=['GET'])
+
+
+@app.route('/cems/recipient/topTenOutbox', methods=['GET'])
 def getTopTenOutbox():
     if request.method == 'GET':
         return RecipientHandler().getTopTenOutbox()
