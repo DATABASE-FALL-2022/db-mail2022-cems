@@ -40,7 +40,7 @@ function UserView() {
 			menuItem: 'Profile',
 			render: () => (
 				<Tab.Pane active={isAuth}>
-					:){' '}
+					:
 					<Card>
 						<Card.Content>
 							<Card.Header>Matthew</Card.Header>
