@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import StatTable from './components/StatTable';
+import StatTable from '../components/StatTable';
 
 function Dashboard() {
 
