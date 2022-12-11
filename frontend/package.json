@@ -2,7 +2,6 @@
   "name": "shop-frontend",
   "version": "0.1.0",
   "private": true,
-
   "dependencies": {
     "@semantic-ui-react/css-patch": "^1.0.0",
     "@testing-library/jest-dom": "^5.16.4",
@@ -16,6 +15,7 @@
     "react-bootstrap": "^2.6.0",
     "react-bootstrap-icons": "^1.10.2",
     "react-dom": "^18.0.0",
+    "react-fakers": "^1.0.3-rc1",
     "react-scripts": "^5.0.1",
     "recharts": "^2.2.0",
     "semantic-ui-css": "^2.4.1",
@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "react-router-dom": "^6.3.0"
   }
 }

@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import * as Icon from 'react-bootstrap-icons';
+import SearchEmail from './Search';
 
 export default function NavigationBar(props) {
 	const email = JSON.parse(localStorage.getItem('user')).email_address;
@@ -13,6 +14,7 @@ export default function NavigationBar(props) {
 				<Navbar.Brand href='#home' className='fw-bold'>
 					CEMS Mail
 				</Navbar.Brand>
+				{/* <SearchEmail /> */}
 				<Navbar.Toggle aria-controls='basic-navbar-nav' />
 				<Navbar.Collapse id='basic-navbar-nav'>
 					<Nav className='ms-auto'>

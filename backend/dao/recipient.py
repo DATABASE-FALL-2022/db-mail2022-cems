@@ -17,6 +17,7 @@ class RecipientDAO:
         cursor.close()
         result = MessageDAO.getMessageById(self,result)
         return result
+        
     def getTopTenInbox(self):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)

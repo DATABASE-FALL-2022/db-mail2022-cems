@@ -69,7 +69,7 @@ export default function UserView(props) {
 	function handleCompose() {
 		return <Compose />;
 	}
-	return (
+	return ( 
 		<div className=''>
 			<NavigationBar logout={props.logout} />
 
