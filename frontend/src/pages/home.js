@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Divider, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup } from 'semantic-ui-react';
+import { Button, Divider, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon, Image, Menu, Input, Card, Message } from 'semantic-ui-react';
 import UserView from './userview';
 import axios from 'axios';
+import { useAsyncError } from 'react-router-dom';
+//import { Form, Button, Card, Modal,Row,Col,InputGroup,Navbar,Container } from 'react-bootstrap';
 
-function HomePage() {
+export default function HomePage() {
 	const [open, setOpen] = useState(false);
 	const [user, setUser] = useState();
+	const [errorEmail, setErrorEmail] = useState(false);
+	const [errorPass, setErrorPass] = useState(false);
 
 	const handleChange = (event, newValue) => {
 		setOpen(true);
@@ -57,7 +61,6 @@ function HomePage() {
 
 	useEffect(() => {
 		const loggedInUser = localStorage.getItem('user');
-		console.log(loggedInUser);
 		if (loggedInUser) {
 			const foundUser = JSON.parse(loggedInUser);
 			setUser(foundUser);
@@ -71,40 +74,135 @@ function HomePage() {
 			</SegmentGroup>
 		);
 	}
-	return (
-		<Segment>
-			<Header dividing textAlign='center' size='huge'>
-				CEMS Mail App
-			</Header>
-			<Modal centered={false} open={open} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
-				<Modal.Header>Success!</Modal.Header>
-				<Modal.Content>
-					<Modal.Description>You have logged in... Redirecting to your email...</Modal.Description>
-				</Modal.Content>
-				<Modal.Actions>
-					<Button onClick={() => setOpen(false)}>OK</Button>
-				</Modal.Actions>
-			</Modal>
-			<Segment placeholder>
-				<Grid columns={2} relaxed='very' stackable>
-					<Grid.Column>
-						<Form onSubmit={toFetch}>
-							<Form.Input icon='user' iconPosition='left' label='Email' placeholder='Email' name='email' />
-							{renderErrorMessage('email')}
-							<Form.Input icon='lock' iconPosition='left' label='Password' type='password' name='pass' />
-							{renderErrorMessage('pass')}
-							<FormButton type='submit' content='Login' primary />
-						</Form>
-					</Grid.Column>
-					<Grid.Column verticalAlign='middle'>
-						<Button content='Sign up' icon='signup' size='big' onClick={handleChange} />
-					</Grid.Column>
-				</Grid>
 
-				<Divider vertical>Or</Divider>
-			</Segment>
-		</Segment>
+	return (
+		<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+			<Grid.Column style={{ maxWidth: 450 }}>
+				<Header as='h1' color='blue' textAlign='center'>
+					CEMS Email App
+				</Header>
+				<Form size='large' onSubmit={toFetch}>
+					<Segment stacked>
+						<Form.Input fluid error={errorEmail} icon='at' iconPosition='left' label='Email' placeholder='Email' name='email' />
+
+						<Form.Input fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
+
+						<Button color='blue' fluid error={errorPass} size='large' type='submit' primary>
+							Login
+						</Button>
+					</Segment>
+				</Form>
+				<Message>
+					New to us? <a href='Signup'>Sign Up</a>
+				</Message>
+			</Grid.Column>
+		</Grid>
+
+		// <Segment>
+		// 	<Header dividing textAlign='center' size='huge'>
+		// 		CEMS Mail App
+		// 	</Header>
+		// 	<Modal centered={false} open={open} onClose={() => setOpen(false)} onOpen={() => setOpen(true)}>
+		// 		<Modal.Header>Success!</Modal.Header>
+		// 		<Modal.Content>
+		// 			<Modal.Description>You have logged in... Redirecting to your email...</Modal.Description>
+		// 		</Modal.Content>
+		// 		<Modal.Actions>
+		// 			<Button onClick={() => setOpen(false)}>OK</Button>
+		// 		</Modal.Actions>
+		// 	</Modal>
+		// 	<Segment>
+		// 		<Grid columns={2} relaxed='very' stackable>
+		// 			<Grid.Column>
+		// 				<Form onSubmit={toFetch}>
+		// 					<Form.Input icon='user' iconPosition='left' label='Email' placeholder='Email' name='email' />
+		// 					{renderErrorMessage('email')}
+		// 					<Form.Input icon='lock' iconPosition='left' label='Password' type='password' name='pass' />
+		// 					{renderErrorMessage('pass')}
+		// 					<FormButton type='submit' content='Login' primary />
+		// 				</Form>
+		// 			</Grid.Column>
+		// 			<Grid.Column verticalAlign='middle' centered>
+		// 				<Button content='Sign up' icon='signup' size='big' onClick={handleChange} />
+		// 			</Grid.Column>
+		// 		</Grid>
+
+		// 		<Divider vertical>Or</Divider>
+		// 	</Segment>
+		// 	<Card.Group itemsPerRow={4}>
+		// 		<Card>
+		// 			<Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+		// 			<Card.Content>
+		// 			<Card.Header>Matthew</Card.Header>
+		// 			<Card.Meta>
+		// 				<span className='date'>Joined in 2015</span>
+		// 			</Card.Meta>
+		// 			<Card.Description>
+		// 				Matthew is a musician living in Nashville.
+		// 			</Card.Description>
+		// 			</Card.Content>
+		// 			<Card.Content extra>
+		// 			<a>
+		// 				<Icon name='user' />
+		// 				22 Friends
+		// 			</a>
+		// 			</Card.Content>
+		// 		</Card>
+		// 		<Card>
+		// 			<Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+		// 			<Card.Content>
+		// 			<Card.Header>Matthew</Card.Header>
+		// 			<Card.Meta>
+		// 				<span className='date'>Joined in 2015</span>
+		// 			</Card.Meta>
+		// 			<Card.Description>
+		// 				Matthew is a musician living in Nashville.
+		// 			</Card.Description>
+		// 			</Card.Content>
+		// 			<Card.Content extra>
+		// 			<a>
+		// 				<Icon name='user' />
+		// 				22 Friends
+		// 			</a>
+		// 			</Card.Content>
+		// 		</Card>
+		// 		<Card>
+		// 			<Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+		// 			<Card.Content>
+		// 			<Card.Header>Matthew</Card.Header>
+		// 			<Card.Meta>
+		// 				<span className='date'>Joined in 2015</span>
+		// 			</Card.Meta>
+		// 			<Card.Description>
+		// 				Matthew is a musician living in Nashville.
+		// 			</Card.Description>
+		// 			</Card.Content>
+		// 			<Card.Content extra>
+		// 			<a>
+		// 				<Icon name='user' />
+		// 				22 Friends
+		// 			</a>
+		// 			</Card.Content>
+		// 		</Card>
+		// 		<Card>
+		// 			<Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+		// 			<Card.Content>
+		// 			<Card.Header>Matthew</Card.Header>
+		// 			<Card.Meta>
+		// 				<span className='date'>Joined in 2015</span>
+		// 			</Card.Meta>
+		// 			<Card.Description>
+		// 				Matthew is a musician living in Nashville.
+		// 			</Card.Description>
+		// 			</Card.Content>
+		// 			<Card.Content extra>
+		// 			<a>
+		// 				<Icon name='user' />
+		// 				22 Friends
+		// 			</a>
+		// 			</Card.Content>
+		// 		</Card>
+		// 	</Card.Group>
+		// </Segment>
 	);
 }
-
-export default HomePage;

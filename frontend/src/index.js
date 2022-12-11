@@ -6,7 +6,7 @@ import '../node_modules/semantic-ui-css/semantic.min.css';
 import HomePage from './pages/home';
 import UserView from './pages/userview';
 import Dashboard from './pages/dashboard';
-import Signup from './Signup';
+import Signup from './pages/signup';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
