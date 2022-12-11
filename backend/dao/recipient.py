@@ -157,11 +157,15 @@ class RecipientDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT r.m_id FROM recipient AS r INNER JOIN message AS m ON r.m_id = m.m_id 
-        WHERE m.user_id = %s GROUP BY r.m_id ORDER BY COUNT(*) DESC LIMIT 1;
+        SELECT r.m_id, count(*) AS stats
+        FROM recipient AS r INNER JOIN message AS m ON r.m_id = m.m_id
+        WHERE m.user_id = %s
+        GROUP BY r.m_id
+        ORDER BY count(*) DESC
+        LIMIT 1;
         '''
         cursor.execute(query, (user_id,))
-        result =  cursor.fetchone()
+        result =  cursor.fetchall()
         cursor.close()
         return result
 
@@ -170,8 +174,12 @@ class RecipientDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT r.user_id FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id 
-        WHERE m.user_id = %s GROUP BY r.user_id ORDER BY COUNT(*) DESC LIMIT 5
+        SELECT r.user_id, count(*) AS stats
+        FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id
+        WHERE m.user_id = %s
+        GROUP BY r.user_id
+        ORDER BY count(*) DESC
+        LIMIT 5;
         '''
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()
