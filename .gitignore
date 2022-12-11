@@ -11,3 +11,4 @@ bin/
 lib/
 backend/pyvenv.cfg
 backend/include/site/python3.9/greenlet/greenlet.h
+backend/.env
