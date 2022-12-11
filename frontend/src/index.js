@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import './index.css';
 import '../node_modules/semantic-ui-css/semantic.min.css';
-import HomePage from './HomePage';
-import UserView from './UserView';
-import Dashboard from './Dashboard';
-import Signup from './Signup';
+import HomePage from './pages/home';
+import UserView from './pages/userview';
+import Dashboard from './pages/dashboard';
+import Signup from './pages/signup';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
