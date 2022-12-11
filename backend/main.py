@@ -244,8 +244,8 @@ def updateRead():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Global Statistics#
 
+# Global Statistics
 
 @app.route('/cems/recipient/mostRecipients/global',methods=['GET'])
 def getGlobalEmailMostRecipients():
@@ -280,39 +280,36 @@ def getTopTenOutbox():
         return jsonify(Error="Method not allowed."), 405
 
 
+# User Statistics
+
 @app.route('/cems/recipient/topEmail/<int:user_id>', methods=['GET'])
 def getEmailWithMostRecipients(user_id):
-    
     if request.method == 'GET':
         return RecipientHandler().getEmailWithMostRecipientsByUserId(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message/topEmail/<int:user_id>', methods=['GET'])
 def getEmailWithMostReplies(user_id):
-    
     if request.method == 'GET':
         return MessageHandler().getEmailWithMostRepliesByUserId(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message/topFive/<int:user_id>', methods=['GET'])
 def getTopFiveReceive(user_id):
-    
     if request.method == 'GET':
         return MessageHandler().getTopFiveReceiveFromUsers(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/cems/recipient/topFive/<int:user_id>', methods=['GET'])
 def getTopFiveSent(user_id):
-    
     if request.method == 'GET':
         return RecipientHandler().getTopFiveSentToUsers(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
 
