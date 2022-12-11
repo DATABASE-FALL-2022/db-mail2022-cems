@@ -66,19 +66,13 @@ export default function UserView(props) {
 		},
 	];
 
-	function handleCompose() {
-		return <Compose />;
-	}
 	return (
 		<div className=''>
 			<NavigationBar logout={props.logout} />
 
 			<Sidebar></Sidebar>
-			<Button onClick={handleCompose}>
-				<Icon.PlusCircle />
-				<span className='ms-1'>New</span>
-			</Button>
 
+			<Compose />
 			<main className='d-flex justify-content-center pt-5'>
 				<Tab className='w-75' panes={panes} />
 			</main>
