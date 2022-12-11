@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Divider, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon,Image, Menu, Input,Card,Message} from 'semantic-ui-react';
-import UserView from './UserView';
+import { Button, Divider, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon, Image, Menu, Input, Card, Message } from 'semantic-ui-react';
+import UserView from './userview';
 import axios from 'axios';
 import { useAsyncError } from 'react-router-dom';
 //import { Form, Button, Card, Modal,Row,Col,InputGroup,Navbar,Container } from 'react-bootstrap';
 
-function HomePage() {
+export default function HomePage() {
 	const [open, setOpen] = useState(false);
 	const [user, setUser] = useState();
-	const [errorEmail,setErrorEmail] = useState(false);
-	const [errorPass,setErrorPass] = useState(false);
+	const [errorEmail, setErrorEmail] = useState(false);
+	const [errorPass, setErrorPass] = useState(false);
 
 	const handleChange = (event, newValue) => {
 		setOpen(true);
@@ -70,39 +70,34 @@ function HomePage() {
 	if (user) {
 		return (
 			<SegmentGroup>
-				<UserView />
+				<UserView logout={handleLogout} />
 			</SegmentGroup>
 		);
 	}
-	
 
 	return (
-		
 		<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
 			<Grid.Column style={{ maxWidth: 450 }}>
-			<Header as='h1' color='blue' textAlign='center'>
-				CEMS Email App
-			</Header>
-			<Form size='large' onSubmit={toFetch}>
-				<Segment stacked>
-				<Form.Input fluid error={errorEmail} icon='at' iconPosition='left' label='Email' placeholder='Email' name='email'/>
-				
-				<Form.Input fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
-				
-				<Button color='blue' fluid error={errorPass} size='large' type='submit' primary>
-					Login
-				</Button>
-				</Segment>
-			</Form>
-			<Message >
-				New to us? <a href='Signup'>Sign Up</a>
-			</Message>
+				<Header as='h1' color='blue' textAlign='center'>
+					CEMS Email App
+				</Header>
+				<Form size='large' onSubmit={toFetch}>
+					<Segment stacked>
+						<Form.Input fluid error={errorEmail} icon='at' iconPosition='left' label='Email' placeholder='Email' name='email' />
+
+						<Form.Input fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
+
+						<Button color='blue' fluid error={errorPass} size='large' type='submit' primary>
+							Login
+						</Button>
+					</Segment>
+				</Form>
+				<Message>
+					New to us? <a href='Signup'>Sign Up</a>
+				</Message>
 			</Grid.Column>
 		</Grid>
-			
-		
-		
-		
+
 		// <Segment>
 		// 	<Header dividing textAlign='center' size='huge'>
 		// 		CEMS Mail App
@@ -211,5 +206,3 @@ function HomePage() {
 		// </Segment>
 	);
 }
-
-export default HomePage;
