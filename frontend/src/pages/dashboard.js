@@ -1,27 +1,36 @@
-import React, { Component, useState } from 'react';
-import { Button, Card, Container, Modal } from 'semantic-ui-react';
-import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
+import React, { Component, useState, useEffect } from 'react';
+import StatTable from './components/StatTable';
 
 function Dashboard() {
-	const [data, setData] = useState([
-		{ name: 1, Counts: 5 },
-		{ name: 2, Counts: 4 },
-		{ name: 3, Counts: 3 },
-		{ name: 4, Counts: 2 },
-		{ name: 5, Counts: 1 },
-	]);
+
+	var user = JSON.parse(localStorage.getItem('user'));
 
 	return (
-		<Container style={{ height: 800 }}>
-			<BarChart width={730} height={250} data={data}>
-				<CartesianGrid strokeDasharray='3 3' />
-				<XAxis dataKey='name' />
-				<YAxis />
-				<Tooltip />
-				<Legend />
-				<Bar dataKey='Counts' fill='#8884d8' />
-			</BarChart>
-		</Container>
+		<div>
+			<div>
+				<h1>User Statistics</h1>
+				<h3>Statistics for account: {user.email_address}, with user ID: {user.user_id}.</h3>
+				<p>Email with the most recipients</p>
+				<StatTable stat='email' type='usr' route='http://127.0.0.1:5000/cems/recipient/topEmail/' c1='Message ID' c2='Num. of Recipients'/>
+				<p>Email with most replies</p>
+				<StatTable stat='email' type='usr' route='http://127.0.0.1:5000/cems/message/topEmail/' c1='Message ID' c2='Num. of Replies'/>
+				<p>Top 5 Users you send emails to the most</p>
+				<StatTable stat='user' type='usr' route='http://127.0.0.1:5000/cems/recipient/topFive/' c1='User ID' c2='Num. of Messages'/>
+				<p>Top 5 Users who sends emails to you the most</p>
+				<StatTable stat='user' type='usr' route='http://127.0.0.1:5000/cems/message/topFive/' c1='User ID' c2='Num. of Messages'/>
+			</div>
+			<div>
+				<h1>Global Statistics</h1>
+				<p>Email with the most recipients</p>
+				<StatTable stat='email' type='gbl' route='http://127.0.0.1:5000/cems/recipient/mostRecipients/global' c1='Message ID' c2='Num. of Recipients'/>
+				<p>Email with most replies</p>
+				<StatTable stat='email' type='gbl' route='http://127.0.0.1:5000/cems/message/mostReplies/global' c1='Message ID' c2='Num. of Replies'/>
+				<p>Top 10 users with more emails in their inbox</p>
+				<StatTable stat='user' type='gbl' route='http://127.0.0.1:5000/cems/recipient/topTenInbox' c1='User ID' c2='Num. of Messages'/>
+				<p>Top 10 users with more emails in their outbox</p>
+				<StatTable stat='user' type='gbl' route='http://127.0.0.1:5000/cems/recipient/topTenOutbox' c1='User ID' c2='Num. of Messages'/>
+			</div>
+		</div>
 	);
 }
 export default Dashboard;
