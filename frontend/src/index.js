@@ -6,6 +6,7 @@ import '../node_modules/semantic-ui-css/semantic.min.css';
 import HomePage from './pages/home';
 import UserView from './pages/userview';
 import Dashboard from './pages/dashboard';
+import Signup from './Signup';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,6 +17,7 @@ root.render(
 			<Route exact path='/Home' element={<HomePage />} />
 			<Route exact path='/UserView' element={<UserView />} />
 			<Route exact path='/Dashboard' element={<Dashboard />} />
+			<Route exact path='/Signup' element={<Signup />} />
 		</Routes>
 	</BrowserRouter>
 );
