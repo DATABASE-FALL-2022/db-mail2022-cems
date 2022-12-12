@@ -115,7 +115,6 @@ class MessageDAO:
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
@@ -127,13 +126,12 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
+        SELECT a.email_address as sender_email_address, first_name|| ' ' ||last_name as sender_name, r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND category = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, category,))
@@ -150,7 +148,6 @@ class MessageDAO:
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE a.user_id = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
@@ -294,3 +291,35 @@ class MessageDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+
+    def deleteMessagePremium(self, m_id):
+
+        conn =get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        delete_from_recipient_query = """
+        DELETE FROM recipient
+        WHERE m_id = %s;
+        """
+        delete_from_message_query = """
+        DELETE FROM message
+        WHERE m_id = %s;
+        """
+        cursor.execute(delete_from_recipient_query, (m_id,))
+        conn.commit()
+        cursor.execute(delete_from_message_query, (m_id,))
+        conn.commit()
+        cursor.close()
+        return f'Deleted email with message ID m_id={m_id} from DB'
+
+    def deleteMessage(self, m_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE message
+        SET is_deleted = true
+        WHERE m_id = %s
+        '''
+        cursor.execute(query, (m_id,))
+        conn.commit()
+        cursor.close()
+        return f'Deleted email with message ID m_id={m_id} from outbox'

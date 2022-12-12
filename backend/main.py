@@ -163,18 +163,16 @@ def getMessageById(m_id):
     elif request.method == 'PUT':
         return MessageHandler().updateMessage(m_id, request.form.to_dict())
     elif request.method == 'DELETE':
-        # TODO - Delete for nomal user
-        # return MessageHandler().deleteMessage(m_id)
-        return 'Deleted message with provided m_id'
+    
+        return MessageHandler().deleteMessage(m_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/premium/<int:m_id>/', methods=['DELETE'])
-def deleteMessageById(m_id):
+@app.route('/cems/message/premium/<int:u_id>/<int:m_id>/', methods=['DELETE'])
+def deleteMessageById(u_id, m_id):
     if request.method == 'DELETE':
-        # return MessageHandler.deleteMessageCompletely(m_id)
-        return 'Deleted message completely as premium of proveided m_id'
+        return MessageHandler().deleteMessagePremium(u_id, m_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -239,12 +237,13 @@ def deleteRecipientMessage(m_id, user_id):
         return RecipientHandler().deleteRecipientMessage(m_id, user_id)
 
 
-@app.route('/cems/recipient/premium/<int:user_id>/<int:m_id>', methods=['DELETE'])
-def deleteRecipientCompletely(user_id, m_id):
-    if request.method == 'DELETE':
-        return RecipientHandler().deleteRecipientCompletely(m_id, user_id)
-    else:
-        return jsonify(Error="Method not allowed."), 405
+#This route allows the premium to delete from the outbox of another user
+# @app.route('/cems/recipient/premium/<int:user_id>/<int:m_id>', methods=['DELETE'])
+# def deleteRecipientCompletely(user_id, m_id):
+#     if request.method == 'DELETE':
+#         return RecipientHandler().deleteRecip0ientCompletely(m_id, user_id)
+#     else:
+#         return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/message/read', methods=['PUT'])
 def updateRead():

@@ -1,7 +1,9 @@
 from config import get_db
 # RealDictCursor is used to configurate the cursor to return a dictionary
 from psycopg2.extras import RealDictCursor
+import logging
 
+logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
 
 class AccountDAO:
 
@@ -49,12 +51,12 @@ class AccountDAO:
     def getAllAccounts(self):
         """
         This function return all tuples in the account table with all the infor including
-        delicate info like passwords.
+        delicate info like passwords and even accounts deleted logically.
         """
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT * FROM account WHERE is_deleted = false
+        SELECT * FROM account
         '''
         cursor.execute(query)
         result = cursor.fetchall()
@@ -106,6 +108,9 @@ class AccountDAO:
         return str(cursor.rowcount) + " record(s) affected"
 
     def verifyPremiumAccount(self, user_id):
+        if self.verifyAccountExist(user_id) == False:
+            return False
+
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
@@ -115,6 +120,7 @@ class AccountDAO:
         result = cursor.fetchone()
         cursor.close()
         result = result["is_premium"]
+        logging.debug(result)
         return result
 
     def deleteAccountById(self, user_id):
@@ -225,7 +231,6 @@ class AccountDAO:
         WHERE r.user_id = %s
         AND a.email_address = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, email,))

@@ -136,7 +136,7 @@ class RecipientDAO:
         return str(cursor.rowcount) + " record(s) affected"
     
     def deleteRecipientCompletely(self, m_id, user_id):
-        if AccountDAO.verifyPremiumAccount(user_id):
+        if AccountDAO().verifyPremiumAccount(user_id):
             return f'User with user_id={user_id} does not have Premium access.'
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)

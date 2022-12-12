@@ -87,7 +87,6 @@ class FriendsDAO:
             FROM friends
             WHERE user_id = %s)
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, user_id,))
