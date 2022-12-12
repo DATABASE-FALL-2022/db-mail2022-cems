@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Divider, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon,Image, Menu, Input,Card,Message} from 'semantic-ui-react';
+import { Button, Label, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon,Image, Menu, Input,Card,Message} from 'semantic-ui-react';
 import UserView from './userview';
 import axios from 'axios';
 import { useAsyncError } from 'react-router-dom';
@@ -81,7 +81,7 @@ function HomePage() {
 	return (
 		
 		<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-			<Grid.Column style={{ maxWidth: 450 }}>
+			<Grid.Column style={{ maxWidth: 550 }}>
 			<Header as='h1' color='blue' textAlign='center'>
 				CEMS Email App
 			</Header>
@@ -99,8 +99,36 @@ function HomePage() {
 			<Message >
 				New to us? <a href='Signup'>Sign Up</a>
 			</Message>
+				<Grid.Row style={{ maxWidth: 550 }}>
+					<div>
+						<Label as='' color='red' image>
+						
+						Elliot Cardona
+						
+						</Label>
+						<Label as='' color='blue' image>
+						
+						Cesar Amaro
+						
+						</Label>
+						<Label as='' color='teal' image>
+						
+						Misael Moctezuma
+						
+						</Label>
+						<Label as='' color='yellow' image>
+						
+						Sebastian Maldonado
+						
+						</Label>
+					</div>
+				</Grid.Row>
 			</Grid.Column>
+			
+			
+			
 		</Grid>
+		
 	);
 }
 
