@@ -13,15 +13,28 @@ class MessageDAO:
     def verifyEmailExist(self, email):
         conn = get_db()
         cursor = conn.cursor()
+        isList = isinstance(email, list)
         query = """
         SELECT * FROM account WHERE email_address = %s;
         """
-        cursor.execute(query, (email,))
-        result = cursor.fetchone()
+        isValid = True
+
+        if isList:
+            for email_i in email:
+                cursor.execute(query, (email_i,))
+                result = cursor.fetchone()
+                if not result:
+                    isValid = False
+                    break
+
+        else:
+            cursor.execute(query, (email,))
+            result = cursor.fetchone()
+            if not result:
+                isValid = False
+                
         cursor.close()
-        if result:
-            return True
-        return False
+        return isValid
 
     def verifyMessageExist(self, m_id):
         conn = get_db()
@@ -52,37 +65,34 @@ class MessageDAO:
     def sendNewMessage(self, sender_id, receiver_email, subject, body):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        
-        isList = type(receiver_email)
-        logging.debug(isList)
-        logging.debug(len(receiver_email))
 
         if isinstance(receiver_email, list):
-            logging.debug('is List')
+            logging.debug('receiver_email is a list')
 
         else:
-            logging.debug('is not list')
+            logging.debug('receiver_email is not a list')
 
         
 
-        # send_query = """
-        # INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
-        # """
+        send_query = """
+        INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
+        """
 
-        # # Insert message into the sender outbox
-        # cursor.execute(send_query, (sender_id, subject, body))
-        # message_id = cursor.fetchone()['m_id']
-        # conn.commit()
+        receive_query = """
+        INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
+        """
 
+        # Insert message into the sender outbox
+        cursor.execute(send_query, (sender_id, subject, body))
+        message_id = cursor.fetchone()['m_id']
+        conn.commit()
 
-        # receive_query = """
-        # INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
-        # """
-
-        # # Insert message into the receiver inbox
-        # cursor.execute(receive_query, (receiver_email, message_id))
-        # conn.commit()
-        # cursor.close()
+        for receiver in receiver_email:
+            # Insert message into the receiver inbox
+            cursor.execute(receive_query, (receiver, message_id))
+            conn.commit()
+            
+        cursor.close()
         return ('Message sent to %s' % (receiver_email))
 
     def getAllMessages(self):

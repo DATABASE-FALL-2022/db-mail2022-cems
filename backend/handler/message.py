@@ -5,8 +5,7 @@ from flask import jsonify
 class MessageHandler:
 
     def sendNewMessage(self, json):
-        # valid_recipient = MessageDAO().verifyEmailExist(json['receiver_email'])
-        valid_recipient = True
+        valid_recipient = MessageDAO().verifyEmailExist(json['receiver_email'])
         if valid_recipient:
             return jsonify(MessageDAO().sendNewMessage(json['id'], json['receiver_email'], json['subject'], json['body']))
         return jsonify(Error='Invalid recipient email address')
