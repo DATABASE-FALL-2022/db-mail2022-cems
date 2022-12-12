@@ -126,7 +126,7 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
+        SELECT a.email_address as sender_email_address, first_name|| ' ' ||last_name as sender_name, r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
