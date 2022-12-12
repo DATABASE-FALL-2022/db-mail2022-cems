@@ -903,8 +903,17 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\" : \"NA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/message/inbox/markCategory/:uid/:mid/:category",
+							"raw": "http://127.0.0.1:5000/cems/message/inbox/markCategory/:uid/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -919,21 +928,16 @@
 								"inbox",
 								"markCategory",
 								":uid",
-								":mid",
-								":category"
+								":mid"
 							],
 							"variable": [
 								{
 									"key": "uid",
-									"value": "1"
+									"value": "2"
 								},
 								{
 									"key": "mid",
-									"value": "11"
-								},
-								{
-									"key": "category",
-									"value": "supp"
+									"value": "12"
 								}
 							]
 						}
@@ -1050,6 +1054,43 @@
 								"message",
 								"topFive",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/cems/message/inbox/markCategory/:uid/:mid",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"inbox",
+								"markCategory",
+								":uid",
+								":mid"
+							],
+							"variable": [
+								{
+									"key": "uid",
+									"value": "2"
+								},
+								{
+									"key": "mid",
+									"value": "12"
+								}
 							]
 						}
 					},

@@ -150,7 +150,39 @@ class RecipientDAO:
         conn.commit()
         cursor.execute(delete_from_message_query, (m_id,))
         conn.commit()
+        cursor.close()
         return f'Deleted email with message ID m_id={m_id} from DB'
+
+    def updateCategory(self, user_id, m_id, category):
+
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query='''
+        UPDATE recipient
+        SET category = %s
+        WHERE user_id = %s
+        AND m_id = %s
+        '''
+        cursor.execute(query, (category, user_id, m_id))
+        conn.commit()
+        cursor.close()
+        return ("Category of message with id %s from user with id %s set to %s" % (m_id, user_id, category))
+        
+
+    def removeCategory(self, user_id, m_id):
+
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query='''
+        UPDATE recipient
+        SET category = NULL 
+        WHERE user_id = %s
+        AND m_id = %s
+        '''
+        cursor.execute(query, (user_id, m_id))
+        conn.commit()
+        cursor.close()
+        return ("Category of message with id %s from user with id %s has been removed." % (m_id, user_id))
 
     def getEmailWithMostRecipientsByUserId(self, user_id):
         

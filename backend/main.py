@@ -195,10 +195,12 @@ def getUserInboxByCategory(user_id, category):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/inbox/markCategory/<int:user_id>/<int:m_id>/<string:category>', methods=['PUT'])
-def markCategory(user_id, m_id, category):
+@app.route('/cems/message/inbox/markCategory/<int:user_id>/<int:m_id>', methods=['PUT', 'DELETE'])
+def markCategory(user_id, m_id):
     if request.method == 'PUT':
-        return MessageHandler().markCategory(user_id, m_id, category)
+        return RecipientHandler().updateCategory(user_id, m_id, request.json['category'])
+    elif request.method == 'DELETE':
+        return RecipientHandler().removeCategory(user_id, m_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
