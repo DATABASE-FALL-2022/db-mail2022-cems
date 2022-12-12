@@ -24,6 +24,7 @@ class RecipientDAO:
         SELECT a.user_id, count(m_id) as stats
         FROM account AS a NATURAL INNER JOIN recipient AS r
         WHERE a.user_id IN (SELECT user_id FROM recipient)
+        AND a.is_deleted = false
         GROUP BY r.user_id, a.user_id
         ORDER BY count(m_id)
         DESC LIMIT 10;
@@ -43,6 +44,7 @@ class RecipientDAO:
         WHERE a.user_id IN (
                 SELECT user_id
                 FROM message)
+                AND a.is_deleted = false
         GROUP BY m.user_id, a.user_id
         ORDER BY count(m_id)
         DESC LIMIT 10;

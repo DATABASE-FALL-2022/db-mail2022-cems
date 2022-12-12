@@ -15,7 +15,7 @@ class MessageDAO:
         cursor = conn.cursor()
         isList = isinstance(email, list)
         query = """
-        SELECT * FROM account WHERE email_address = %s;
+        SELECT * FROM account WHERE email_address = %s AND is_deleted = false;
         """
         isValid = True
 
@@ -110,11 +110,12 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT a.email_address as sender_email_address, first_name|| ' ' ||last_name as sender_name, r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        SELECT a.email_address as sender_email_address, first_name|| ' ' ||last_name as sender_name, r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
-        AND is_deleted = FALSE
+        AND r.is_deleted = false
+        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
@@ -126,12 +127,13 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND category = %s
-        AND is_deleted = FALSE
+        AND r.is_deleted = false
+        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, category,))
@@ -143,11 +145,12 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT a.user_id AS sender_id, m.m_id AS m_id, r.user_id AS receiver_id, reply_id, subject, body, m_date, is_read, is_deleted
+        SELECT a.user_id AS sender_id, m.m_id AS m_id, r.user_id AS receiver_id, reply_id, subject, body, m_date, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE a.user_id = %s
-        AND is_deleted = FALSE
+        AND r.is_deleted = false
+        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
@@ -172,7 +175,7 @@ class MessageDAO:
             current_datetime = datetime.now().strftime("%H:%M on %B %d, %Y")
             subject = 'Read Notification'
             body = '%s has read your message with id: %s at %s' % (arg2, arg3, current_datetime)
-            self.sendNewMessage(12, arg1, subject, body)
+            self.sendNewMessage(12, [arg1], subject, body)
 
     def readMessage(self, m_id, reader_id):
 

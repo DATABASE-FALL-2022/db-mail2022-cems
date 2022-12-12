@@ -22,7 +22,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor()
         query = '''
-        SELECT * FROM account WHERE user_id = %s;
+        SELECT * FROM account WHERE user_id = %s AND is_deleted = false;
         '''
         cursor.execute(query, (user_id,))
         result = cursor.fetchone()
@@ -54,7 +54,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT * FROM account
+        SELECT * FROM account WHERE is_deleted = false
         '''
         cursor.execute(query)
         result = cursor.fetchall()
@@ -65,7 +65,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT * FROM account WHERE user_id = %s
+        SELECT * FROM account WHERE user_id = %s AND is_deleted = false
         '''
         cursor.execute(query, (user_id,))
         result = cursor.fetchone()
@@ -76,7 +76,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT * FROM account WHERE email_address = %s
+        SELECT * FROM account WHERE email_address = %s AND is_deleted = false
         '''
         cursor.execute(query, (email,))
         result = cursor.fetchone()
@@ -87,7 +87,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        UPDATE account SET is_premium = true WHERE user_id = %s
+        UPDATE account SET is_premium = true WHERE user_id = %s AND is_deleted = false
         '''
         cursor.execute(query, (user_id,))
         conn.commit()
@@ -98,7 +98,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        UPDATE account SET is_premium = false WHERE user_id = %s;
+        UPDATE account SET is_premium = false WHERE user_id = %s AND is_deleted = false
         '''
         cursor.execute(query, (user_id,))
         conn.commit()
@@ -109,7 +109,7 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT is_premium FROM account WHERE user_id = %s;
+        SELECT is_premium FROM account WHERE user_id = %s AND is_deleted = false
         '''
         cursor.execute(query, (user_id,))
         result = cursor.fetchone()
@@ -120,26 +120,15 @@ class AccountDAO:
     def deleteAccountById(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        delete_from_account = """
-        DELETE FROM account
-        WHERE user_id = %s
-        RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
-        """
-
-        delete_from_recipients = """
-        DELETE FROM recipient
+        query = """
+        UPDATE account
+        SET is_deleted = true
         WHERE user_id = %s
         """
 
-        delete_from_messages = """
-        DELETE FROM message
-        WHERE user_id = %s
-        """
-        #cursor.execute(delete_from_messages, (user_id,))
-        #conn.commit()
-        #cursor.execute(delete_from_recipients, (user_id,))
-        #conn.commit()
-        cursor.execute(delete_from_account, (user_id,))
+        
+        
+        cursor.execute(query, (user_id,))
         result = cursor.fetchone()
         conn.commit()
         cursor.close()
@@ -149,9 +138,9 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        DELETE FROM account
+        UPDATE account
+        SET is_deleted = true
         WHERE email_address = %s
-        RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
         """
         cursor.execute(query, (email,))
         result = cursor.fetchone()
@@ -232,12 +221,13 @@ class AccountDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND a.email_address = %s
-        AND is_deleted = FALSE
+        AND r.is_deleted = false
+        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, email,))
