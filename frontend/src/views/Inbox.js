@@ -37,13 +37,18 @@ const initialState = {
 
 
 export default function Inbox() {
+	const [state, dispatch] = React.useReducer(exampleReducer, initialState)
+  	const { loading, results, value } = state
+	// console.log('value');
+	// console.log(state.value);
 	const [data, setData] = useState([]);
-	const emailList = data.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
+	var emailList = data.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
+	console.log('emailist before:');
+	console.log(emailList);
 	
 	//-----------------------------------------------
 
-	const [state, dispatch] = React.useReducer(exampleReducer, initialState)
-  	const { loading, results, value } = state
+	
 
 
 	const timeoutRef = React.useRef()
@@ -66,10 +71,14 @@ export default function Inbox() {
 			type: 'FINISH_SEARCH',
 			results: _.filter(data, isMatch),
 		})
+
+		emailList = results.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />)
+		console.log('emailList after');
+		console.log(emailList);
 		// console.log('data inside handle');
 		// console.log(data);
 		}, 300)
-	}, [])
+	}, [data])
 
 	React.useEffect(() => {
 		return () => {
@@ -99,7 +108,7 @@ export default function Inbox() {
           loading={loading}
           placeholder='Search...'
           onResultSelect={(e, data2) =>
-            dispatch({ type: 'UPDATE_SELECTION', selection: data2.result.name })
+            dispatch({ type: 'UPDATE_SELECTION', selection: data2.result.subject })
           }
           onSearchChange={handleSearchChange}
           results={results}
