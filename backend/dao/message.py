@@ -212,10 +212,13 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT * FROM message WHERE m_id = (SELECT reply_id FROM message WHERE reply_id IS NOT NULL GROUP BY reply_id ORDER BY count(m_id) DESC LIMIT 1);
+        SELECT reply_id AS m_id, count(reply_id) AS stats
+        FROM message
+        WHERE reply_id IS NOT NULL
+        GROUP BY reply_id
+        ORDER BY count(reply_id)
+        DESC LIMIT 1;
         """
-        
-        
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
@@ -246,29 +249,33 @@ class MessageDAO:
             result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + ""
         return result_msg
 
-
-    
     def getEmailWithMostRepliesByUserId(self, user_id):
-
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT m.reply_id FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id 
-        WHERE r.user_id = %s AND m.reply_id NOTNULL GROUP BY m.reply_id ORDER BY COUNT(*) DESC LIMIT 1
+        SELECT m.reply_id as m_id, count(*) AS stats
+        FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id
+        WHERE r.user_id = %s
+        AND m.reply_id IS NOT NULL
+        GROUP BY m.reply_id
+        ORDER BY count(*)
+        DESC LIMIT 1;
         '''
         cursor.execute(query, (user_id,))
-        result = cursor.fetchone()
+        result = cursor.fetchall()
         cursor.close()
         return result
     
-    
     def getTopFiveReceiveFromUsers(self, user_id):
-
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT m.user_id FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id 
-        WHERE r.user_id = %s GROUP BY m.user_id ORDER BY COUNT(*) DESC LIMIT 5
+        SELECT m.user_id, count(*) AS stats
+        FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id
+        WHERE r.user_id = %s
+        GROUP BY m.user_id
+        ORDER BY count(*) DESC
+        LIMIT 5;
         '''
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()

@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ListGroup, Button, Card, Modal, Dropdown } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import Notification from './Notification';
+import axios from 'axios';
 
 export default function Email(props) {
 	const [sender, setSender] = useState([]);
 	const [show, setShow] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
 	const [deleteResponse, setDeleteResponse] = useState(false);
+	const [replyResponse, setReplyResponse] = useState(false);
+	const [replyMessage, setReplyMessage] = useState(false);
+	const ref = useRef(null);
 
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const handleShow = () => {
+		setShow(true);
+		handleRead();
+	};
 	const handleCloseDelete = () => setShowDelete(false);
 	const handleShowDelete = () => setShowDelete(true);
+	var readMessage = props.info.is_read;
 
 	useEffect(() => {
 		fetch('http://127.0.0.1:5000/cems/account/' + (props.page === 'inbox' ? props.info.sender_id : props.info.receiver_id), {
@@ -24,6 +32,10 @@ export default function Email(props) {
 			.catch((error) => console.log(error));
 	}, [props.info.receiver_id, props.info.sender_id, props.page]);
 
+	/**
+	 *
+	 * @returns
+	 */
 	function formatDate(date) {
 		const newDate = new Date(date);
 		var time = newDate.toLocaleTimeString('en-US', { timeStyle: 'short' });
@@ -39,18 +51,87 @@ export default function Email(props) {
 		return time;
 	}
 
+	/**
+	 *
+	 * @returns
+	 */
 	const handleDelete = () => {
-		console.log('STARTING DELETE of ' + props.info.m_id);
-		fetch('http://127.0.0.1:5000/cems/message/' + props.info.m_id, {
-			methods: 'DELETE',
-		})
-			.then((response) => response.json())
-			.then((response) => setDeleteResponse(response))
-			.catch((error) => console.log(error));
-		console.log(deleteResponse);
+		const userID = JSON.parse(localStorage.getItem('user')).user_id;
+
+		axios
+			.put('http://127.0.0.1:5000/cems/recipient/del/' + userID + '/' + props.info.m_id, {})
+			.then(function (response) {
+				console.log(response); // TODO: Give message to user
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 		handleCloseDelete();
 	};
 
+	/**
+	 *
+	 * @returns
+	 */
+	const handleReply = () => {
+		handleShow();
+	};
+
+	/**
+	 *
+	 * @returns
+	 */
+	const handleSendReply = () => {
+		axios
+			.post('http://127.0.0.1:5000/cems/message', {
+				id: JSON.parse(localStorage.getItem('user')).user_id,
+				receiver_email: sender.email_address,
+				subject: 'RE: ' + props.info.subject,
+				body: ref.current.value,
+				reply_id: props.info.m_id,
+			})
+			.then(function (response) {
+				console.log(response); // TODO: Give message to user
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		handleClose();
+	};
+
+	/**
+	 *
+	 * @returns
+	 */
+	const handleMessageChange = (event) => {
+		setReplyMessage(event.target.value);
+	};
+
+	/**
+	 *
+	 * @returns
+	 */
+	const handleRead = () => {
+		if (!readMessage) {
+			axios
+				.put('http://127.0.0.1:5000/cems/message/read', {
+					m_id: props.info.m_id,
+					user_id: JSON.parse(localStorage.getItem('user')).user_id,
+				})
+				.then(function (response) {
+					console.log(response); // TODO: Give message to user
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+			readMessage = true;
+		}
+	};
+
+	/**
+	 *
+	 * @returns
+	 */
 	function formatEmails() {
 		if (sender.email_address === 'dont_reply@support.edu') return <Notification info={props.info} />;
 		else {
@@ -71,7 +152,7 @@ export default function Email(props) {
 
 					<div className='col-2 d-flex align-self-center align-items-center justify-content-end'>
 						<div className='fw-bold'>{formatDate(props.info.m_date)}</div>
-						<Button className='ms-2' onClick={handleShowDelete}>
+						<Button className='ms-2' onClick={handleReply}>
 							Reply
 						</Button>
 						<Link className='' onClick={handleShowDelete}>
@@ -101,7 +182,7 @@ export default function Email(props) {
 										<Icon.Reply />
 									</span>
 								</div>
-								<textarea className='form-control' id='exampleFormControlTextarea1' rows='5'></textarea>
+								<textarea className='form-control' value={replyMessage} ref={ref} onChange={handleMessageChange} id='replyMessage' rows='5'></textarea>
 							</div>
 						</div>
 					</Modal.Body>
@@ -110,7 +191,7 @@ export default function Email(props) {
 						<Button variant='secondary' onClick={handleClose}>
 							Close
 						</Button>
-						<Button variant='primary' onClick={handleClose}>
+						<Button variant='primary' onClick={handleSendReply}>
 							Reply
 						</Button>
 					</Modal.Footer>

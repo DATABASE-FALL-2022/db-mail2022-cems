@@ -104,25 +104,34 @@ def getAllFriends():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-
 @app.route('/cems/friends/<int:user_id>', methods=['GET'])
-def getEmailsSentByFriends(user_id):
-    """
-    The `user_id` is the user for which the query will get the emails
-    sent to by their friends.
-    """
+def getAllFriendsByUserId(user_id):
     if request.method == 'GET':
-        return FriendsHandler().getEmailsSentByFriends(user_id)
+        return FriendsHandler().getAllFriendsByUserId(user_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
+# @app.route('/cems/friends/<int:user_id>', methods=['GET'])
+# def getEmailsSentByFriends(user_id):
+#     """
+#     The `user_id` is the user for which the query will get the emails
+#     sent to by their friends.
+#     """
+#     if request.method == 'GET':
+#         return FriendsHandler().getEmailsSentByFriends(user_id)
+#     else:
+#         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/cems/friends/<int:user_id>/<int:friend_id>', methods=['PUT', 'DELETE'])
+
+@app.route('/cems/friends/<int:user_id>/<int:friend_id>', methods=['GET', 'PUT', 'DELETE'])
 def getFriendRelation(user_id, friend_id):
     """
-    Delete friend with `friend_id` from account with `user_id`.
+    GET true if `user_id` has `friend_id` added as a friend.
+    DELETE friend with `friend_id` from account with `user_id`.
     """
-    if request.method == 'DELETE':
+    if request.method == 'GET':
+        return FriendsHandler().getIsFriend(user_id, friend_id)
+    elif request.method == 'DELETE':
         return FriendsHandler().deleteFriend(user_id, friend_id)
     else:
         return jsonify(Error="Method not allowed."), 405
@@ -244,8 +253,8 @@ def updateRead():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Global Statistics#
 
+# Global Statistics
 
 @app.route('/cems/recipient/mostRecipients/global',methods=['GET'])
 def getGlobalEmailMostRecipients():
@@ -262,13 +271,17 @@ def getGlobalEmailMostReplies():
         return MessageHandler().getGlobalEmailMostReplies()
     else:
         return jsonify(Error="Method not allowed."), 405
+
+
 @app.route('/cems/recipient/topTenInbox', methods=['GET'])
 def getTopTenInbox():
     if request.method == 'GET':
         return RecipientHandler().getTopTenInbox()
     else:
         return jsonify(Error="Method not allowed."), 405
-@app.route('/cems/message/topTenOutbox', methods=['GET'])
+
+
+@app.route('/cems/recipient/topTenOutbox', methods=['GET'])
 def getTopTenOutbox():
     if request.method == 'GET':
         return RecipientHandler().getTopTenOutbox()
@@ -276,39 +289,36 @@ def getTopTenOutbox():
         return jsonify(Error="Method not allowed."), 405
 
 
+# User Statistics
+
 @app.route('/cems/recipient/topEmail/<int:user_id>', methods=['GET'])
 def getEmailWithMostRecipients(user_id):
-    
     if request.method == 'GET':
         return RecipientHandler().getEmailWithMostRecipientsByUserId(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message/topEmail/<int:user_id>', methods=['GET'])
 def getEmailWithMostReplies(user_id):
-    
     if request.method == 'GET':
         return MessageHandler().getEmailWithMostRepliesByUserId(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
+
 
 @app.route('/cems/message/topFive/<int:user_id>', methods=['GET'])
 def getTopFiveReceive(user_id):
-    
     if request.method == 'GET':
         return MessageHandler().getTopFiveReceiveFromUsers(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
 @app.route('/cems/recipient/topFive/<int:user_id>', methods=['GET'])
 def getTopFiveSent(user_id):
-    
     if request.method == 'GET':
         return RecipientHandler().getTopFiveSentToUsers(user_id)
-
     else:
         return jsonify(Error="Method not allowed."), 405
 
