@@ -129,10 +129,9 @@ class AccountDAO:
         
         
         cursor.execute(query, (user_id,))
-        result = cursor.fetchone()
         conn.commit()
         cursor.close()
-        return result
+        return str(cursor.rowcount) + " record(s) affected"
 
     def deleteAccountByEmail(self, email):
         conn = get_db()
@@ -143,10 +142,9 @@ class AccountDAO:
         WHERE email_address = %s
         """
         cursor.execute(query, (email,))
-        result = cursor.fetchone()
         conn.commit()
         cursor.close()
-        return result
+        return str(cursor.rowcount) + " record(s) affected"
 
     def markCategory(user_id, m_id, category):
         conn = get_db()
