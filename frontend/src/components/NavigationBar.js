@@ -19,9 +19,6 @@ export default function NavigationBar(props) {
 						<div className='d-flex align-items-center ms-auto '>
 							<Icon.PersonCircle />
 							<NavDropdown title={email} id='basic-nav-dropdown'>
-								<NavDropdown.Item href='#action/3.1'>Profile</NavDropdown.Item>
-								<NavDropdown.Item href='#action/3.2'>Friends</NavDropdown.Item>
-								<NavDropdown.Divider />
 								<NavDropdown.Item onClick={props.logout}>Logout</NavDropdown.Item>
 							</NavDropdown>
 						</div>

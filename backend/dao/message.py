@@ -248,7 +248,7 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        UPDATE message 
+        UPDATE message
         SET user_id = %s, reply_id = %s, subject = %s, body = %s, m_date = %s
         WHERE m_id = %s;
         '''

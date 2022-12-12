@@ -41,7 +41,7 @@ export default function Compose(props) {
 		<>
 			<Button onClick={handleShow}>
 				<Icon.PlusCircle />
-				<span className='ms-1'>New</span>
+				<span className='ms-1'>New Message</span>
 			</Button>
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
