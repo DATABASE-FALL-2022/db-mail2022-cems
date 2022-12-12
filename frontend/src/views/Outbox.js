@@ -4,8 +4,12 @@ import { ListGroup, Card } from 'react-bootstrap';
 
 export default function Outbox() {
 	const [data, setData] = useState([]);
-	const emailList = data.map((value) => <Email key={value.m_id} info={value} page={'outbox'} />);
-
+	var emailList = [];
+	try{
+		emailList = data.map((value) => <Email key={value.m_id} info={value} page={'outbox'} />);
+	}catch(error){
+		console.log(error);
+	}
 	useEffect(() => {
 		var user = JSON.parse(localStorage.getItem('user'));
 		fetch('http://127.0.0.1:5000/cems/message/outbox/' + user.user_id, {

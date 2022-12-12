@@ -4,7 +4,13 @@ import { ListGroup, Card, Badge } from 'react-bootstrap';
 
 export default function Inbox() {
 	const [data, setData] = useState([]);
-	const emailList = data.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
+	var emailList = [];
+	try{
+		emailList = data.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
+	}catch(error){
+		console.log(error);
+	}
+	
 
 	useEffect(() => {
 		var user = JSON.parse(localStorage.getItem('user'));
