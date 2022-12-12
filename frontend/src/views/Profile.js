@@ -27,13 +27,14 @@ export default function Profile() {
 	const [day,setDay] = useState();
 	const [month,setMonth] = useState();
 	const [year,setYear] = useState();
+	const [delLoading,setDelLoading] = useState(false);
 
 
 	var loggedUserID = JSON.parse(localStorage.getItem('user')).user_id;
 	
 
 	useEffect(() => {
-		//setOpen(false);
+		setOpen(false);
 		fetch('http://127.0.0.1:5000/cems/account/' + loggedUserID, {
 			methods: 'GET',
 		})
@@ -244,6 +245,21 @@ export default function Profile() {
 		return bodyFormData;
 		
 	}
+
+	const deleteAccount = async (id) =>{
+		setDelLoading(true);
+		var link = 'http://127.0.0.1:5000/cems/account/'+user.user_id;
+
+		const response = await axios.delete(link
+			)
+          .catch(function (error) {
+            console.log(error);
+          });
+
+		console.log(response);
+		setDelLoading(false);
+
+	}
 	const saveToDB = async (data) =>{
 		var { premium} = data;
 
@@ -358,6 +374,7 @@ export default function Profile() {
 				<Segment><Header as='h5'>Premium status:</Header><Segment><Header as='h6'>{formatPremium()}</Header></Segment></Segment>
 				<Message onDismiss={closeMessage} hidden={!open} success header='Update successful' content='Information has been updated. Refresh to see changes...'/>
 				<Segment><Button primary onClick={handleEdit}>Edit Information</Button></Segment>
+				<Segment><Button>Delete Account</Button></Segment>
 				
 			</Segment.Group>
 			

@@ -38,7 +38,7 @@ function Signup() {
 
     const checkEmailValid = async (email) => {
         var base = 'http://127.0.0.1:5000/cems/account/';
-		var link = base + email.value;
+		var link = base + email.value + '@cems.com';
         const response = await axios.get(link).catch((error) => console.log(error));
         try{
             if (response.data!=="Account not found"){
