@@ -26,7 +26,7 @@ export default function Inbox() {
 		emailList = newData.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
 	};
 
-	function reducer(state, action) {
+	function exampleReducer(state, action) {
 		switch (action.type) {
 			case 'CLEAN_QUERY':
 				return initialState;
@@ -44,12 +44,7 @@ export default function Inbox() {
 		}
 	}
 	const [data, setData] = useState([]);
-	const [testEmailList, setEmailList] = useState([]);
-	const [state, dispatch] = React.useReducer(reducer, initialState);
-	const { loading, results, value } = state;
-	const timeoutRef = React.useRef();
 	var emailList = {};
-	var categoryEmailList = {};
 
 	try {
 		emailList = data.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
@@ -58,12 +53,9 @@ export default function Inbox() {
 		emailList = <p className='p-5 fw-bold'>Your inbox is empty...</p>;
 	}
 
-	try {
-		categoryEmailList = testEmailList.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
-	} catch (error) {
-		console.log(error);
-		categoryEmailList = <p className='p-5 fw-bold'>No emails for that category found...</p>;
-	}
+	const [state, dispatch] = React.useReducer(exampleReducer, initialState);
+	const { loading, results, value } = state;
+	const timeoutRef = React.useRef();
 
 	const handleSearchChange = React.useCallback(
 		(e, val) => {
@@ -111,15 +103,13 @@ export default function Inbox() {
 			</div>
 		);
 	};
-
+	const [testEmailList, setEmailList] = useState([]);
+	var categoryEmailList = {};
 	const [show, setShow] = useState(false);
 	// const [emails, setEmails] = useState(false);
-
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
-
 	const [cat, setCategory] = useState('');
-
 	const handleAdd = () => {
 		var user = JSON.parse(localStorage.getItem('user'));
 		fetch('http://127.0.0.1:5000/cems/message/inbox/category/' + user.user_id + '/' + cat.value, {
@@ -128,10 +118,16 @@ export default function Inbox() {
 			.then((response) => response.json())
 			.then((response) => setEmailList(response))
 			.catch((error) => console.log(error));
-
 		handleClose();
 	};
 
+	try {
+		const { loading, results, value } = state;
+		categoryEmailList = testEmailList.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
+	} catch (error) {
+		console.log(error);
+		categoryEmailList = <p className='p-5 fw-bold'>No emails for that category found...</p>;
+	}
 	return (
 		<div>
 			<Search className='mb-3' loading={loading} placeholder='Search...' resultRenderer={resultRenderer} onResultSelect={(e, val) => dispatch({ type: 'UPDATE_SELECTION', selection: val.result.sender_email_address })} onSearchChange={handleSearchChange} results={results} value={value} />
