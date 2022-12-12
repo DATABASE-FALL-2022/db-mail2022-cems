@@ -22,7 +22,8 @@ class FriendsDAO:
         FROM account
         WHERE user_id IN (SELECT friend_id
                         FROM friends
-                        WHERE user_id = %s);
+                        WHERE user_id = %s) 
+                        AND is_deleted = false;
         """
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()
@@ -77,7 +78,7 @@ class FriendsDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, r.is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
@@ -85,7 +86,8 @@ class FriendsDAO:
             (SELECT friend_id
             FROM friends
             WHERE user_id = %s)
-        AND is_deleted = FALSE
+        AND r.is_deleted = false
+        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, user_id,))
