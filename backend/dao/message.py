@@ -172,7 +172,7 @@ class MessageDAO:
             current_datetime = datetime.now().strftime("%H:%M on %B %d, %Y")
             subject = 'Read Notification'
             body = '%s has read your message with id: %s at %s' % (arg2, arg3, current_datetime)
-            self.sendNewMessage(12, arg1, subject, body)
+            self.sendNewMessage(12, [arg1], subject, body)
 
     def readMessage(self, m_id, reader_id):
 
