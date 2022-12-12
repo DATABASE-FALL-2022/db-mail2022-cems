@@ -18,12 +18,14 @@ class FriendsDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT * FROM friends 
-        WHERE user_id = %s
-        ORDER BY friend_id;
+        SELECT *
+        FROM account
+        WHERE user_id IN (SELECT friend_id
+                        FROM friends
+                        WHERE user_id = %s);
         """
-        cursor.execute(query, user_id)
-        result = cursor.fetchone()
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchall()
         cursor.close()
         return result
     
