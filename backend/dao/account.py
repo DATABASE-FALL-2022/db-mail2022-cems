@@ -1,7 +1,9 @@
 from config import get_db
 # RealDictCursor is used to configurate the cursor to return a dictionary
 from psycopg2.extras import RealDictCursor
+import logging
 
+logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
 
 class AccountDAO:
 
@@ -106,6 +108,9 @@ class AccountDAO:
         return str(cursor.rowcount) + " record(s) affected"
 
     def verifyPremiumAccount(self, user_id):
+        if self.verifyAccountExist(user_id) == False:
+            return False
+
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
@@ -115,6 +120,7 @@ class AccountDAO:
         result = cursor.fetchone()
         cursor.close()
         result = result["is_premium"]
+        logging.debug(result)
         return result
 
     def deleteAccountById(self, user_id):

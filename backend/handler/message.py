@@ -100,3 +100,15 @@ class MessageHandler:
         
         result = MessageDAO().getTopFiveReceiveFromUsers(user_id)
         return jsonify(result), 200
+
+    def deleteMessagePremium(self, u_id, m_id):
+
+        if(AccountDAO().verifyPremiumAccount(u_id) == False):
+            return jsonify("Permission denied, become premium first!")
+        result = MessageDAO().deleteMessagePremium(m_id)
+        return jsonify(result), 200
+
+    def deleteMessage(self, m_id):
+
+        result = MessageDAO().deleteMessage(m_id)
+        return jsonify(result), 200

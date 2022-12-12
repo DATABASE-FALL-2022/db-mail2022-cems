@@ -291,3 +291,35 @@ class MessageDAO:
         result = cursor.fetchall()
         cursor.close()
         return result
+
+    def deleteMessagePremium(self, m_id):
+
+        conn =get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        delete_from_recipient_query = """
+        DELETE FROM recipient
+        WHERE m_id = %s;
+        """
+        delete_from_message_query = """
+        DELETE FROM message
+        WHERE m_id = %s;
+        """
+        cursor.execute(delete_from_recipient_query, (m_id,))
+        conn.commit()
+        cursor.execute(delete_from_message_query, (m_id,))
+        conn.commit()
+        cursor.close()
+        return f'Deleted email with message ID m_id={m_id} from DB'
+
+    def deleteMessage(self, m_id):
+        conn = get_db()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        query = '''
+        UPDATE message
+        SET is_deleted = true
+        WHERE m_id = %s
+        '''
+        cursor.execute(query, (m_id,))
+        conn.commit()
+        cursor.close()
+        return f'Deleted email with message ID m_id={m_id} from outbox'
