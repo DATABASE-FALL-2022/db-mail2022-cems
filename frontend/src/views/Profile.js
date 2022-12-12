@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Email from '../components/Email';
 //import { ListGroup, Card, Badge } from 'react-bootstrap';
-import { Tab, Header, Segment,Form,Button,Message,Card, Grid} from 'semantic-ui-react';
+import { Tab, Header, Segment,Form,Button,Message,Modal, Icon} from 'semantic-ui-react';
 //import * as Icon from 'react-bootstrap-icons';
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
 
 export default function Profile() {
 	const [user, setUser] = useState([]);
@@ -28,6 +29,7 @@ export default function Profile() {
 	const [month,setMonth] = useState();
 	const [year,setYear] = useState();
 	const [delLoading,setDelLoading] = useState(false);
+	const [delModal,setDelModal] = useState(false);
 
 
 	var loggedUserID = JSON.parse(localStorage.getItem('user')).user_id;
@@ -226,7 +228,7 @@ export default function Profile() {
 			bodyFormData.append('first_name', firstname.value);
 		}
 		if(lastname.value!==user.last_name){
-			bodyFormData.append('lastn_name', lastname.value);
+			bodyFormData.append('last_name', lastname.value);
 		}
 		if(gender.value!==user.gender){
 			bodyFormData.append('gender', gender.value);
@@ -246,7 +248,7 @@ export default function Profile() {
 		
 	}
 
-	const deleteAccount = async (id) =>{
+	const deleteAccount = async () =>{
 		setDelLoading(true);
 		var link = 'http://127.0.0.1:5000/cems/account/'+user.user_id;
 
@@ -256,8 +258,15 @@ export default function Profile() {
             console.log(error);
           });
 
-		console.log(response);
-		setDelLoading(false);
+		
+		if (response.data){
+			setDelLoading(false);
+			setDelModal(false)
+			setUser({});
+			localStorage.clear();
+			window.location.reload();
+		}
+		
 
 	}
 	const saveToDB = async (data) =>{
@@ -373,8 +382,33 @@ export default function Profile() {
 				</Segment.Group>
 				<Segment><Header as='h5'>Premium status:</Header><Segment><Header as='h6'>{formatPremium()}</Header></Segment></Segment>
 				<Message onDismiss={closeMessage} hidden={!open} success header='Update successful' content='Information has been updated. Refresh to see changes...'/>
-				<Segment><Button primary onClick={handleEdit}>Edit Information</Button></Segment>
-				<Segment><Button>Delete Account</Button></Segment>
+				<Segment horizontal>
+					<Button  primary onClick={handleEdit}>Edit Information</Button>
+					<Modal
+						
+						size={'mini'}
+						style={{position:'relative',height: 220}}
+						open={delModal}
+						trigger={<Button  negative >Delete Account</Button>}
+						onClose={() => setDelModal(false)}
+						onOpen={() => setDelModal(true)}
+						>
+						<Header icon='remove' content='Delete Account' />
+						<Modal.Content>
+							<p>
+							All your information will be deleted. Do yo want to continue?
+							</p>
+						</Modal.Content>
+						<Modal.Actions>
+							<Button color='grey' onClick={() => setDelModal(false)}>
+							<Icon name='checkmark' /> No
+							</Button>
+							<Button loading={delLoading} color='red' onClick={() => deleteAccount()}>
+							<Icon name='remove' /> Yes
+							</Button>
+						</Modal.Actions>
+					</Modal>
+				</Segment>
 				
 			</Segment.Group>
 			
