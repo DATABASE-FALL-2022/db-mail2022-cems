@@ -68,9 +68,11 @@ export default function Inbox() {
 				const re = new RegExp(_.escapeRegExp(val.value), 'i');
 				const isMatch = (result) => re.test(result.sender_email_address);
 
+				const unique = [...new Map(data.map((item) => [item['sender_email_address'], item])).values()];
+
 				dispatch({
 					type: 'FINISH_SEARCH',
-					results: _.filter(data, isMatch),
+					results: _.filter(unique, isMatch),
 				});
 			}, 300);
 		},
