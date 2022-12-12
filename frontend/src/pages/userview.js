@@ -20,10 +20,6 @@ export default function UserView(props) {
 			menuItem: 'Inbox',
 			render: () => (
 				<Tab.Pane active={isAuth}>
-					<Container>
-						<Header>Anything you need to put here</Header>
-						<Divider />
-					</Container>
 					<Inbox />
 				</Tab.Pane>
 			),
@@ -32,10 +28,6 @@ export default function UserView(props) {
 			menuItem: 'Outbox',
 			render: () => (
 				<Tab.Pane active={isAuth}>
-					<Container>
-						<Header>Anything you need to put here</Header>
-						<Divider />
-					</Container>
 					<Outbox />
 				</Tab.Pane>
 			),
@@ -69,12 +61,12 @@ export default function UserView(props) {
 	return (
 		<div className=''>
 			<NavigationBar logout={props.logout} />
+			<div className='w-100 d-flex justify-content-start' style={{ 'padding-left': '1.5rem', 'padding-top': '1rem' }}>
+				<Compose />
+			</div>
 
-			<Sidebar></Sidebar>
-
-			<Compose />
-			<main className='d-flex justify-content-center pt-5'>
-				<Tab className='w-75' panes={panes} />
+			<main className='d-flex justify-content-center p-5'>
+				<Tab className='w-100' panes={panes} />
 			</main>
 		</div>
 	);

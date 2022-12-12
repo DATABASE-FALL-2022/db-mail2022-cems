@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Label, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon,Image, Menu, Input,Card,Message} from 'semantic-ui-react';
+import { Button, Label, Form, FormButton, Grid, Header, Modal, Segment, SegmentGroup, Icon, Image, Menu, Input, Card, Message } from 'semantic-ui-react';
 import UserView from './userview';
 import axios from 'axios';
 import { useAsyncError } from 'react-router-dom';
@@ -8,26 +8,25 @@ import { useAsyncError } from 'react-router-dom';
 function HomePage() {
 	const [open, setOpen] = useState(false);
 	const [user, setUser] = useState();
-	const [errorEmail,setErrorEmail] = useState(false);
-	const [errorPass,setErrorPass] = useState(false);
-	const [btnLoading,setBtnLoading] = useState(false);
-
+	const [errorEmail, setErrorEmail] = useState(false);
+	const [errorPass, setErrorPass] = useState(false);
+	const [btnLoading, setBtnLoading] = useState(false);
 
 	const validate = (res, p) => {
 		if (res.data.passwd === p.value) {
 			setErrorPass(false);
 			console.log('logged in');
-			var full_name = res.data.first_name + " " + res.data.last_name;
+			var full_name = res.data.first_name + ' ' + res.data.last_name;
 			setUser(res.data);
 			const usr = {
 				user_id: res.data.user_id,
 				email_address: res.data.email_address,
 				is_premium: res.data.is_premium,
-				full_name: full_name
+				full_name: full_name,
 			};
 			localStorage.setItem('user', JSON.stringify(usr));
 		} else {
-			setErrorPass({state:true,content:'Wrong Password'});
+			setErrorPass({ state: true, content: 'Wrong Password' });
 			console.log('wrong password');
 		}
 	};
@@ -42,13 +41,13 @@ function HomePage() {
 
 		const response = await axios.get(link).catch((error) => console.log(error));
 
-		try{
-			if(response.data === 'Account not found'){
-				setErrorEmail({state:true,content:'Email Not Found'});
-			}else{
+		try {
+			if (response.data === 'Account not found') {
+				setErrorEmail({ state: true, content: 'Email Not Found' });
+			} else {
 				validate(response, pass);
 			}
-		}catch (error){
+		} catch (error) {
 			console.log(error);
 		}
 
@@ -76,59 +75,45 @@ function HomePage() {
 			</SegmentGroup>
 		);
 	}
-	
 
 	return (
-		
 		<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
 			<Grid.Column style={{ maxWidth: 550 }}>
-			<Header as='h1' color='blue' textAlign='center'>
-				CEMS Email App
-			</Header>
-			<Form size='large' onSubmit={toFetch}>
-				<Segment stacked>
-				<Form.Input error={errorEmail} fluid  icon='at' iconPosition='left' label='Email' placeholder='Email' name='email'/>
-				
-				<Form.Input error={errorPass} fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
-				
-				<Button loading={btnLoading} color='blue' fluid size='large' type='submit' primary>
-					Login
-				</Button>
-				</Segment>
-			</Form>
-			<Message >
-				New to us? <a href='Signup'>Sign Up</a>
-			</Message>
+				<Header as='h1' color='blue' textAlign='center'>
+					CEMS Email App
+				</Header>
+				<Form size='large' onSubmit={toFetch}>
+					<Segment stacked>
+						<Form.Input error={errorEmail} fluid icon='at' iconPosition='left' label='Email' placeholder='Email' name='email' />
+
+						<Form.Input error={errorPass} fluid icon='lock' iconPosition='left' label='Password' placeholder='Password' type='password' name='pass' />
+
+						<Button loading={btnLoading} color='blue' fluid size='large' type='submit' primary>
+							Login
+						</Button>
+					</Segment>
+				</Form>
+				<Message>
+					New to us? <a href='Signup'>Sign Up</a>
+				</Message>
 				<Grid.Row style={{ maxWidth: 550 }}>
 					<div>
 						<Label as='' color='red' image>
-						
-						Elliot Cardona
-						
+							Elliot Cardona
 						</Label>
 						<Label as='' color='blue' image>
-						
-						Cesar Amaro
-						
+							Cesar Amaro
 						</Label>
 						<Label as='' color='teal' image>
-						
-						Misael Moctezuma
-						
+							Misael Moctezuma
 						</Label>
 						<Label as='' color='yellow' image>
-						
-						Sebastian Maldonado
-						
+							Sebastian Maldonado
 						</Label>
 					</div>
 				</Grid.Row>
 			</Grid.Column>
-			
-			
-			
 		</Grid>
-		
 	);
 }
 

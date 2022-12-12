@@ -4,6 +4,7 @@ import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import Notification from './Notification';
 import axios from 'axios';
+import Category from './Category';
 
 export default function Email(props) {
 	const [sender, setSender] = useState([]);
@@ -62,22 +63,31 @@ export default function Email(props) {
 	const handleDelete = () => {
 		const userID = JSON.parse(localStorage.getItem('user')).user_id;
 
-		axios
-			.put('http://127.0.0.1:5000/cems/recipient/del/' + userID + '/' + props.info.m_id, {})
-			.then(function (response) {
-				console.log(response); // TODO: Give message to user
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-		handleCloseDelete();
-	};
+		if (props.page === 'inbox') {
+			axios
+				.put('http://127.0.0.1:5000/cems/recipient/del/' + userID + '/' + props.info.m_id, {})
+				.then(function (response) {
+					console.log(response); // TODO: Give message to user
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		} else {
+			if (JSON.parse(localStorage.getItem('user')).is_premium) {
+				axios
+					.delete('http://127.0.0.1:5000/cems/recipient/premium/' + userID + '/' + props.info.m_id, {})
+					.then(function (response) {
+						console.log(response); // TODO: Give message to user
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			} else {
+				// TODO delete from only outbox
+			}
+		}
 
-	/**
-	 *
-	 */
-	const handleReply = () => {
-		handleShow();
+		handleCloseDelete();
 	};
 
 	/**
@@ -225,9 +235,8 @@ export default function Email(props) {
 					</div>
 					<div className='col-2 d-flex align-self-center align-items-center justify-content-end'>
 						<div className='fw-bold'>{formatDate(props.info.m_date)}</div>
-						<Button className='ms-2' onClick={handleReply}>
-							Reply
-						</Button>
+						{editOrReplyButton}
+						<Category message={props.info} userID={JSON.parse(localStorage.getItem('user')).user_id} />
 						<Link className='' onClick={handleShowDelete}>
 							<Icon.TrashFill className='ms-2' color='red' size='20px' />
 						</Link>
@@ -276,6 +285,16 @@ export default function Email(props) {
 			</Button>
 		);
 
+	const editOrReplyButton =
+		props.page === 'inbox' ? (
+			<Button className='ms-2' onClick={handleShow}>
+				Reply
+			</Button>
+		) : (
+			<Button variant='primary' className='ms-2' onClick={handleShow}>
+				Edit
+			</Button>
+		);
 	const messageArea = props.page === 'inbox' ? <textarea className='form-control' ref={ref} onChange={handleMessageChange} id='replyMessage' rows='4'></textarea> : <textarea className='form-control' ref={editRef} onChange={handleEditChange} id='editMessage' rows='4'></textarea>;
 	return (
 		<ListGroup.Item className='justify-content-between align-items-center p-4' style={{ cursor: 'pointer' }}>
