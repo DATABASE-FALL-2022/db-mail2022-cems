@@ -3,6 +3,9 @@ from config import get_db
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
 from dao.account import AccountDAO
+import logging
+
+logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
 
 
 class MessageDAO:
@@ -10,15 +13,28 @@ class MessageDAO:
     def verifyEmailExist(self, email):
         conn = get_db()
         cursor = conn.cursor()
+        isList = isinstance(email, list)
         query = """
         SELECT * FROM account WHERE email_address = %s;
         """
-        cursor.execute(query, (email,))
-        result = cursor.fetchone()
+        isValid = True
+
+        if isList:
+            for email_i in email:
+                cursor.execute(query, (email_i,))
+                result = cursor.fetchone()
+                if not result:
+                    isValid = False
+                    break
+
+        else:
+            cursor.execute(query, (email,))
+            result = cursor.fetchone()
+            if not result:
+                isValid = False
+                
         cursor.close()
-        if result:
-            return True
-        return False
+        return isValid
 
     def verifyMessageExist(self, m_id):
         conn = get_db()
@@ -45,13 +61,23 @@ class MessageDAO:
         cursor.close()
         return result
 
+
     def sendNewMessage(self, sender_id, receiver_email, subject, body):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
+        if isinstance(receiver_email, list):
+            logging.debug('receiver_email is a list')
+
+        else:
+            logging.debug('receiver_email is not a list')
+
+        
+
         send_query = """
         INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
         """
+
         receive_query = """
         INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
         """
@@ -61,9 +87,11 @@ class MessageDAO:
         message_id = cursor.fetchone()['m_id']
         conn.commit()
 
-        # Insert message into the receiver inbox
-        cursor.execute(receive_query, (receiver_email, message_id))
-        conn.commit()
+        for receiver in receiver_email:
+            # Insert message into the receiver inbox
+            cursor.execute(receive_query, (receiver, message_id))
+            conn.commit()
+            
         cursor.close()
         return ('Message sent to %s' % (receiver_email))
 
@@ -82,7 +110,7 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
+        SELECT a.email_address as sender_email_address, first_name|| ' ' ||last_name as sender_name, r.user_id AS receiver_id, m.m_id AS m_id, a.user_id AS sender_id, reply_id, subject, body, m_date, category, is_read, is_deleted
         FROM account AS a INNER JOIN message AS m ON (a.user_id = m.user_id)
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
@@ -194,10 +222,13 @@ class MessageDAO:
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = """
-        SELECT * FROM message WHERE m_id = (SELECT reply_id FROM message WHERE reply_id IS NOT NULL GROUP BY reply_id ORDER BY count(m_id) DESC LIMIT 1);
+        SELECT reply_id AS m_id, count(reply_id) AS stats
+        FROM message
+        WHERE reply_id IS NOT NULL
+        GROUP BY reply_id
+        ORDER BY count(reply_id)
+        DESC LIMIT 1;
         """
-        
-        
         cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
@@ -228,29 +259,33 @@ class MessageDAO:
             result_msg = result_msg + key + ": " + str(original_message[key]) + " -> " + str(request[key]) + ""
         return result_msg
 
-
-    
     def getEmailWithMostRepliesByUserId(self, user_id):
-
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT m.reply_id FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id 
-        WHERE r.user_id = %s AND m.reply_id NOTNULL GROUP BY m.reply_id ORDER BY COUNT(*) DESC LIMIT 1
+        SELECT m.reply_id as m_id, count(*) AS stats
+        FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id
+        WHERE r.user_id = %s
+        AND m.reply_id IS NOT NULL
+        GROUP BY m.reply_id
+        ORDER BY count(*)
+        DESC LIMIT 1;
         '''
         cursor.execute(query, (user_id,))
-        result = cursor.fetchone()
+        result = cursor.fetchall()
         cursor.close()
         return result
     
-    
     def getTopFiveReceiveFromUsers(self, user_id):
-
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT m.user_id FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id 
-        WHERE r.user_id = %s GROUP BY m.user_id ORDER BY COUNT(*) DESC LIMIT 5
+        SELECT m.user_id, count(*) AS stats
+        FROM message AS m INNER JOIN recipient AS r ON m.m_id = r.m_id
+        WHERE r.user_id = %s
+        GROUP BY m.user_id
+        ORDER BY count(*) DESC
+        LIMIT 5;
         '''
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()

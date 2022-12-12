@@ -42,6 +42,17 @@ class RecipientHandler:
     def deleteRecipientCompletely(self, m_id, user_id):
         return jsonify(RecipientDAO().deleteRecipientCompletely(m_id, user_id)), 200
 
+    def updateCategory(self, user_id, m_id, category):
+
+        result = RecipientDAO().updateCategory(user_id, m_id, category)
+
+        return jsonify(result), 200
+
+    def removeCategory(self, user_id, m_id):
+
+        result = RecipientDAO().removeCategory(user_id, m_id)
+        return jsonify(result), 200
+
     def getEmailWithMostRecipientsByUserId(self, user_id):
 
         result = RecipientDAO().getEmailWithMostRecipientsByUserId(user_id)
