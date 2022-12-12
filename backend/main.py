@@ -239,12 +239,13 @@ def deleteRecipientMessage(m_id, user_id):
         return RecipientHandler().deleteRecipientMessage(m_id, user_id)
 
 
-@app.route('/cems/recipient/premium/<int:user_id>/<int:m_id>', methods=['DELETE'])
-def deleteRecipientCompletely(user_id, m_id):
-    if request.method == 'DELETE':
-        return RecipientHandler().deleteRecipientCompletely(m_id, user_id)
-    else:
-        return jsonify(Error="Method not allowed."), 405
+#This route allows the premium to delete from the outbox of another user
+# @app.route('/cems/recipient/premium/<int:user_id>/<int:m_id>', methods=['DELETE'])
+# def deleteRecipientCompletely(user_id, m_id):
+#     if request.method == 'DELETE':
+#         return RecipientHandler().deleteRecip0ientCompletely(m_id, user_id)
+#     else:
+#         return jsonify(Error="Method not allowed."), 405
 
 @app.route('/cems/message/read', methods=['PUT'])
 def updateRead():

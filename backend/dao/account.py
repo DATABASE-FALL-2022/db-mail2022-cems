@@ -126,7 +126,6 @@ class AccountDAO:
         WHERE user_id = %s
         """
         cursor.execute(query, (user_id,))
-        result = cursor.fetchone()
         conn.commit()
         cursor.close()
         return result
@@ -140,7 +139,6 @@ class AccountDAO:
         WHERE email_address = %s
         """
         cursor.execute(query, (email,))
-        result = cursor.fetchone()
         conn.commit()
         cursor.close()
         return result
