@@ -20,7 +20,7 @@ export default function Category(props) {
 	const handleAdd = () => {
 		axios
 			.put('http://127.0.0.1:5000/cems/message/inbox/markCategory/' + props.userID + '/' + props.message.m_id, {
-				category: cat,
+				category: cat.value,
 			})
 			.then(function (response) {
 				console.log(response); // TODO: Give message to user

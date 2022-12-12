@@ -75,7 +75,7 @@ export default function Email(props) {
 		} else {
 			if (JSON.parse(localStorage.getItem('user')).is_premium) {
 				axios
-					.delete('http://127.0.0.1:5000/cems/recipient/premium/' + userID + '/' + props.info.m_id, {})
+					.delete('http://127.0.0.1:5000/cems/message/premium/' + userID + '/' + props.info.m_id, {})
 					.then(function (response) {
 						console.log(response); // TODO: Give message to user
 					})
@@ -83,7 +83,14 @@ export default function Email(props) {
 						console.log(error);
 					});
 			} else {
-				// TODO delete from only outbox
+				axios
+					.delete('http://127.0.0.1:5000/cems/message/' + props.info.m_id, {})
+					.then(function (response) {
+						console.log(response); // TODO: Give message to user
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
 			}
 		}
 

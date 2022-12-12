@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Email from '../components/Email';
-import { ListGroup, Card, Badge } from 'react-bootstrap';
+import { ListGroup, Card } from 'react-bootstrap';
 import { Search } from 'semantic-ui-react';
 import _ from 'lodash';
-import Compose from '../components/Compose';
-import Filter from '../components/Filter';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import * as Icon from 'react-bootstrap-icons';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 export default function Inbox() {
 	const initialState = {
