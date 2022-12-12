@@ -259,7 +259,14 @@ export default function Profile() {
           });
 
 		console.log(response);
-		setDelLoading(false);
+		if (response){
+			setDelLoading(false);
+			setDelModal(false)
+			setUser({});
+			localStorage.clear();
+			window.location.reload();
+		}
+		
 
 	}
 	const saveToDB = async (data) =>{
@@ -396,7 +403,7 @@ export default function Profile() {
 							<Button color='gray' onClick={() => setDelModal(false)}>
 							<Icon name='checkmark' /> No
 							</Button>
-							<Button color='red' onClick={() => deleteAccount()}>
+							<Button loading={delLoading} color='red' onClick={() => deleteAccount()}>
 							<Icon name='remove' /> Yes
 							</Button>
 						</Modal.Actions>
