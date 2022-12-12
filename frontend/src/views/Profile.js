@@ -228,7 +228,7 @@ export default function Profile() {
 			bodyFormData.append('first_name', firstname.value);
 		}
 		if(lastname.value!==user.last_name){
-			bodyFormData.append('lastn_name', lastname.value);
+			bodyFormData.append('last_name', lastname.value);
 		}
 		if(gender.value!==user.gender){
 			bodyFormData.append('gender', gender.value);
