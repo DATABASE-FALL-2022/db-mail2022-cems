@@ -12,9 +12,11 @@ export default function Email(props) {
 	const [deleteResponse, setDeleteResponse] = useState(false);
 	const [replyResponse, setReplyResponse] = useState(false);
 	const [replyMessage, setReplyMessage] = useState(false);
+	const [editMessage, setEditMessage] = useState(false);
 	const [friend, setIsFriend] = useState(false);
 	const [previousMessage, setPreviousMessage] = useState(false);
 	const ref = useRef(null);
+	const editRef = useRef(null);
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => {
@@ -107,11 +109,15 @@ export default function Email(props) {
 		setReplyMessage(event.target.value);
 	};
 
+	const handleEditChange = (event) => {
+		setEditMessage(event.target.value);
+	};
+
 	/**
 	 *
 	 */
 	const handleRead = () => {
-		if (!readMessage) {
+		if (!readMessage && props.page === 'inbox') {
 			axios
 				.put('http://127.0.0.1:5000/cems/message/read', {
 					m_id: props.info.m_id,
@@ -140,6 +146,28 @@ export default function Email(props) {
 			.catch(function (error) {
 				console.log(error);
 			});
+	};
+
+	const handleEditMessage = () => {
+		if (JSON.parse(localStorage.getItem('user')).is_premium) {
+			var formData = new FormData();
+			formData.append('body', editRef.current.value);
+
+			axios({
+				method: 'put',
+				url: 'http://127.0.0.1:5000/cems/message/' + props.info.m_id,
+				data: formData,
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((response) => {
+					console.log(response);
+				});
+
+			handleClose();
+		}
 	};
 
 	/**
@@ -236,6 +264,19 @@ export default function Email(props) {
 			props.info.body
 		);
 
+	const iconForIO = props.page === 'inbox' ? <Icon.Reply /> : <Icon.Pencil />;
+	const buttonForModal =
+		props.page === 'inbox' ? (
+			<Button variant='primary' onClick={handleSendReply}>
+				Reply
+			</Button>
+		) : (
+			<Button variant='primary' onClick={handleEditMessage}>
+				Edit
+			</Button>
+		);
+
+	const messageArea = props.page === 'inbox' ? <textarea className='form-control' ref={ref} onChange={handleMessageChange} id='replyMessage' rows='4'></textarea> : <textarea className='form-control' ref={editRef} onChange={handleEditChange} id='editMessage' rows='4'></textarea>;
 	return (
 		<ListGroup.Item className='justify-content-between align-items-center p-4' style={{ cursor: 'pointer' }}>
 			{formatEmails()}
@@ -247,14 +288,15 @@ export default function Email(props) {
 					</Modal.Header>
 					<Modal.Body>
 						<div className=''>{message}</div>
+
 						<div id='replyField' className='mt-4'>
 							<div className='input-group'>
 								<div className='input-group-prepend'>
 									<span className='input-group-text h-100' id='basic-addon'>
-										<Icon.Reply />
+										{iconForIO}
 									</span>
 								</div>
-								<textarea className='form-control' ref={ref} onChange={handleMessageChange} id='replyMessage' rows='4'></textarea>
+								{messageArea}
 							</div>
 						</div>
 					</Modal.Body>
@@ -263,9 +305,7 @@ export default function Email(props) {
 						<Button variant='secondary' onClick={handleClose}>
 							Close
 						</Button>
-						<Button variant='primary' onClick={handleSendReply}>
-							Reply
-						</Button>
+						{buttonForModal}
 					</Modal.Footer>
 				</Modal>
 			</div>
