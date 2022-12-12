@@ -48,7 +48,7 @@ class MessageDAO:
     def sendNewMessage(self, sender_id, receiver_email, subject, body):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-
+        
         send_query = """
         INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
         """
