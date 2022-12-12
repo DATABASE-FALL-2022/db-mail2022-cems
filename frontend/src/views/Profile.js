@@ -258,8 +258,8 @@ export default function Profile() {
             console.log(error);
           });
 
-		console.log(response);
-		if (response){
+		
+		if (response.data){
 			setDelLoading(false);
 			setDelModal(false)
 			setUser({});
@@ -400,7 +400,7 @@ export default function Profile() {
 							</p>
 						</Modal.Content>
 						<Modal.Actions>
-							<Button color='gray' onClick={() => setDelModal(false)}>
+							<Button color='grey' onClick={() => setDelModal(false)}>
 							<Icon name='checkmark' /> No
 							</Button>
 							<Button loading={delLoading} color='red' onClick={() => deleteAccount()}>
