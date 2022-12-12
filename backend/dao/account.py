@@ -120,12 +120,20 @@ class AccountDAO:
     def deleteAccountById(self, user_id):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
-        query = """
+        delete_from_account = """
         DELETE FROM account
         WHERE user_id = %s
         RETURNING (user_id, first_name, last_name, date_of_birth, gender, phone_number, email_address, passwd, is_premium);
         """
-        cursor.execute(query, (user_id,))
+
+        delete_from_recipients = """
+        DELETE FROM recipient
+        WHERE user_id = %s
+        """
+        
+        cursor.execute(delete_from_recipients, (user_id,))
+        conn.commit()
+        cursor.execute(delete_from_account, (user_id,))
         result = cursor.fetchone()
         conn.commit()
         cursor.close()
