@@ -32,7 +32,7 @@ export default function Friends() {
 							friend_id: friendData.user_id
 						})
 						.then(function (response) {
-							console.log(response.data); // TODO: Give message to user
+							console.log(response.data);
 						})
 						.catch(function (error) {
 							console.log(error);
