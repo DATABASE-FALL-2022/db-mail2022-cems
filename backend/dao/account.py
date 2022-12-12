@@ -130,9 +130,15 @@ class AccountDAO:
         DELETE FROM recipient
         WHERE user_id = %s
         """
-        
-        cursor.execute(delete_from_recipients, (user_id,))
-        conn.commit()
+
+        delete_from_messages = """
+        DELETE FROM message
+        WHERE user_id = %s
+        """
+        #cursor.execute(delete_from_messages, (user_id,))
+        #conn.commit()
+        #cursor.execute(delete_from_recipients, (user_id,))
+        #conn.commit()
         cursor.execute(delete_from_account, (user_id,))
         result = cursor.fetchone()
         conn.commit()
