@@ -762,7 +762,7 @@
 							"variable": [
 								{
 									"key": "mid",
-									"value": "1"
+									"value": "10"
 								}
 							]
 						}
@@ -775,7 +775,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/cems/message/premium/:mid",
+							"raw": "http://127.0.0.1:5000/cems/message/premium/:uid/:mid",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -788,12 +788,17 @@
 								"cems",
 								"message",
 								"premium",
+								":uid",
 								":mid"
 							],
 							"variable": [
 								{
+									"key": "uid",
+									"value": "2"
+								},
+								{
 									"key": "mid",
-									"value": "1"
+									"value": "10"
 								}
 							]
 						}
@@ -868,7 +873,33 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "http://127.0.0.1:5000/cems/message/inbox/category/:user_id/:category",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"cems",
+								"message",
+								"inbox",
+								"category",
+								":user_id",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "2"
+								},
+								{
+									"key": "category",
+									"value": "red"
+								}
+							]
 						}
 					},
 					"response": []
@@ -1248,42 +1279,6 @@
 								"cems",
 								"recipient",
 								"del",
-								":uid",
-								":mid"
-							],
-							"variable": [
-								{
-									"key": "uid",
-									"value": "1"
-								},
-								{
-									"key": "mid",
-									"value": "11"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Premium Recipient Message",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:5000/cems/recipient/premium/:uid/:mid",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "5000",
-							"path": [
-								"cems",
-								"recipient",
-								"premium",
 								":uid",
 								":mid"
 							],
