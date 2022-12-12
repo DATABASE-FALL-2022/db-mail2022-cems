@@ -3,6 +3,9 @@ from config import get_db
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
 from dao.account import AccountDAO
+import logging
+
+logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
 
 
 class MessageDAO:
@@ -45,26 +48,41 @@ class MessageDAO:
         cursor.close()
         return result
 
+
     def sendNewMessage(self, sender_id, receiver_email, subject, body):
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        isList = type(receiver_email)
+        logging.debug(isList)
+        logging.debug(len(receiver_email))
 
-        send_query = """
-        INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
-        """
-        receive_query = """
-        INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
-        """
+        if isinstance(receiver_email, list):
+            logging.debug('is List')
 
-        # Insert message into the sender outbox
-        cursor.execute(send_query, (sender_id, subject, body))
-        message_id = cursor.fetchone()['m_id']
-        conn.commit()
+        else:
+            logging.debug('is not list')
 
-        # Insert message into the receiver inbox
-        cursor.execute(receive_query, (receiver_email, message_id))
-        conn.commit()
-        cursor.close()
+        
+
+        # send_query = """
+        # INSERT INTO message(user_id, subject, body, m_date) VALUES (%s, %s, %s, current_timestamp) RETURNING m_id;
+        # """
+
+        # # Insert message into the sender outbox
+        # cursor.execute(send_query, (sender_id, subject, body))
+        # message_id = cursor.fetchone()['m_id']
+        # conn.commit()
+
+
+        # receive_query = """
+        # INSERT INTO recipient(user_id, m_id) VALUES ((SELECT user_id FROM account WHERE email_address = %s), %s);
+        # """
+
+        # # Insert message into the receiver inbox
+        # cursor.execute(receive_query, (receiver_email, message_id))
+        # conn.commit()
+        # cursor.close()
         return ('Message sent to %s' % (receiver_email))
 
     def getAllMessages(self):
