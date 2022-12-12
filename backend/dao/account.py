@@ -49,12 +49,12 @@ class AccountDAO:
     def getAllAccounts(self):
         """
         This function return all tuples in the account table with all the infor including
-        delicate info like passwords.
+        delicate info like passwords and even accounts deleted logically.
         """
         conn = get_db()
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         query = '''
-        SELECT * FROM account WHERE is_deleted = false
+        SELECT * FROM account
         '''
         cursor.execute(query)
         result = cursor.fetchall()
@@ -224,7 +224,6 @@ class AccountDAO:
         WHERE r.user_id = %s
         AND a.email_address = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, email,))

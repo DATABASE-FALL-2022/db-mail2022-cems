@@ -115,7 +115,6 @@ class MessageDAO:
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE r.user_id = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
@@ -133,7 +132,6 @@ class MessageDAO:
         WHERE r.user_id = %s
         AND category = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id, category,))
@@ -150,7 +148,6 @@ class MessageDAO:
         INNER JOIN recipient AS r ON (m.m_id = r.m_id)
         WHERE a.user_id = %s
         AND r.is_deleted = false
-        AND a.is_deleted = false
         ORDER BY m_date DESC;
         """
         cursor.execute(query, (user_id,))
