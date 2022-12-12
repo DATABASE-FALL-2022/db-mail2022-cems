@@ -18,7 +18,7 @@ export default function Inbox() {
 		emailList = newData.map((value) => <Email key={value.m_id} info={value} page={'inbox'} />);
 	};
 
-	function exampleReducer(state, action) {
+	function reducer(state, action) {
 		switch (action.type) {
 			case 'CLEAN_QUERY':
 				return initialState;
@@ -44,7 +44,7 @@ export default function Inbox() {
 		emailList = <p className='p-5 fw-bold'>Your inbox is empty...</p>;
 	}
 
-	const [state, dispatch] = React.useReducer(exampleReducer, initialState);
+	const [state, dispatch] = React.useReducer(reducer, initialState);
 	const { loading, results, value } = state;
 	const timeoutRef = React.useRef();
 
