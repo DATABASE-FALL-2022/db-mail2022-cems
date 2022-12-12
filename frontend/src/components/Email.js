@@ -74,13 +74,17 @@ export default function Email(props) {
 				});
 		} else {
 			if (JSON.parse(localStorage.getItem('user')).is_premium) {
-				axios
-					.delete('http://127.0.0.1:5000/cems/message/premium/' + userID + '/' + props.info.m_id, {})
-					.then(function (response) {
-						console.log(response); // TODO: Give message to user
+				fetch('http://127.0.0.1:5000/cems/message/premium/' + userID + '/' + props.info.m_id, { method: 'DELETE' })
+					.then(async (response) => {
+						const data = await response.json();
+
+						if (!response.ok) {
+							const error = (data && data.message) || response.status;
+							return Promise.reject(error);
+						}
 					})
-					.catch(function (error) {
-						console.log(error);
+					.catch((error) => {
+						console.error('There was an error!', error);
 					});
 			} else {
 				axios

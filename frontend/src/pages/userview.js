@@ -61,7 +61,7 @@ export default function UserView(props) {
 	return (
 		<div className=''>
 			<NavigationBar logout={props.logout} />
-			<div className='w-100 d-flex justify-content-start' style={{ paddingLeft: '2.5rem', paddingTop: '2rem' }}>
+			<div className='w-100 d-flex justify-content-start' style={{ paddingLeft: '4rem', paddingTop: '2rem' }}>
 				<Compose />
 			</div>
 

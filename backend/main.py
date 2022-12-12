@@ -169,7 +169,7 @@ def getMessageById(m_id):
         return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/cems/message/premium/<int:u_id>/<int:m_id>/', methods=['DELETE'])
+@app.route('/cems/message/premium/<int:u_id>/<int:m_id>', methods=['DELETE'])
 def deleteMessageById(u_id, m_id):
     if request.method == 'DELETE':
         return MessageHandler().deleteMessagePremium(u_id, m_id)
