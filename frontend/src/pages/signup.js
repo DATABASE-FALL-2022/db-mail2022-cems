@@ -129,10 +129,7 @@ function Signup() {
 
         var { email, pass,firstname,lastname,day,month,year, gender,phone,premium} = data;
         var link = 'http://127.0.0.1:5000/cems/account';
-        var monthInt = parseInt(month.value);
-        monthInt = monthInt-1;
-        var dateObj = new Date(year.value, monthInt, day.value, 0, 0, 0, 0);
-        var dob = dateObj.toUTCString();
+        var dob = year.value+'-'+month.value+'-'+day.value;
         
         
 
