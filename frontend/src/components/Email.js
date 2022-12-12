@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ListGroup, Button, Card, Modal, Dropdown } from 'react-bootstrap';
+import { ListGroup, Button, Card, Modal, Dropdown, Badge } from 'react-bootstrap';
 import * as Icon from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import Notification from './Notification';
@@ -12,6 +12,8 @@ export default function Email(props) {
 	const [deleteResponse, setDeleteResponse] = useState(false);
 	const [replyResponse, setReplyResponse] = useState(false);
 	const [replyMessage, setReplyMessage] = useState(false);
+	const [friend, setIsFriend] = useState(false);
+	const [previousMessage, setPreviousMessage] = useState(false);
 	const ref = useRef(null);
 
 	const handleClose = () => setShow(false);
@@ -34,6 +36,7 @@ export default function Email(props) {
 
 	/**
 	 *
+	 * @param {*} date
 	 * @returns
 	 */
 	function formatDate(date) {
@@ -53,7 +56,6 @@ export default function Email(props) {
 
 	/**
 	 *
-	 * @returns
 	 */
 	const handleDelete = () => {
 		const userID = JSON.parse(localStorage.getItem('user')).user_id;
@@ -71,7 +73,6 @@ export default function Email(props) {
 
 	/**
 	 *
-	 * @returns
 	 */
 	const handleReply = () => {
 		handleShow();
@@ -79,14 +80,13 @@ export default function Email(props) {
 
 	/**
 	 *
-	 * @returns
 	 */
 	const handleSendReply = () => {
 		axios
 			.post('http://127.0.0.1:5000/cems/message', {
 				id: JSON.parse(localStorage.getItem('user')).user_id,
 				receiver_email: sender.email_address,
-				subject: 'RE: ' + props.info.subject,
+				subject: props.info.subject,
 				body: ref.current.value,
 				reply_id: props.info.m_id,
 			})
@@ -101,7 +101,7 @@ export default function Email(props) {
 
 	/**
 	 *
-	 * @returns
+	 * @param {*} event
 	 */
 	const handleMessageChange = (event) => {
 		setReplyMessage(event.target.value);
@@ -109,7 +109,6 @@ export default function Email(props) {
 
 	/**
 	 *
-	 * @returns
 	 */
 	const handleRead = () => {
 		if (!readMessage) {
@@ -128,28 +127,74 @@ export default function Email(props) {
 		}
 	};
 
+	const isFriend = () => {
+		const user_id = props.info.receiver_id;
+		const friend_id = props.info.sender_id;
+
+		axios
+			.get('http://127.0.0.1:5000/cems/friends/' + user_id + '/' + friend_id)
+			.then(function (response) {
+				console.log(response.data.exists); // TODO: Give message to user
+				setIsFriend(response.data.exists);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+
 	/**
 	 *
 	 * @returns
 	 */
-	function formatEmails() {
+	const formatEmails = () => {
 		if (sender.email_address === 'dont_reply@support.edu') return <Notification info={props.info} />;
 		else {
+			var friendMark = <></>;
+			var friendField = <></>;
+			var userMark = <></>;
+			var readMark = <></>;
+			var replyMark = <></>;
+
+			isFriend();
+			if (friend) {
+				friendMark = (
+					<Badge pill bg='success' border='danger'>
+						<Icon.Person />
+						Friend
+					</Badge>
+				);
+			}
+
+			if (sender.is_premium) userMark = <Icon.PatchCheckFill color='#1DA1F2' />;
+
+			if (props.page === 'outbox' && props.info.is_read) {
+				readMark = (
+					<Badge pill bg='secondary' border='danger'>
+						<Icon.Check2All color='white' /> Read
+					</Badge>
+				);
+			}
+
+			if (props.info.reply_id !== null) replyMark = <Icon.ReplyFill color='blue' />;
+
 			return (
 				<div className='row'>
 					<div onClick={handleShow} className='row col'>
+						{friendField}
 						<div className='ms-1 col-3 align-self-center align-items-center'>
 							<div className='fw-bold'>
-								{sender.first_name} {sender.last_name}
+								{sender.first_name} {sender.last_name} {userMark} {friendMark}
 							</div>
 							<div className=''>{sender.email_address}</div>
 						</div>
 						<div className='ms-5 me-auto col-6 align-self-center align-items-center'>
-							<div className='fw-bold'>{props.info.subject}</div>
+							<div className='fw-bold'>
+								{props.info.subject} {replyMark}
+							</div>
 							<Card className='m-auto p-2'>{props.info.body}</Card>
+							{readMark}
 						</div>
 					</div>
-
 					<div className='col-2 d-flex align-self-center align-items-center justify-content-end'>
 						<div className='fw-bold'>{formatDate(props.info.m_date)}</div>
 						<Button className='ms-2' onClick={handleReply}>
@@ -162,7 +207,34 @@ export default function Email(props) {
 				</div>
 			);
 		}
-	}
+	};
+
+	useEffect(() => {
+		if (props.info.reply_id !== null) {
+			fetch('http://127.0.0.1:5000/cems/message/' + props.info.reply_id, {
+				methods: 'GET',
+			})
+				.then((response) => response.json())
+				.then((response) => setPreviousMessage(response))
+				.catch((error) => console.log(error));
+		}
+	}, [props.info.reply_id]);
+
+	const message =
+		props.info.reply_id !== null ? (
+			<Card body>
+				<div className=''>
+					Message being replied to:
+					<Card body>{previousMessage.body}</Card>
+				</div>
+				<div className='mt-5'>
+					<p className='fw-bold'>This is a reply to the message above:</p>
+					<Card body>{props.info.body}</Card>
+				</div>
+			</Card>
+		) : (
+			props.info.body
+		);
 
 	return (
 		<ListGroup.Item className='justify-content-between align-items-center p-4' style={{ cursor: 'pointer' }}>
@@ -174,7 +246,7 @@ export default function Email(props) {
 						<Modal.Title>{props.info.subject}</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<div className=''>{props.info.body}</div>
+						<div className=''>{message}</div>
 						<div id='replyField' className='mt-4'>
 							<div className='input-group'>
 								<div className='input-group-prepend'>
@@ -182,7 +254,7 @@ export default function Email(props) {
 										<Icon.Reply />
 									</span>
 								</div>
-								<textarea className='form-control' value={replyMessage} ref={ref} onChange={handleMessageChange} id='replyMessage' rows='5'></textarea>
+								<textarea className='form-control' ref={ref} onChange={handleMessageChange} id='replyMessage' rows='4'></textarea>
 							</div>
 						</div>
 					</Modal.Body>
